@@ -1,0 +1,162 @@
+<section class="content">
+
+  <form class="form-horizontal" [formGroup]="form" *ngIf="form">
+
+    <div class="box">
+      <div class="box-header with-border">
+        <h3 class="box-title">Dados para Troca de Lotes</h3>
+      </div>
+
+      <div class="box-body">
+        <fieldset [disabled]="loading">
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-md-2 text-right" for="warehouse">Armazém:</label>
+            <div class="col-md-10">
+              <select formControlName="warehouse" class="form-control" id="warehouse" (change)="warehouseChange()">
+                <option *ngFor="let warehouse of warehouses"
+                        [value]="warehouse.id">
+                  {{ warehouse.code + ' - ' + warehouse.name }}
+                </option>
+              </select>
+              <app-error-message controlName="warehouse" label="Armazém"></app-error-message>
+            </div>
+          </div>
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-md-2 text-right" for="ownerStakeholder">Vendedor:</label>
+            <div class="col-md-10">
+              <app-autocomplete [service]="ownerAutocomplete"></app-autocomplete>
+              <input id="ownerStakeholder" type="hidden" formControlName="ownerStakeholder"/>
+              <app-error-message controlName="ownerStakeholder" label="Vendedor"></app-error-message>
+            </div>
+          </div>
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-md-2 text-right" for="recipientStakeholder">Destinatário:</label>
+            <div class="col-md-10">
+              <app-autocomplete [service]="recipientAutocomplete"></app-autocomplete>
+              <input id="recipientStakeholder" type="hidden" formControlName="recipientStakeholder"/>
+              <app-error-message controlName="recipientStakeholder" label="Destinatário"></app-error-message>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="box-header with-border">
+        <h3 class="box-title">Dados de Lotes</h3>
+      </div>
+
+      <div class="box-body">
+        <fieldset [disabled]="loading">
+          <div class="row inside-fieldset">
+
+            <div class="form-group col-md-6" appErrorGroup>
+              <label class="control-label col-md-3 text-right" for="originalBatch">Lote de Origem:</label>
+              <div class="col-md-9">
+                <app-autocomplete [disabled]="form.controls['originalBatch'].disabled" [service]="originalBatchAutocomplete"></app-autocomplete>
+                <input id="originalBatch" type="hidden" formControlName="originalBatch" class="form-control"/>
+                <app-error-message controlName="originalBatch" label="Lote de Origem"></app-error-message>
+              </div>
+            </div>
+            <div class="form-group col-md-6" appErrorGroup>
+              <label class="control-label col-md-3 text-right" for="destinyBatch">Lote de Destino:</label>
+              <div class="col-md-9">
+                <app-autocomplete [disabled]="form.controls['destinyBatch'].disabled" [service]="destinyBatchAutocomplete"></app-autocomplete>
+                <input id="destinyBatch" type="hidden" formControlName="destinyBatch" class="form-control"/>
+                <app-error-message controlName="destinyBatch" label="Lote de Destino"></app-error-message>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-md-1 text-right" style="width: calc(100% * 101.6 / 812.8)" for="motive">Motivo:</label>
+            <div class="col-md-11" style="width: calc(100% - 100% * 101.6 / 812.8);">
+              <textarea maxlength="255" class="form-control" id="motive" formControlName="motive">
+                  </textarea>
+              <app-error-message controlName="motive" label="Motivo"></app-error-message>
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="table-responsive" *ngIf="!!originalBatchStorageUnits.length">
+          <table class="table table-condensed table-bordered table-hover">
+            <thead>
+            <tr>
+              <th class="col-xs-1 text-center">
+                <input
+                  type="checkbox"
+                  [checked]="allStorageUnitsSelected"
+                  (change)="toggleAllStorageUnits()"/>
+              </th>
+              <th class="col-xs-3">
+                Tag
+              </th>
+              <th class="col-xs-2">
+                Localização
+              </th>
+              <th class="col-xs-3">
+                Quantidade
+              </th>
+              <th class="col-xs-3">
+                Tipo de embalagem
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let storageUnit of originalBatchStorageUnits">
+              <td class="text-center">
+                <input
+                  type="checkbox"
+                  [checked]="storageUnit.selected"
+                  (change)="storageUnit.toggleSelected()"/>
+              </td>
+              <td>{{storageUnit.tagLabel}}</td>
+              <td>{{storageUnit.location}}</td>
+              <td>
+                <p *ngIf="storageUnit.showQuantityByBatch">
+                  KG {{storageUnit.quantityByBatchString}}
+                  <app-kilos-to-sacks
+                    [value]="storageUnit.quantityByBatch"
+                    [batch]="originalBatch"></app-kilos-to-sacks>
+                  /
+                </p>
+                KG {{storageUnit.quantityString}}
+                <app-kilos-to-sacks
+                  [value]="storageUnit.quantity"
+                  [batch]="originalBatch"></app-kilos-to-sacks>
+              </td>
+              <td>{{storageUnit.packType ? storageUnit.packType.description : ''}}</td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+              <th class="col-xs-2 text-right" colspan="3">
+                Total:
+              </th>
+              <th class="col-xs-3">
+                {{ totalCalcString }}
+              </th>
+            </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12 mb10">
+
+        <button
+          class="btn btn-size btn-success" (click)="verifyTransfer()">
+          Transferir
+        </button>
+
+      </div>
+    </div>
+
+  </form>
+</section>
+
+<app-confirm *ngIf="transferConfirm.opened"
+             [message]="confirmationMessage"
+             (confirm)="save()" (close)="transferConfirm.close()"></app-confirm>

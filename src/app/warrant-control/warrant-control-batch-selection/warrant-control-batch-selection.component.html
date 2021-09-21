@@ -1,0 +1,149 @@
+<style>
+  /*.custom_row {margin: 0 0 12px 0 !important;}*/
+  .custom_row .custom_col {padding:4px !important; margin-bottom: 5px !important;}
+  .custom_row .custom_col .text-danger {padding:4px !important;}
+  .custom_row .custom_col label {display:block !important;}
+  .buscar_por label {font-weight:normal; margin-right:5px;}
+  .listaLotesPesquisa {max-height: 300px; overflow: auto; width: 100%; margin: 0;}
+  .padding-top {padding-top: 15px !important;}
+  .listaLotesPesquisa div {margin:0; padding:0;}
+</style>
+
+<div class="padding-top" >
+  <h4>Lista de lotes bloqueados</h4>
+
+  <form [formGroup]="form" (ngSubmit)="pesquisar()" *ngIf="isEditable">
+
+    <!-- busca por lote -->
+    <div class="row, custom_row">
+
+      <label class="control-label col-md-2 text-right"></label>
+      <div class="col-xs-4 text-left custom_col">
+        <label for="buscar_por_cod_lote">Código</label>
+        <input [formControl]="form.get('buscar_por_cod_lote')" type="text" maxlength="40" class="form-control" id="buscar_por_cod_lote" />
+      </div>
+
+      <div class="col-xs-4 text-left custom_col">
+        <label for="buscar_por_dono_lote">Cliente</label>
+
+        <input type="text" class="form-control" disabled value="{{ownerFixed?.label}}">
+
+        <input id="buscar_por_dono_lote" type="hidden" formControlName="buscar_por_dono_lote" />
+        <app-error-message controlName="buscar_por_dono_lote" label="Cliente"></app-error-message>
+      </div>
+
+      <div class="col-xs-2 text-left custom_col">
+        <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <app-submit-button [disabled]="desabilitarBotaoPesquisarLote()" [loading]="loading" [btnClass]="'btn btn-success btn-normal'">
+          Pesquisar
+        </app-submit-button>
+      </div>
+    </div>
+
+  </form>
+
+  <!-- lista da pesquisa de lotes-->
+  <div class="row listaLotesPesquisa" *ngIf="isEditable">
+    <div class="col-xs-12">
+      <p *ngIf="nenhumLoteEncontrado == true" style="text-align:center; margin-top:20px">
+        Nehum lote encontrado para o critério de busca</p>
+      <table class="table table-bordered table-condensed" *ngIf="nenhumLoteEncontrado == false && loading == false">
+        <thead>
+        <tr>
+          <th>Lote</th>
+          <th>Localização do Lote</th>
+          <th>Cliente</th>
+          <th>Certificado</th>
+          <th>Total do Lote</th>
+          <th>Reservado</th>
+          <th>Saldo</th>
+          <th>Sacas</th>
+          <th>Ação</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let lote of listaPesquisaLotes">
+          <td>
+            <a [routerLink]="['/batch-report']" [queryParams]="{lote: lote.batchCode}" target="_blank" title="Abrir ficha do lote">{{lote.batchCode}}</a>
+          </td>
+          <td>{{ lote.local ? 'Lote Local':'Lote Remoto' }}</td>
+          <td>{{ lote.batchOperation?.owner?.person?.name }}</td>
+          <td>{{ lote.batchOperation?.certificateNames }}</td>
+          <td>{{ calcBalanceString(lote) }} kg</td>
+          <td>{{ lote.qtdReservedString }} kg</td>
+          <td>{{ lote.balanceString }} kg</td>
+          <td>{{ lote.sacks }}</td>
+          <td class="bts-list-actions" *ngIf="isEditable">
+            <button *ngIf="lote.availableWeight >= 1" (click)="adicionar(lote)"
+                    type="button" appTooltip="Adicionar" class="btn btn-success btn-sm">
+              <span class="fa fa-plus"></span>
+            </button>
+            <!---<span *ngIf="lote.sample.status == sampleStatusReserved.code">{{lote.sample.statusObject.name}}</span>--->
+            <span *ngIf="lote.availableWeight < 1"> Sem Saldo Disp.</span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- lotes selecionados -->
+  <div class="row" *ngIf="retentionBatches  && retentionBatches.length > 0"
+       style="margin-top:30px">
+    <div class="col-xs-12">
+      <table class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+          <th colspan="7">Selecionados</th>
+        </tr>
+        <tr>
+          <th>Lote</th>
+          <th>Cliente</th>
+          <th>Certificado</th>
+          <th>Quantidade Total</th>
+          <th>Quantidade Bloqueada (kg)</th>
+          <th>Sacas Bloqueadas</th>
+          <th class="bts-list-actions" *ngIf="isEditable">Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let linha of retentionBatches">
+          <td>{{linha.batch?.batchCode}}</td>
+          <td>{{linha.batch?.batchOperation?.owner?.person?.name}}</td>
+          <td>{{linha.batch?.batchOperation?.certificateNames}}</td>
+          <td>{{calcBalanceString(linha.batch)}} kg</td>
+          <td>
+            <input type="number" step=".01" class="form-control"
+                   [value]="linha.quantity" (change)="quantidadeAlterada($event, linha)" id="msgQtdeKgBatchId{{linha.batch?.id}}"
+                   style="max-width:80px;" />
+            <div class="text-danger" id="msgQtdeKgBatchIdError{{linha.batch?.id}}" style="display:none;">
+              O despejo deve ser um valor entre 1 e a quantidade total</div>
+          </td>
+          <td>
+            <input type="number" class="form-control" [(ngModel)]="linha.sacksQuantity"
+                   [value]="linha.sacksQuantity" (change)="sacksChanged($event, linha)" id="qtdeBatchId{linha.batch?.id}"
+                   style="max-width:120px;" />
+            <div class="text-danger" id="msgQtdeBatchId{{linha.batch?.id}}" style="display:none;">
+              O despejo deve ser um valor entre 1 e a quantidade disponível de sacas do Lote</div>
+          </td>
+
+          <td class="bts-list-actions">
+            <button (click)="remover(linha.batch)" type="button" appTooltip="Remover" class="btn btn-danger btn-sm">
+              <span class="fa fa-trash-o fa-lg"></span>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr style="font-weight:bold;">
+          <td colspan="4" style="text-align:right;">Totais:</td>
+          <td>{{getTotalWeight()}} Kg</td>
+          <td>{{getTotalSacks()}}</td>
+        </tr>
+        </tfoot>
+      </table>
+
+    </div>
+  </div>
+
+</div>

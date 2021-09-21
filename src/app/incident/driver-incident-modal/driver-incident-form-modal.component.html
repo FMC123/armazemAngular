@@ -1,0 +1,39 @@
+<div class="modal fade"
+     appModal
+     [shownCallback]="focusOnInput()"
+     (close)="close.emit(null)"
+     tabindex="-1"
+     role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <form (ngSubmit)="submit()" [formGroup]="form" *ngIf="form" class="form-horizontal">
+        <div class="modal-header">
+          <h3 class="modal-title">Novo Incidente do Motorista {{driver?.name}}</h3>
+        </div>
+
+        <div class="modal-body">
+          <div class="col-md-12 col-xs-12" appErrorGroup>
+            <label for="description">Descrição</label>
+            <textarea id="description"
+                   class="form-control text-area"
+                   formControlName="description"
+                   maxlength="255"
+                   rows="5"
+                   placeholder="Descrição do incidente">
+              </textarea>
+            <app-error-message controlName="description" label="Descrição"></app-error-message>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+
+          <app-submit-button [loading]="loading">Salvar</app-submit-button>
+          <button type="button" class="btn btn-default btn-size" data-dismiss="modal" style="float:right">
+            Cancelar
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

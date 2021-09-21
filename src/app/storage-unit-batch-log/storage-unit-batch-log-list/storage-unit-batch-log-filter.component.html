@@ -1,0 +1,144 @@
+<div class="box">
+  <div class="box-header">
+    <h3 class="box-title w100">
+      Filtro
+    </h3>
+  </div>
+
+  <div class="box-body">
+    <form class="form-horizontal" (ngSubmit)="submit()" *ngIf="form" [formGroup]="form" (keydown.enter)="$event.preventDefault();">
+      <fieldset [disabled]="loading">
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-xs-4 col-md-2 text-right" for="createdDateStartString">Período</label>
+          <div class="col-xs-8 col-md-10">
+            <div class="row">
+              <div class="col-xs-6">
+                <div class="input-group">
+                  <input type="text" [textMask]="dateMask" appDatePicker formControlName="createdDateStartString"
+                    placeholder="Início" class="form-control" />
+                  <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+                </div>
+              </div>
+              <div class="col-xs-6">
+                <div class="input-group">
+                  <input type="text" [textMask]="dateMask" appDatePicker formControlName="createdDateEndString"
+                    placeholder="Fim" class="form-control" />
+                  <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-xs-4 col-md-2 text-right" for="tpMovimentacao">
+            Movimentação
+          </label>
+          <div class="col-xs-8 col-md-4">
+            <select formControlName="type" class="form-control">
+              <option value=''>Selecione um tipo de movimentação</option>
+              <option *ngFor="let tipoMove of tiposMovimentacao" [value]="tipoMove.code">
+                {{ tipoMove.name }}
+              </option>
+            </select>
+            <app-error-message controlName="type" label="Tipo de Movimentação"></app-error-message>
+          </div>
+
+          <label class="control-label col-xs-4 col-md-2 text-right" for="forkliftId">Empilhadeira</label>
+          <div class="col-xs-8 col-md-4">
+            <select formControlName="forkliftId" class="form-control">
+              <option value=''>Selecione um empilhadeira</option>
+              <option *ngFor="let forklift of forklifts" [value]="forklift.id">
+                {{ forklift.name }}
+              </option>
+            </select>
+            <app-error-message controlName="forkliftId" label="Empilhadeira"></app-error-message>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-xs-4 col-md-2 text-right" for="userName">Operador</label>
+          <div class="col-xs-8 col-md-4">
+            <input id="userName" formControlName="userName" type="text" class="form-control" />
+            <app-error-message controlName="userName" label="Operador"></app-error-message>
+          </div>
+
+          <label class="control-label col-xs-4 col-md-2 text-right" for="positionCode">
+            Posição
+          </label>
+          <div class="col-xs-8 col-md-4">
+            <input id="positionCode" class="form-control" formControlName="positionCode" placeholder="" maxlength="255" />
+            <app-error-message controlName="positionCode" label="Posição"></app-error-message>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-xs-4 col-md-2 text-right" for="tagCode">
+            Tag
+          </label>
+          <div class="col-xs-8 col-md-4">
+            <input type="number" id="tagCode" class="form-control" formControlName="tagCode" maxlength="20" />
+            <app-error-message controlName="tagCode" label="Tag"></app-error-message>
+          </div>
+
+          <label class="control-label col-xs-4 col-md-2 text-right" for="batchOperationCode">
+            Romaneio
+          </label>
+          <div class="col-xs-8 col-md-4">
+            <input id="batchOperationCode" class="form-control" formControlName="batchOperationCode" maxlength="255" />
+            <app-error-message controlName="batchOperationCode" label="Romaneio"></app-error-message>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-xs-4 col-md-2 text-right" for="batchCode">
+            Lote
+          </label>
+          <div class="col-xs-8 col-md-4">
+            <input id="batchCode" class="form-control" formControlName="batchCode" maxlength="255" />
+            <app-error-message controlName="batchCode" label="Lote"></app-error-message>
+          </div>
+
+          <label class="control-label col-xs-4 col-md-2 text-right" for="ownerName">Proprietário</label>
+          <div class="col-xs-8 col-md-4">
+            <input id="ownerName" formControlName="ownerName" type="text" class="form-control" />
+            <app-error-message controlName="ownerName" label="Proprietário"></app-error-message>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-xs-4 col-md-2 text-right" for="quantity">
+            Peso da Unidade de Armazenamento
+          </label>
+          <div class="col-xs-8 col-md-4">
+            <input id="quantity" class="form-control" formControlName="quantity" maxlength="10" [textMask]="decimalMask" />
+            <app-error-message controlName="quantity" label="Peso da Unidade de Armazenamento"></app-error-message>
+          </div>
+        </div>
+
+      </fieldset>
+      <div class="form-group">
+        <div class="col-xs-offset-4 col-xs-8 col-md-10 col-md-offset-2">
+          <button [disabled]="loading" [class.has-spinner]="loading" type="submit" class="btn btn-size btn-success">
+            <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+            PESQUISAR
+          </button>
+
+          <button type="button" (click)="buildForm()" class="btn btn-size btn-default">LIMPAR</button>
+
+          <button (click)="submitPdf()" type="button" class="btn btn-size btn-success">
+            <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+            ABRIR PDF
+          </button>
+
+          <button (click)="submitCsv()" type="button" class="btn btn-size btn-success">
+            <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+            ABRIR CSV
+          </button>
+
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

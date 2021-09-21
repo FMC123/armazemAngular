@@ -1,0 +1,32 @@
+<form [formGroup]="form">
+  <div [hidden]="!!service.selected">
+    <input formControlName="autocomplete" style="display: block"
+           [typeahead]="service.datasource"
+           [typeaheadOptionField]="service.optionField"
+           (typeaheadLoading)="service.setLoading($event)"
+           (typeaheadNoResults)="service.setNoResults($event)"
+           (typeaheadOnSelect)="service.select($event)"
+           [typeaheadAsync]="!instant"
+           [typeaheadWaitMs]="instant ? 1 : 300"
+           [typeaheadMinLength]="instant ? 0 : 3"
+           (input)="emitInput($event)"
+           class="form-control"
+           placeholder="{{placeHolder}}"
+           #autocompleteEl/>
+  </div>
+  <div *ngIf="service.loading===true">
+    <i class="fa fa-spinner fa-spin"></i> Carregando...
+  </div>
+  <div *ngIf="service.noResults===true">
+    <i class="fa fa-remove"></i> Não foram encontrados resultados
+  </div>
+  <div [hidden]="!service.selected">
+    <div class="input-group" style="width: 100%" [ngClass]="{'display-input': form.controls['autocomplete'].disabled}">
+      <input type="text" class="form-control" [value]="service.label" disabled>
+      <span class="input-group-btn" [hidden]="hideClearButton">
+        <button class="btn btn-default" (click)=service.clean(autocompleteEl) type="button"><i
+          class="fa fa-close text-danger"></i></button>
+      </span>
+    </div>
+  </div>
+</form>

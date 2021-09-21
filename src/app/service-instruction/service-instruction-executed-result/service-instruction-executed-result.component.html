@@ -1,0 +1,50 @@
+<style>
+  .custom_row {margin: 0 0 12px 0 !important;}
+  .custom_row .custom_col {padding:2px !important;}
+  .custom_row .custom_col .text-danger {padding:2px !important;}
+  .custom_row .custom_col label {display:block !important;}
+</style>
+
+<div class="box" *ngIf="batches != null && batches.length > 0">
+  <div class="box-header">
+    <h3 class="box-title">Lotes Resultantes</h3>
+  </div>
+  <div class="box-body">
+    <div class="row">
+      <div class="col-xs-12">
+        <table class="table table-bordered table-condensed">
+          <thead>
+          <tr>
+            <th>Lote</th>
+            <th>Localização</th>
+            <th>Certificado</th>
+            <th>Quantidade</th>
+            <th>Sacas</th>
+            <th>Peneira</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let batch of batches">
+            <td>{{ batch.batchCode }}</td>
+            <td>{{ batch.localString }}</td>
+            <td>{{ batch.certificateNamesString }}</td>
+            <td>{{ batch.netWeightString }}</td>
+            <td>{{ batch.netQuantityValue }}</td>
+            <td>{{ batch.strainer?.description }}</td>
+          </tr>
+
+          </tbody>
+          <tfoot>
+          <tr style="font-weight:bold;">
+            <td [attr.colspan]="serviceInstruction.isAwaitingBatchAvailability"
+                style="text-align:right;"
+                [colSpan]="3">Totais:</td>
+            <td>{{getTotalWeight()}} Kg</td>
+            <td>{{getTotalSacks()}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>

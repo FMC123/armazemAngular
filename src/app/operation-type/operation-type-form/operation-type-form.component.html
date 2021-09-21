@@ -1,0 +1,128 @@
+<section class="content-header">
+  <h1>
+    <small>Cadastro</small>
+    Tipo de Operação
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Tipo de Operação', '/operation-type'],
+    ['Cadastro do Tipo de Operação', null]
+  ]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <form
+        (ngSubmit)="save()"
+        [formGroup]="form"
+        *ngIf="form"
+        class="form-horizontal"
+      >
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Formulário</h3>
+          </div>
+
+          <div class="box-body">
+            <fieldset [disabled]="loading">
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="description">
+                  *Descrição
+                </label>
+                <div class="col-md-10">
+                  <input
+                    [formControl]="form.get('description')"
+                    type="text"
+                    maxlength="255"
+                    class="form-control"
+                    id="description"
+                  />
+                  <app-error-message controlName="description" label="Descrição"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="descriptionCounterpart">
+                  Descrição Contrapartida
+                </label>
+                <div class="col-md-10">
+                  <input
+                    [formControl]="form.get('descriptionCounterpart')"
+                    type="text"
+                    maxlength="255"
+                    class="form-control"
+                    id="descriptionCounterpart"
+                  />
+                  <app-error-message controlName="descriptionCounterpart" label="Descrição Contrapartida"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="type">*Tipo</label>
+                <div class="col-md-10">
+                  <select formControlName="type" class="form-control" id="type">
+                    <option value=''>Selecione um tipo</option>
+                    <option *ngFor="let type of types" [value]="type.code">
+                      {{ type.name }}
+                    </option>
+                  </select>
+                  <app-error-message controlName="type" label="Tipo"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="isInputDefaultValue">
+                  Operação de Entrada Padrão
+                </label>
+                <div class="col-md-1">
+                  <label>
+                    <input id="isInputDefaultValue" [formControl]="form.get('isInputDefaultValue')" type="checkbox" /> Sim
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup hidden="true">
+                <label class="control-label col-md-2 text-right" for="isOutputDefaultValue">
+                  Operação de Saída Padrão
+                </label>
+                <div class="col-md-1">
+                  <label>
+                    <input id="isOutputDefaultValue" [formControl]="form.get('isOutputDefaultValue')" type="checkbox" /> Sim
+                  </label>
+                </div>
+              </div>
+
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right">Serviços da Operação</label>
+                <div class="col-md-10">
+                  <app-operation-type-service-input-form [options]="items" [selecteds]="operationType.serviceItemsInputs"></app-operation-type-service-input-form>
+                </div>
+              </div>
+
+
+            </fieldset>
+          </div>
+
+          <div class="box-footer">
+            <div class="row">
+              <div class="col-sm-offset-2">
+                <div class="col-sm-10 mb10">
+                  <app-submit-button [loading]="loading">
+                    SALVAR
+                  </app-submit-button>
+                  <a [class.disabled]="loading"
+                      routerLink="/operation-type"
+                      class="btn btn-default btn-size">
+                    VOLTAR
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

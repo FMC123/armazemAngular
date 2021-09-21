@@ -1,0 +1,26 @@
+
+<section class="content-header">
+    <h1>
+      <small>Detalhes</small>
+      Histórico do Romaneio
+    </h1>
+    <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Histórico dos Romaneios','/batch-log'],
+    ['Histórico do Romaneio', null]
+  ]"></app-breadcrumb>
+  </section>
+
+  <section class="content">
+
+ <app-batch-operation-log-list-info [batchOperationLog]="batchOperationLog" *ngIf="batchOperationLog"></app-batch-operation-log-list-info>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <a routerLink="/batch-log"
+          class="btn btn-default btn-size">
+        VOLTAR
+      </a>
+    </div>
+  </div>
+  </section>

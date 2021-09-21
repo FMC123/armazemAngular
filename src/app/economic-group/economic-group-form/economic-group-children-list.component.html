@@ -1,0 +1,10 @@
+<table class="table table-bordered">
+  <tr>
+<th class="col-xs-1">Código Grupo Econômico</th>
+<th class="col-xs-1">Descrição Grupo Econômico</th>
+  </tr>
+    <tr *ngFor="let economicGroup of children">
+      <td>{{ economicGroup.code }}</td>
+      <td>{{ economicGroup.description }}</td>
+  </tr>
+</table>

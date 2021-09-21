@@ -1,0 +1,63 @@
+<div class="box">
+  <div class="box-header">
+    <h1 class="box-title">Certificados</h1>
+  </div>
+
+  <div class="box-body">
+    <app-loading *ngIf="loading"></app-loading>
+    <div *ngIf="!loading">
+      <button
+        *ngIf="isAdminForTransfer()"
+        (click)="formModal.open()"
+        class="btn btn-success"
+        style="margin-bottom: 12px">
+        Novo
+      </button>
+    </div>
+    <div
+      *ngIf="!loading && (!certificates || certificates.length<=0)"
+      style="width: 100%"
+      class="text-center">
+      Não existem certificados para este romaneio
+    </div>
+    <table
+      *ngIf="!loading && (certificates && certificates.length>0)"
+      class="table table-bordered table-condensed">
+      <thead>
+        <tr>
+          <th class="col-xs-8 col-md-10">Certificado</th>
+          <th class="col-xs-4 col-md-2 text-center">Acões</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let certificate of certificates">
+          <td>{{ certificate.certificate?.name }}</td>
+          <td class="bts-list-actions">
+            <button
+              *ngIf="isAdminForTransfer()"
+              (click)="deleteConfirm.open(certificate.id)"
+              type="button"
+              appTooltip="Excluir"
+              class="btn btn-danger btn-sm"
+              [disabled]="loading">
+              <span class="fa fa-trash-o fa-lg"></span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<app-confirm
+  *ngIf="deleteConfirm.opened"
+  message="Tem certeza que deseja excluir este registro?"
+  (confirm)="delete(deleteConfirm.value)"
+  (close)="deleteConfirm.close()">
+</app-confirm>
+
+<app-batch-operation-certificate-form-modal
+  *ngIf="formModal.opened"
+  [batchOperation]="batchOperation"
+  (close)="onFormClose($event)"
+></app-batch-operation-certificate-form-modal>

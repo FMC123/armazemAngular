@@ -1,0 +1,29 @@
+<div class="new-layout">
+  <section class="content-header">
+    <app-breadcrumb [items]="breadcrumb"></app-breadcrumb>
+    <h1>
+        <small>Cadastro</small>
+        Posições no estoque
+      </h1>
+  </section>
+
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+        <app-batch-storage-unit-form *ngIf="loaded"></app-batch-storage-unit-form>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <app-batch-storage-unit-list *ngIf="loaded"></app-batch-storage-unit-list>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <app-batch-storage-unit-history-list *ngIf="loaded"></app-batch-storage-unit-history-list>
+      </div>
+    </div>
+  </section>
+</div>

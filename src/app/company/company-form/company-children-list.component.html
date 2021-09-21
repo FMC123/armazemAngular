@@ -1,0 +1,10 @@
+<table class="table table-bordered">
+  <tr>
+<th class="col-xs-1">Nome</th>
+<th class="col-xs-1">Codigo AX</th>
+  </tr>
+    <tr *ngFor="let comapany of companys">
+      <td>{{ comapany.name }}</td>
+      <td>{{ comapany.codeAX }}</td>
+  </tr>
+</table>

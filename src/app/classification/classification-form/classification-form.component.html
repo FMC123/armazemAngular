@@ -1,0 +1,209 @@
+<div class="new-layout">
+  <section class="content-header">
+    <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Classificações', '/classification'],
+    ['Cadastro das Classificações', null]
+  ]"></app-breadcrumb>
+    <h1>
+      <small>Cadastro</small>
+      Classificações
+    </h1>
+  </section>
+
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+        <form (ngSubmit)="save()" [formGroup]="form" *ngIf="form" class="form-horizontal">
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Formulário</h3>
+            </div>
+
+            <div class="panel-body">
+              <fieldset [disabled]="loading">
+
+                <div class="row" *ngIf="!blindClassification">
+                  <label class="control-label col-md-2 text-right" for="barcode">
+                    Código da Amostra
+                  </label>
+                  <div class="form-group col-md-8" appErrorGroup>
+                    <app-autocomplete  [service]="sampleAutocomplete"></app-autocomplete>
+                    <input id="barcode" type="hidden" maxlength="30" formControlName="barcode" class="form-control"/>
+                    <app-error-message controlName="barcode" label="Código de barras"></app-error-message>
+                    <div class="text-danger" *ngIf="invalidBarcode">
+                      Código da amostra inválido!
+                    </div>
+                    <div class="text-info" *ngIf="!invalidBarcode">
+                      <p *ngFor="let batch of batches">{{batch?.owner?.person?.name}}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row" *ngIf="blindClassification">
+                  <label class="control-label col-md-2 text-right" for="barcode">
+                    Código de barras
+                  </label>
+                  <div class="form-group col-md-8" appErrorGroup>
+                    <!--[typeahead]="barcodeDatasource"  autocomplete="off" -->
+                    <input id="barcode" formControlName="barcode"
+                      (blur)="onBlurMethod($event.target.value)" maxlength="30" class="form-control"
+                    />
+                    <app-error-message controlName="barcode" label="Código de barras"></app-error-message>
+                    <div class="text-danger" *ngIf="invalidBarcode">
+                      Código de barras inválido!
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <label class="control-label col-md-2 text-right" for="version">
+                    Versão
+                  </label>
+                  <div class="form-group col-md-3" appErrorGroup>
+                    <input formControlName="version" id="version" type="text" [textMask]="integerMask"
+                      class="form-control" maxlength="18" />
+                    <app-error-message controlName="version" label="Versão"></app-error-message>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <label class="control-label col-md-2 text-right" for="classificationDate">
+                    Data de classificação
+                  </label>
+                  <div class="form-group col-md-3" appErrorGroup>
+                    <div class="input-group">
+                      <input id="classificationDate" type="text" [textMask]="dateMask" appDatePicker
+                        formControlName="classificationDate" placeholder="dd/mm/aaaa" class="form-control" />
+                      <div class="input-group-addon clickable">
+                        <span class="fa fa-calendar fa-fw"></span>
+                      </div>
+                    </div>
+                    <app-error-message controlName="classificationDate" label="Data de classificação">
+                    </app-error-message>
+                  </div>
+
+                  <!-- <label class="control-label col-md-2 text-right" for="tastedAgain1By" id="tastedAgain1By">Reprovador
+                  1</label>
+                <div class="form-group col-md-3" appErrorGroup>
+                  <select formControlName="tastedAgain1By" class="form-control">
+                    <option value=''>Selecione um reprovador 1</option>
+                    <option *ngFor="let user of users" [value]="user.id">
+                      {{ user.name }}
+                    </option>
+                  </select>
+                  <app-error-message controlName="tastedAgain1By" label="Reprovador 1"></app-error-message>
+                </div> -->
+                </div>
+
+                <div class="row">
+                  <label class="control-label col-md-2 text-right" for="classifiedBy"
+                    id="classifiedBy">Classificador</label>
+                  <div class="form-group col-md-4" appErrorGroup>
+                    <select formControlName="classifiedBy" class="form-control">
+                      <option value=''>Selecione um classificador</option>
+                      <option *ngFor="let user of users" [value]="user.id">
+                        {{ user.name }}
+                      </option>
+                    </select>
+                    <app-error-message controlName="classifiedBy" label="Classificador"></app-error-message>
+                  </div>
+
+                  <!-- <label class="control-label col-md-2 text-right" for="tastedAgain2By" id="tastedAgain2By">Reprovador
+                  2</label>
+                <div class="form-group col-md-3" appErrorGroup>
+                  <select formControlName="tastedAgain2By" class="form-control">
+                    <option value=''>Selecione um reprovador 2</option>
+                    <option *ngFor="let user of users" [value]="user.id">
+                      {{ user.name }}
+                    </option>
+                  </select>
+                  <app-error-message controlName="tastedAgain2By" label="Reprovador 2"></app-error-message>
+                </div> -->
+                </div>
+
+                <div class="row">
+                  <label class="control-label col-md-2 text-right" for="tastedBy" id="tastedBy">Provador</label>
+                  <div class="form-group col-md-4" appErrorGroup>
+                    <select formControlName="tastedBy" class="form-control">
+                      <option value=''>Selecione um provador bebida</option>
+                      <option *ngFor="let user of users" [value]="user.id">
+                        {{ user.name }}
+                      </option>
+                    </select>
+                    <app-error-message controlName="tastedBy" label="Provador bebida"></app-error-message>
+                  </div>
+
+                  <!-- <label class="control-label col-md-2 text-right" for="tastedAgain3By" id="tastedAgain3By">Reprovador
+                  3</label>
+                <div class="form-group col-md-3" appErrorGroup>
+                  <select formControlName="tastedAgain3By" class="form-control">
+                    <option value=''>Selecione um reprovador 3</option>
+                    <option *ngFor="let user of users" [value]="user.id">
+                      {{ user.name }}
+                    </option>
+                  </select>
+                  <app-error-message controlName="tastedAgain3By" label="Reprovador 3"></app-error-message>
+                </div> -->
+                </div>
+
+                <div class="row">
+                  <label class="control-label col-md-2 text-right" for="observation">
+                    Observação
+                  </label>
+                  <div class="form-group col-md-8" appErrorGroup>
+                    <textarea [formControl]="form.get('observation')" id="observation" class="form-control"
+                      maxlength="255"></textarea>
+                    <app-error-message controlName="observation" label="Observação"></app-error-message>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <label class="control-label col-md-2 text-right" for="isIndication">
+                    Indicação Café Especial
+                  </label>
+                  <div class="form-group col-md-8" style="padding-top:15px" appErrorGroup>
+                    <input [formControl]="form.get('isIndication')" id="isIndication" type="checkbox" />
+                    <app-error-message controlName="isIndication" label="Indicação de Café Especial">
+                    </app-error-message>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <label class="control-label col-md-2 text-right" for="showItemOwner">
+                    Responsáveis
+                  </label>
+                  <div class="form-group col-md-8" style="padding-top:15px" appErrorGroup>
+                    <input [formControl]="form.get('showItemOwner')" id="showItemOwner" type="checkbox" [(ngModel)]="isShowItemOwner"/>
+                    <app-error-message controlName="showItemOwner" label="Exibe coluna Responsáveis">
+                    </app-error-message>
+                  </div>
+                </div>
+
+                <!-- itens -->
+                <app-classification-item-form [classificationVersion]="classificationVersion" [users]="users"
+                  [submitted]="submitted" [specialCoffee]="specialCoffee" [isShowItemOwner]="isShowItemOwner"></app-classification-item-form>
+
+              </fieldset>
+            </div>
+
+            <div class="box-footer">
+              <div class="row">
+                <div class="col-sm-offset-2">
+                  <div class="col-sm-10 mb10">
+                    <app-submit-button [loading]="loading" [disabled]="invalidBarcode">
+                      Salvar
+                    </app-submit-button>
+                    <a [class.disabled]="loading" onclick="window.history.back()" class="btn btn-default btn-size">
+                      Voltar
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>

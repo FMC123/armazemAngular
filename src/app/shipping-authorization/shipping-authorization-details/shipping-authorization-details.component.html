@@ -1,0 +1,56 @@
+<div class="new-layout">
+
+  <section class="content-header">
+    <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Autorização de embarque', '/shipping-authorization'],
+    [shippingAuthorization.code, null]
+  ]"></app-breadcrumb>
+    <h1>
+      <small>Detalhe</small>
+      Autorização de Embarque
+    </h1>
+  </section>
+
+  <section class="content">
+    <app-shipping-authorization-info [shippingAuthorization]="shippingAuthorization" *ngIf="shippingAuthorization">
+    </app-shipping-authorization-info>
+
+    <div class="box">
+      <div class="box-header">
+        <h4 class="panel-title clearfix" style="line-height: 2">
+          Lotes da autorização de embarque
+        </h4>
+      </div>
+      <div class="box-body">
+        <div class="row">
+          <div class="col-xs-12">
+            <table class="table table-bordered">
+              <tr>
+                <th>Lote</th>
+                <th>Certificado</th>
+                <th>Quantidade (Sc)</th>
+                <th>Quantidade Kg</th>
+              </tr>
+              <tr *ngFor="let serviceItem of shippingAuthorization.batches">
+                <td>{{ serviceItem.batch.batchCode }}</td>
+                <td>{{ serviceItem.batch.batchOperation?.certificateNames }}</td>
+                <td>{{ serviceItem.sackQuantity }}</td>
+                <td>{{ serviceItem.quantityString }}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <a routerLink="/shipping-authorization" class="btn btn-default btn-size">
+          Voltar
+        </a>
+      </div>
+    </div>
+  </section>
+
+</div>

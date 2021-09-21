@@ -1,0 +1,23 @@
+<div *ngIf="status === 'OK'"
+  [appTooltip]="'OK'"
+  [placement]="'bottom'"
+  class="automation-semaphore"
+  [style.background-color]="'green'">
+  &#160;
+</div>
+
+<div *ngIf="status === 'ERROR'"
+  [appTooltip]="current.message"
+  [placement]="'bottom'"
+  class="automation-semaphore"
+  [style.background-color]="'red'">
+  &#160;
+</div>
+
+<div *ngIf="status === 'OFF'"
+  [appTooltip]="'Não configurada'"
+  [placement]="'bottom'"
+  class="automation-semaphore"
+  [style.background-color]="'#fff'">
+  &#160;
+</div>

@@ -1,0 +1,27 @@
+<section class="content-header">
+  <h1>
+    <small>Detalhes</small>
+    Motorista
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Motorista','/driver'],
+    ['Detalhes do Motorista', null]
+  ]"></app-breadcrumb>
+</section>
+
+
+<section class="content">
+
+  <app-driver-list-info [driver]="driver" *ngIf="driver"></app-driver-list-info>
+  <app-driver-incident [driver]="driver" *ngIf="driver"></app-driver-incident>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <a routerLink="/driver"
+         class="btn btn-default btn-size">
+        VOLTAR
+      </a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,28 @@
+<section class="content-header">
+  <h1>
+    <small>Detalhes</small>
+    Contato
+  </h1>
+  <app-breadcrumb [items]="[
+  ['Início', ''],
+  ['Pessoa','/person'],
+  ['Detalhes de Contato', null]
+]"></app-breadcrumb>
+</section>
+
+<section class="content">
+
+  <app-customer-contact-list-info [customerContact]="customerContact" *ngIf="customerContact"></app-customer-contact-list-info>
+
+
+  <div class="col-xs-12 mb10">
+    <button
+      type="button"
+      (click)="returnFormPerson()"
+      class="btn btn-default btn-size"
+    >
+      VOLTAR
+    </button>
+  </div>
+
+</section>

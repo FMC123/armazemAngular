@@ -1,0 +1,233 @@
+<div
+  class="modal fade"
+  appModal
+  (close)="close.emit(null)"
+  tabindex="-1"
+  role="dialog"
+>
+<div class="modal-dialog modal-lg" role="document">
+  <div class="modal-content">
+    <form
+      (ngSubmit)="submitAndClose()"
+      [formGroup]="form"
+      *ngIf="form"
+      class="form-horizontal"
+    >
+      <div class="modal-header">
+        <h3 class="modal-title">Marcador</h3>
+      </div>
+      <div class="modal-body">
+        <fieldset [disabled]="loading">
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-md-2 text-right" for="label">
+              Nome
+            </label>
+            <div class="col-md-10">
+              <input
+                id="label"
+                [formControl]="form.get('label')"
+                type="text"
+                maxlength="255"
+                class="form-control"
+                focusable
+              />
+              <app-error-message controlName="label" label="Nome"></app-error-message>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-md-2 text-right">
+              Tipo
+            </label>
+            <div class="col-md-10">
+              {{ markupGroup.typeObject?.name }}
+            </div>
+          </div>
+
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-md-2 text-right" for="color">
+              Cor
+            </label>
+            <div class="col-md-10">
+              <input
+                id="color"
+                [formControl]="form.get('color')"
+                type="color"
+                class="form-control"
+              />
+              <app-error-message controlName="color" label="Cor"></app-error-message>
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="m-3"></div>
+
+        <div class="box" *ngIf="batches && batches.length">
+          <div class="box-header with-border">
+            <div class="box-title">Lotes</div>
+          </div>
+          <div class="box-body">
+            <div class="table-responsive">
+              <table class="table table-striped table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th class="col-xs-5">
+                      Lote
+                    </th>
+                    <th class="col-xs-5">
+                      Quantidade p/ embarque
+                    </th>
+                    <th
+                      *ngIf="subitemsEditable"
+                      class="col-xs-2 text-center"
+                    >
+                      Ação
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let batch of batches">
+                    <td>{{batch.batch.batchCode}}</td>
+                    <td>KG {{batch.quantityString}}</td>
+                    <td
+                      *ngIf="subitemsEditable"
+                      class="text-center"
+                    >
+                      <button
+                        (click)="excludeBatch($event, batch)"
+                        type="button"
+                        appTooltip="Excluir"
+                        class="btn btn-danger btn-sm"
+                      >
+                        <span class="fa fa-trash-o fa-lg"></span>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot *ngIf="batches && batches.length">
+                  <tr>
+                    <td class="text-right">
+                      Total:
+                    </td>
+                    <td>
+                      <strong>KG {{ totalBatchQuantityString }}</strong>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="m-3"></div>
+
+        <div class="box" *ngIf="storageUnits && storageUnits.length">
+          <div class="box-header with-border">
+            <div class="box-title">Unidades de armazenamento</div>
+          </div>
+          <div class="box-body">
+            <div class="table-responsive">
+              <table class="table table-striped table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th class="col-xs-4">
+                      Lote
+                    </th>
+                    <th class="col-xs-3">
+                      Tag
+                    </th>
+                    <th class="col-xs-3">
+                      Peso
+                    </th>
+                    <th
+                      *ngIf="subitemsEditable"
+                      class="col-xs-2 text-center"
+                    >
+                      Ação
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let storageUnit of storageUnitsToDisplay">
+                    <td>{{ findBatchCodeOfStorageUnit(storageUnit.storageUnitBatch.storageUnit) }}</td>
+                    <td>{{ storageUnit.storageUnitBatch.storageUnit.tag?.tagCode }}</td>
+                    <td>{{ storageUnit.storageUnitBatch.unitType }} {{ storageUnit.storageUnitBatch.quantityString }}</td>
+                    <td
+                      *ngIf="subitemsEditable"
+                      class="text-center"
+                    >
+                      <button
+                        (click)="excludeStorageUnit($event, storageUnit)"
+                        type="button"
+                        appTooltip="Excluir"
+                        class="btn btn-danger btn-sm"
+                      >
+                        <span class="fa fa-trash-o fa-lg"></span>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot *ngIf="storageUnitsToDisplay && storageUnitsToDisplay.length">
+                  <tr>
+                    <td></td>
+                    <td class="text-right">
+                      Total:
+                    </td>
+                    <td>
+                      <div><strong *ngIf="totalStorageUnitKilos">KG {{ totalStorageUnitKilosString }}</strong></div>
+                      <div><strong *ngIf="totalStorageUnitSacks">SC {{ totalStorageUnitSacksString }}</strong></div>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          (click)="downloadShipmentReport()"
+          class="btn btn-default"
+          [disabled]="loading || noData"
+        >
+          <i class="fa fa-print"></i>
+          RELATÓRIO DE EMBARQUE
+        </button>
+
+        <!-- <button
+          type="button"
+          (click)="downloadShipmentDryHarborReport()"
+          class="btn btn-default"
+          [disabled]="loading"
+        >
+          <i class="fa fa-line-chart"></i>
+          RELATÓRIO DE EMBARQUE - PORTO SECO
+        </button> -->
+        <!-- <a
+          [class.disabled]="loading"
+          [routerLink]="['/allocation-truck/edit/'+markupGroup.id]"
+          class="btn btn-default btn-size"
+        >
+        <i class="fa fa-truck"></i>
+          ALOCAÇAO DE LOTE NO CAMINHÃO
+        </a> -->
+
+
+        <div class="col-md-12">
+          &#160;
+        </div>
+        <br />
+        <button type="button" class="btn btn-default btn-size" data-dismiss="modal">
+          CANCELAR
+        </button>
+        <app-submit-button
+          [loading]="loading"
+        >
+          SALVAR
+        </app-submit-button>
+      </div>
+    </form>
+  </div>
+</div>
+</div>

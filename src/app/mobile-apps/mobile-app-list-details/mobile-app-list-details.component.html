@@ -1,0 +1,29 @@
+<section class="content-header">
+  <h1>
+    <small>Cadastro</small>
+    Aplicativos Mobile
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Aplicativos Mobile', '/mobile-app'],
+    ['Cadastro de Aplicativos Mobile', null]
+  ]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <div class="row">
+    <app-mobile-app-list-info [mobileApp]="mobileApp" *ngIf="mobileApp"></app-mobile-app-list-info>
+
+    <div class="box box-default">
+      <div class="box-footer">
+        <div class="row">
+          <div class="col-xs-12 mb10">
+            <a routerLink="/mobile-app" class="btn btn-success btn-size">
+              VOLTAR
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

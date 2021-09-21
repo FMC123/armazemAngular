@@ -1,0 +1,146 @@
+<form class="form-horizontal"
+      (ngSubmit)="submit()"
+      [formGroup]="form"
+      *ngIf="form">
+  <fieldset [disabled]="loading">
+
+    <div class="form-group" appErrorGroup>
+      <label class="control-label col-xs-4 col-md-2 text-right" for="userName">Usuário</label>
+      <div class="col-xs-8 col-md-4">
+        <input id="userName"
+                formControlName="userName"
+                type="text"
+                class="form-control" />
+        <app-error-message controlName="userName" label="Usuário"></app-error-message>
+      </div>
+      <label class="control-label col-xs-4 col-md-2 text-right" for="warehouseId">Armazém</label>
+      <div class="col-xs-8 col-md-4">
+        <select formControlName="warehouseId" class="form-control">
+          <option value=''>Selecione um armazém</option>
+          <option *ngFor="let warehouse of warehouses" [value]="warehouse.id">
+            {{ warehouse.code }} - {{ warehouse.name }}
+          </option>
+        </select>
+        <app-error-message controlName="warehouseId" label="Armazém"></app-error-message>
+      </div>
+    </div>
+
+    <div class="form-group" appErrorGroup>
+      <label class="control-label col-xs-4 col-md-2 text-right" for="batchCode">Código Lote</label>
+      <div class="col-xs-8 col-md-4">
+        <input id="batchCode"
+                formControlName="batchCode"
+                type="text"
+                class="form-control"
+                 />
+        <app-error-message controlName="batchCode" label="Código Lote"></app-error-message>
+      </div>
+      <label class="control-label col-xs-4 col-md-2 text-right" for="batchOperationCode">Código Romeneio</label>
+      <div class="col-xs-8 col-md-4">
+        <input id="batchOperationCode"
+                formControlName="batchOperationCode"
+                type="text"
+                class="form-control"
+                 />
+        <app-error-message controlName="batchOperationCode" label="Código Romeneio"></app-error-message>
+      </div>
+    </div>
+
+    <div class="form-group" appErrorGroup>
+      <label class="control-label col-xs-4 col-md-2 text-right" for="status">Status</label>
+      <div class="col-xs-8 col-md-4">
+        <select formControlName="status" class="form-control">
+          <option value=''>Selecione um Status</option>
+          <option *ngFor="let status of statusBatch" [value]="status.code">
+            {{ status.name }}
+          </option>
+        </select>
+        <app-error-message controlName="status" label="Status"></app-error-message>
+      </div>
+      <label class="control-label col-xs-4 col-md-2 text-right" for="packTypeId">Embalagem</label>
+      <div class="col-xs-8 col-md-4">
+        <select formControlName="packTypeId" class="form-control">
+          <option value=''>Selecione uma embalagem</option>
+          <option *ngFor="let packType of packTypes" [value]="packType.id">
+            {{ packType.description }}
+          </option>
+        </select>
+        <app-error-message controlName="packTypeId" label="Embalagem"></app-error-message>
+      </div>
+    </div>
+
+    <div class="form-group" appErrorGroup>
+        <label class="control-label col-xs-4 col-md-2 text-right" for="drinkId">Bebida</label>
+        <div class="col-xs-8 col-md-4">
+          <select formControlName="drinkId" class="form-control">
+            <option value=''>Selecione uma bebida</option>
+            <option *ngFor="let drink of drinks" [value]="drink.id">
+              {{ drink.name }}
+            </option>
+          </select>
+          <app-error-message controlName="drinkId" label="Bebida"></app-error-message>
+        </div>
+        <label class="control-label col-xs-4 col-md-2 text-right" for="strainerId">Peneira</label>
+        <div class="col-xs-8 col-md-4">
+          <select formControlName="strainerId" class="form-control">
+            <option value=''>Selecione uma peneira</option>
+            <option *ngFor="let strainer of strainers" [value]="strainer.id">
+              {{ strainer.name }}
+            </option>
+          </select>
+          <app-error-message controlName="strainerId" label="Peneira"></app-error-message>
+        </div>
+      </div>
+      <div class="form-group" appErrorGroup>
+        <label class="control-label col-xs-4 col-md-2 text-right" for="initialCreatedDateString">Data Inicial</label>
+        <div class="col-xs-8 col-sm-3 col-lg-4">
+          <div class="input-group">
+            <input type="text"
+                  [textMask]="dateMask"
+                  appDatePicker
+                  formControlName="initialCreatedDateString"
+                  class="form-control">
+            <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+          </div>
+          <app-error-message controlName="initialCreatedDateString" label="Data Inicial"></app-error-message>
+        </div>
+        <label class="control-label col-xs-4 col-md-2 text-right" for="finalCraetedDateString">Data Final</label>
+        <div class="col-xs-8 col-sm-3 col-lg-4">
+          <div class="input-group">
+            <input type="text"
+                  [textMask]="dateMask"
+                  appDatePicker
+                  formControlName="finalCraetedDateString"
+                  class="form-control">
+            <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+          </div>
+          <app-error-message controlName="finalCraetedDateString" label="Data Final"></app-error-message>
+        </div>
+      </div>
+    <div class="form-group" appErrorGroup>
+      <label class="control-label col-xs-4 col-md-2 text-right" for="refClient">Ref. Cliente</label>
+      <div class="col-xs-8 col-md-4">
+        <input id="refClient"
+               formControlName="refClient"
+               type="text"
+               maxlength="20"
+               class="form-control"/>
+        <app-error-message controlName="refClient" label="Ref. Cliente"></app-error-message>
+      </div>
+    </div>
+  </fieldset>
+  <div class="form-group">
+    <div class="col-xs-offset-4 col-xs-8 col-sm-offset-2 col-sm-10">
+      <app-submit-button [loading]="loading">
+        PESQUISAR
+      </app-submit-button>
+      <button
+        type="button"
+        (click)="buildForm()"
+        class="btn btn-size btn-default"
+      >
+        LIMPAR
+      </button>
+    </div>
+  </div>
+</form>

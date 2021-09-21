@@ -1,0 +1,45 @@
+<div class="box">
+  <div class="box-header with-border" (click)="collapse()">
+    <h3 class="box-title">Descargas <strong>{{summaryPanel?.referenceDateString}}</strong></h3>
+    <span class="pull-right-container">
+      <i *ngIf="collapsed" class="fa fa-angle-down fa-2x pull-right"></i>
+      <i *ngIf="!collapsed" class="fa fa-angle-up fa-2x pull-right"></i>
+    </span>
+  </div>
+  <div class="box-body">
+    <div class="row" [hidden]="collapsed">
+      <div class="col-xs-12">
+        <app-loading *ngIf="!error && loading"></app-loading>
+
+        <p class="text-danger" *ngIf="error">Ops, ocorreu um erro</p>
+
+        <div class="table-responsive" *ngIf="!error && !loading">
+          <table class="table-centered table table-bordered">
+            <tbody>
+            <tr>
+              <td>PREVISÃO</td>
+              <td><strong>{{ summaryPanel.expectedEntries }}</strong> ENTRADA(s)</td>
+              <td><strong>{{ summaryPanel.expectedEntriesSacks }}</strong> SACA(s)</td>
+            </tr>
+            <tr>
+              <td>DESCARREGADO</td>
+              <td><strong>{{ summaryPanel.unloadedEntries }}</strong> ENTRADA(s)</td>
+              <td><strong>{{ summaryPanel.unloadedEntriesSacks }}</strong> SACA(s)</td>
+            </tr>
+            <tr>
+              <td>DESCARREGANDO</td>
+              <td><strong>{{ summaryPanel.unloadingEntries }}</strong> ENTRADA(s)</td>
+              <td><strong>{{ summaryPanel.unloadingEntriesSacks }}</strong> SACA(s)</td>
+            </tr>
+            <tr>
+              <td>SALDO</td>
+              <td><strong>{{ summaryPanel.balance }}</strong> ENTRADA(s)</td>
+              <td><strong>{{ summaryPanel.balanceSacks }}</strong> SACA(s)</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

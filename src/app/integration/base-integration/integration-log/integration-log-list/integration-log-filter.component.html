@@ -1,0 +1,124 @@
+<form class="form-horizontal"
+      (ngSubmit)="submit()"
+      [formGroup]="form"
+      *ngIf="form">
+   <fieldset [disabled]="loading">
+
+    <div class="form-group col-xs-6" appErrorGroup>
+      <label
+        class="control-label col-xs-4 col-md-6 text-right"
+        for="integrationContent">
+        Request
+      </label>
+      <div class="col-xs-8 col-md-6">
+        <input
+          id="integrationContent"
+          class="form-control"
+          formControlName="integrationContent"
+          maxlength="255"
+        />
+        <app-error-message controlName="integrationContent" label="Request"></app-error-message>
+      </div>
+    </div>
+
+     <div class="col-xs-12 col-md-6 form-group" appErrorGroup>
+      <label class="control-label col-xs-4 col-md-6 text-right" for="initialCreatedDateString">Data Inicial</label>
+      <div class="col-xs-8 col-md-6">
+        <div class="input-group">
+          <input type="text"
+                [textMask]="dateMask"
+                appDatePicker
+                formControlName="initialCreatedDateString"
+                class="form-control"
+                value="{{monthLast}}">
+          <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+        </div>
+        <app-error-message controlName="initialCreatedDateString" label="Data Inicial"></app-error-message>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-md-6 form-group" appErrorGroup>
+      <label class="control-label col-xs-4 col-md-6 text-right" for="finalCraetedDateString">Data Final</label>
+      <div class="col-xs-8 col-md-6">
+        <div class="input-group">
+          <input type="text"
+                [textMask]="dateMask"
+                appDatePicker
+                formControlName="finalCraetedDateString"
+                class="form-control">
+          <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+        </div>
+        <app-error-message controlName="finalCraetedDateString" label="Data Final"></app-error-message>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-md-6 form-group" appErrorGroup>
+      <label class="control-label col-xs-4 col-md-6 text-right" for="integrated">Integrado</label>
+      <div class="col-xs-8 col-md-6">
+        <div class="input-group">
+          <input type="checkbox" value="integrated" id="integrated" (click)="checked()"/>
+        </div>
+        <app-error-message controlName="integrated" label="Integrado"></app-error-message>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-md-6 form-group" appErrorGroup>
+      <label class="control-label col-xs-4 col-md-6 text-right">Status</label>
+      <div class="col-xs-8 col-md-6">
+        <select formControlName="selectedStatus" class="form-control">
+          <option value="" disabled selected hidden>Escolha um Status</option>
+          <option  *ngFor="let status of listStatus"  [value]="status.code">
+            {{ status.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+    
+    
+    <div class="col-xs-12 col-md-6 form-group" appErrorGroup>
+      <label class="control-label col-xs-4 col-md-6 text-right">Direção</label>
+      <div class="col-xs-8 col-md-6">
+        <select formControlName="selectedDirection" class="form-control">
+          <option value="" disabled selected hidden>Escolha uma Direção</option>
+          <option  *ngFor="let direction of listDirection"  [value]="direction.code">
+            {{ direction.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-md-6 form-group" appErrorGroup>
+      <label class="control-label col-xs-4 col-md-6 text-right">URL</label>
+      <div class="col-xs-8 col-md-6">
+        <select formControlName="selectedUrl" class="form-control" placeholder="Nenhuma url selecionadaa">
+          <option value="" disabled selected hidden>Escolha uma Url</option>
+          <option  *ngFor="let url of listUrl"  [value]="url" >
+            {{ url }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-md-6 form-group" appErrorGroup>
+      <label class="control-label col-xs-4 col-md-6 text-right">Tipo</label>
+      <div class="col-xs-8 col-md-6">
+        <select formControlName="selectedIntegrationType" class="form-control">
+          <option value="" disabled selected hidden>Escolha um Tipo</option>
+          <option  *ngFor="let integrationType of listIntegrationType"  [value]="integrationType.code">
+            {{ integrationType.code }}
+          </option>
+        </select>
+      </div>
+    </div>
+  
+
+   </fieldset>
+  <div class="col-xs-12 col-md-6 form-group">
+    <div class="col-xs-offset-4 col-xs-8 col-sm-offset-2 col-sm-10">
+      <app-submit-button [loading]="loading">
+        PESQUISAR
+      </app-submit-button>
+    </div>
+  </div>
+ 
+</form> 

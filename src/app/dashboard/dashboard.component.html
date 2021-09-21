@@ -1,0 +1,18 @@
+<div class="new-layout">
+  <div class="row">
+    <div class="col-xs-12">
+      <app-lobby-panel *ngIf="dashboardShowLobby()"></app-lobby-panel>
+      <app-summary-panel *ngIf="dashboardShowSummary()"></app-summary-panel>
+      <app-stock-panel *ngIf="dashboardShowStock()"></app-stock-panel>
+    </div>
+    <div class="col-xs-12">
+      <app-power-bi *ngIf="dashboardShowPowerBI() && reportInfo && reportInfo.length > 0 && username && password"
+                    [reportId]="reportId"
+                    [reportInfo]="reportInfo"
+                    [baseUrl]="baseURL"
+      >
+
+      </app-power-bi>
+    </div>
+  </div>
+</div>

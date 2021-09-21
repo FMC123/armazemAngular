@@ -1,0 +1,31 @@
+<section class="content-header">
+  <h1>
+    <small>Cadastro</small>
+    Grupo de Serviço
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Grupos de Serviço', '/service-group'],
+    ['Cadastro de Grupo de Serviço', null]
+  ]">
+  </app-breadcrumb>
+</section>
+<section class="content">
+  <div class="row">
+    <app-service-group-list-info [serviceGroup]="serviceGroup" *ngIf="serviceGroup"></app-service-group-list-info>
+    <app-service-group-item-list [serviceGroup]="serviceGroup" *ngIf="serviceGroup"></app-service-group-item-list>
+
+    <div class="box box-default">
+      <div class="box-footer">
+        <div class="row">
+          <div class="col-xs-12 mb10">
+            <a routerLink="/service-group"
+              class="btn btn-success btn-size">
+              VOLTAR
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

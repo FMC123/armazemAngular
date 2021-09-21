@@ -1,0 +1,33 @@
+<div class="new-layout">
+  <section class="content-header">
+    <app-breadcrumb [items]="[
+        ['Início', ''],
+        ['Rastreamento', null]
+        ]"></app-breadcrumb>
+    <h1>
+      Rastreamento
+    </h1>
+  </section>
+
+  <section class="content">
+
+    <div class="row">
+      <div class="col-lg-4">
+        <app-sample-tracking-search></app-sample-tracking-search>
+      </div>
+      
+      <div class="col-lg-8">
+        <div class="row">
+          <app-sample-tracking-container></app-sample-tracking-container>
+        </div>
+        <div class="row">
+          <div>
+            <a routerLink="/sample-tracking" class="btn btn-default btn-size">
+              Voltar
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

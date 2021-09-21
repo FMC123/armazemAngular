@@ -1,0 +1,37 @@
+<svg
+  [attr.width]="svgWidth"
+  [attr.height]="svgHeight"
+  version="1.1"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <g
+    *ngFor="let position of positions"
+    (click)="toggleSelect(position)"
+    [style.cursor]="position.clickable? 'pointer': ''"
+  >
+    <rect
+      [attr.x]="position.x"
+      [attr.y]="position.y"
+      [attr.width]="position.adjustedWidth"
+      [attr.height]="position.adjustedHeight"
+      [attr.transform]="position.transform"
+      [attr.stroke]="position.stroke"
+      [attr.fill]="position.fill"
+      [attr.stroke-width]="position.strokeWidth"
+    >
+    </rect>
+
+    <text
+      *ngIf="position.storageUnitsQuantity"
+      [attr.x]="position.xCenter"
+      [attr.y]="position.yCenter + (position.adjustedHeight*0.1)"
+      [attr.width]="position.adjustedWidth"
+      [attr.height]="position.adjustedHeight"
+      [attr.alignment-baseline]="'middle'"
+      [attr.text-anchor]="'middle'"
+      [style.fill]="position.textFill"
+    >
+      {{ position.text }}
+    </text>
+  </g>
+</svg>

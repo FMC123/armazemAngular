@@ -1,0 +1,34 @@
+<div class="box">
+  <div class="box-body">
+    <a routerLink="/transportation/in/new" class="btn btn-success">
+      <i class="fa fa-plus"></i> NOVA ENTRADA
+    </a>
+
+    <a routerLink="/transportation/out/new" class="btn btn-danger">
+      <i class="fa fa-minus"></i> NOVA SAÍDA
+    </a>
+
+    <a [routerLink]="['/purchase-forecast']" *ngIf="fiscalNoteScreenDefault"
+      [queryParams]="{ mode: 'balance' }" class="btn btn-primary">
+      <i class="fa fa-hourglass-start"></i> PREVISÕES DE ENTRADA
+    </a>
+
+    <a [routerLink]="['/purchase-order']" *ngIf="purchaseOrderScreenDefault"
+      class="btn btn-primary">
+      <i class="fa fa-hourglass-start"></i> PREVISÕES DE ENTRADA
+    </a>
+
+    <a [routerLink]="['/transportation', 'closed']" [queryParams]="{ mode: 'balance' }" class="btn btn-default">
+      <i class="fa fa-history"></i> MOVIMENTAÇÕES JÁ FINALIZADAS
+    </a>
+
+    <button
+      type="button"
+      (click)="downloadWaitList()"
+      class="btn btn-default"
+      [disabled]="loading"
+    >
+      <i class="fa fa-print"></i> IMPRIMIR LISTA DE ESPERA
+    </button>
+  </div>
+</div>

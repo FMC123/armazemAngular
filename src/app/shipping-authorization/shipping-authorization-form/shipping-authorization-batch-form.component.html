@@ -1,0 +1,58 @@
+<app-loading *ngIf="loading"></app-loading>
+<form [formGroup]="form" (ngSubmit)="add()" *ngIf="form && !noFunds">
+  <table class="table table-bordered">
+    <tr>
+      <th class="col-xs-2">Lote</th>
+      <th class="col-xs-3">Certificado</th>
+      <th class="col-xs-3">Quantidade (Sc)</th>
+      <th class="col-xs-3">Quantidade Kg</th>
+      <th class="col-xs-1 text-center">Ação</th>
+    </tr>
+    <tr *ngIf="availableBatches && availableBatches.length">
+      <td appErrorGroup>
+        <select formControlName="batchId" class="form-control">
+          <option value="">Selecione um lote</option>
+          <option *ngFor="let batch of availableBatches" [value]="batch.id"
+            [disabled]="batch.sample.status == sampleReserved">
+            {{ batch.batchCode }}
+            {{batch.sample.status == sampleReserved ? ' (Reservado)' : ''}}
+          </option>
+        </select>
+        <app-error-message controlName="batchId" label="Lote"></app-error-message>
+      </td>
+      <td>
+        {{certificates}}
+      </td>
+      <td appErrorGroup>
+        <input type="number" id="sacksQuantityString" class="form-control" formControlName="sacksQuantityString"
+          maxlength="10" (change)="sacksChanged($event)" [disabled]="!fieldEnable()" />
+        <app-error-message controlName="sacksQuantityString" label="Quantidade (Sc)"></app-error-message>
+      </td>
+      <td appErrorGroup>
+        <input id="quantityString" class="form-control" formControlName="quantityString" maxlength="14"
+          (change)="quantityChanged($event)" [disabled]="!fieldEnable()" [textMask]="decimalMask" />
+        <app-error-message controlName="quantityString" label="Quantidade Kg"></app-error-message>
+      </td>
+      <td class="bts-list-actions">
+        <button type="submit" class="btn btn-success" appTooltip="Adicionar">
+          <span class="fa fa-check"></span>
+        </button>
+      </td>
+    </tr>
+    <tr *ngFor="let serviceItem of filteredData">
+      <td>{{ serviceItem.batch.batchCode }}</td>
+      <td>{{ serviceItem.batch.batchOperation?.certificateNames }}</td>
+      <td>{{ serviceItem.sackQuantity }}</td>
+      <td>{{ serviceItem.quantityString }}</td>
+      <td class="bts-list-actions">
+        <button (click)="remove(serviceItem.batch.id)" type="button" appTooltip="Excluir" class="btn btn-danger btn-sm">
+          <span class="fa fa-trash-o fa-lg"></span>
+        </button>
+      </td>
+    </tr>
+  </table>
+</form>
+
+<p class="text-danger" *ngIf="noFunds && !loading">
+  Nenhum lote encontrado
+</p>

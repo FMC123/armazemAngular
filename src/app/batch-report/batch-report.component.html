@@ -1,0 +1,47 @@
+<div class="new-layout">
+  <section class="content-header">
+    <app-breadcrumb [items]="[
+      ['Início', ''],
+      ['Ficha do Lote', null]
+    ]"></app-breadcrumb>
+    <h1>
+      Ficha do Lote
+    </h1>
+  </section>
+
+  <section class="content-header">
+    <app-batch-report-search #searchComponent (searching)="searching($event)"></app-batch-report-search>
+
+    <div *ngIf="!haveBatch">
+      <div style="margin-top:30px" *ngIf="batches?.length > 0">
+        <div class="col-xs-12 box"
+              style="margin-right:15px;">
+          <table class="table table-striped table-bordered table-hover" style="margin-top: 20PX">
+            <thead>
+            <tr>
+              <th colspan="9">Lotes Encontrados</th>
+            </tr>
+            <tr>
+              <th>Lote</th>
+              <th>Ref. do Cliente</th>
+              <th>Cliente</th>
+              <th>Localização do Lote</th>
+              <th>Certificado</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let batch of batches" (click)="saveBatch(batch)" class="clickable">
+              <td>{{batch.batchCode}}</td>
+              <td>{{batch.refClient}}</td>
+              <td>{{batch.owner?.person?.name}}</td>
+              <td>{{batch.localStringWithAuth(auth)}}</td>
+              <td>{{batch.batchOperation?.certificateNames}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      </div>
+      <app-search-result [batch]="selectedBatch" *ngIf="haveBatch"></app-search-result>
+    </section>
+  </div>

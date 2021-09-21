@@ -1,0 +1,24 @@
+<app-loading *ngIf="loading"></app-loading>
+<div
+  *ngIf="!loading && (!certificates || certificates.length<=0)"
+  style="width: 100%"
+  class="text-center">
+  Não existem certificados para esta nota fiscal
+</div>
+<table *ngIf="!loading && (certificates && certificates.length>0)"
+  class="table-condensed" style="background-color:inherit; width:100%;">
+  <thead>
+    <tr>
+      <th class="col-xs-3">Certificado</th>
+      <th *ngIf="balanceFieldBlock" class="col-xs-3">Número Certificadora Custódia - CDC</th>
+      <th *ngIf="balanceFieldBlock" class="col-xs-2">Número Certificadora Origem</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let certificate of certificates">
+      <td>{{ certificate.certificate?.name }}</td>
+      <td *ngIf="balanceFieldBlock">{{ certificate.certifiedCustodyCode }}</td>
+      <td *ngIf="balanceFieldBlock">{{ certificate.certifiedOriginCode }}</td>
+    </tr>
+  </tbody>
+</table>

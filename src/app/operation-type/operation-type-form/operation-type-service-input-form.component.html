@@ -1,0 +1,38 @@
+<app-loading *ngIf="loading"></app-loading>
+<form [formGroup]="form" (ngSubmit)="add()" *ngIf="form">
+  <table class="table table-bordered">
+    <tr>
+      <th class="col-xs-10">Itens</th>
+      <th class="col-xs-2 text-center">Ação</th>
+    </tr>
+    <tr *ngIf="availableOptions && availableOptions.length">
+      <td appErrorGroup>
+        <select formControlName="itemId" class="form-control">
+          <option value="">Selecione um serviceItem</option>
+          <option *ngFor="let option of availableOptions" [value]="option.id">
+            {{ option.code }} - {{ option.description }}
+          </option>
+        </select>
+        <app-error-message controlName="itemId" label="Item"></app-error-message>
+      </td>
+      <td class="text-center">
+        <button type="submit" class="btn btn-success" appTooltip="Adicionar">
+          <span class="fa fa-check"></span>
+        </button>
+      </td>
+    </tr>
+    <tr *ngFor="let selected of selecteds">
+      <td>{{ selected.code }} - {{ selected.description }}</td>
+      <td class="text-center">
+        <button
+          (click)="remove(selected.id)"
+          type="button"
+          appTooltip="Excluir"
+          class="btn btn-danger btn-sm"
+        >
+          <span class="fa fa-trash-o fa-lg"></span>
+        </button>
+      </td>
+    </tr>
+  </table>
+</form>

@@ -1,0 +1,19 @@
+<div class="map-sidebar">
+  <section class="content-header" style="padding: 0px; margin-bottom: 24px;">
+    <h1>
+      <small>Mapa</small>
+      Tempo Real
+    </h1>
+  </section>
+  <app-map-realtime-search></app-map-realtime-search>
+  <app-map-realtime-details (move)="storageUnitMoveModal.open($event)"></app-map-realtime-details>
+  <app-map-realtime-markup-group></app-map-realtime-markup-group>
+</div>
+
+<app-storage-unit-move-form-modal
+  *ngIf="storageUnitMoveModal.opened"
+  [storageUnitId]="storageUnitMoveModal.value"
+  [positions]="positions"
+  (close)="storageUnitMoveModal.close()"
+></app-storage-unit-move-form-modal>
+<app-map-realtime-markup-group-form *ngIf="markupGroupEditable" [markupGroup]="markupGroupEditable" (close)="clearMarkupGroupEditable()"></app-map-realtime-markup-group-form>

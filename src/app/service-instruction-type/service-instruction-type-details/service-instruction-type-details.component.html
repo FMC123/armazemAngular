@@ -1,0 +1,29 @@
+<section class="content-header">
+  <h1>
+    <small>Detalhe</small>
+    Embalagem
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Tipos de Instrução de Serviço', '/service-instruction-type'],
+    [serviceInstructionType.name, null]
+  ]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <app-service-instruction-type-info
+    [serviceInstructionType]="serviceInstructionType"
+    *ngIf="serviceInstructionType"
+  ></app-service-instruction-type-info>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <a
+        routerLink="/service-instruction-type"
+        class="btn btn-default btn-size"
+      >
+        VOLTAR
+      </a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,106 @@
+<svg [attr.width]="svgWidth"
+      [attr.height]="svgHeight"
+      version="1.1"
+      xmlns="http://www.w3.org/2000/svg" *ngIf="positionsToDisplay && positionsToDisplay.length">
+  <g
+    *ngFor="let position of positionsToDisplay"
+    (click)="select(position)"
+    style="cursor:pointer"
+  >
+    <title>{{ position.fullPosition }}</title>
+    <rect
+      *ngIf="rectHidden(position)"
+      [attr.x]="position.x"
+      [attr.y]="position.y"
+      [attr.width]="position.adjustedWidth"
+      [attr.height]="position.adjustedHeight"
+      [attr.transform]="position.transform"
+      [attr.stroke]="position.stroke"
+      [attr.fill]="position.fill"
+      [attr.stroke-width]="position.strokeWidth"
+    >
+      <animate
+        *ngIf="position.selected && position.type !== 'DC'"
+        attributeType="XML"
+        attributeName="fill"
+        [attr.values]="position.fill + ';black'"
+        dur="2s"
+        repeatCount="indefinite"
+      />
+      <animate *ngIf="!position.selected && position.highlighted && position.type !== 'DC'"
+        attributeType="XML"
+        attributeName="fill"
+        [attr.values]="position.stroke + ';white'"
+        dur="2s"
+        repeatCount="indefinite"
+      ></animate>
+      <animate
+        *ngIf="position.selectedFrom && position.type !== 'DC'"
+        attributeType="XML"
+        attributeName="fill"
+        [attr.values]="position.fill + ';black'"
+        dur="2s"
+        repeatCount="indefinite"
+      />
+      <animate *ngIf="position.selectedFrom && position.type !== 'DC'"
+        attributeType="XML"
+        attributeName="stroke"
+        [attr.values]="position.stroke + ';black'"
+        dur="2s"
+        repeatCount="indefinite"
+      ></animate>
+    </rect>
+    <circle
+      *ngIf="position.active && position.circle"
+      [attr.cx]="position.x + position.radius"
+      [attr.cy]="position.y + position.radius"
+      [attr.r]="position.radius"
+      [attr.stroke]="position.stroke"
+      [attr.fill]="position.fill"
+      [attr.stroke-width]="position.strokeWidth">
+      <animate
+        *ngIf="position.selected"
+        attributeType="XML"
+        attributeName="fill"
+        [attr.values]="position.fill + ';black'"
+        dur="2s"
+        repeatCount="indefinite"
+      />
+      <animate *ngIf="!position.selected && position.highlighted"
+               attributeType="XML"
+               attributeName="fill"
+               [attr.values]="position.stroke + ';white'"
+               dur="2s"
+               repeatCount="indefinite"
+      ></animate>
+      <animate
+        *ngIf="position.selectedFrom"
+        attributeType="XML"
+        attributeName="fill"
+        [attr.values]="position.fill + ';black'"
+        dur="2s"
+        repeatCount="indefinite"
+      />
+      <animate *ngIf="position.selectedFrom"
+               attributeType="XML"
+               attributeName="stroke"
+               [attr.values]="position.stroke + ';black'"
+               dur="2s"
+               repeatCount="indefinite"
+      ></animate>
+    </circle>
+    <text *ngIf="(position.bagCount || position.type !== 'A') && position.active" [attr.x]="position.xCenter"
+        [attr.y]="position.yCenter + (position.adjustedHeight*0.1)"
+        [attr.width]="position.adjustedWidth"
+        [attr.height]="position.adjustedHeight"
+        [attr.alignment-baseline]="'middle'"
+        [attr.text-anchor]="'middle'"
+        [style.fill]="position.textFill"
+        [attr.transform]="position.transformToDescriptive"
+        [ngStyle]="descriptiveFontSize(position)"
+      >
+        {{ position.text }}
+    </text>
+  </g>
+
+</svg>

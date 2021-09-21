@@ -1,0 +1,75 @@
+<app-loading *ngIf="loading"></app-loading>
+<div *ngIf="!loading && (!fiscalNotes || fiscalNotes.length<=0)"
+  style="width: 100%"
+  class="text-center">
+  Não existem notas fiscais para este transporte
+</div>
+<table *ngIf="!loading && (fiscalNotes && fiscalNotes.length>0)"
+  class="table-condensed" style="background-color:inherit; width:100%;">
+  <thead>
+    <tr>
+      <th class="col-xs-1">Nota Fiscal</th>
+      <th class="col-xs-3">Cliente</th>
+      <th class="col-xs-2">Ordem de compra</th>
+      <th class="col-xs-1">Quantidade</th>
+      <th *ngIf="!invoiceFieldBlock" class="col-xs-2">Certificado</th>
+      <th *ngIf="!purchaseFieldBlock" class="col-xs-1">Compra</th>
+      <th class="col-xs-1">Romaneio</th>
+      <th class="col-xs-1 text-center">Relatório</th>
+    </tr>
+  </thead>
+  <tbody>
+    <template ngFor let-fiscalNote [ngForOf]="fiscalNotes">
+      <tr>
+        <td>{{ fiscalNote.code }}</td>
+        <td>
+            <span *ngIf="fiscalNote.collaborator != null && fiscalNote.collaborator.id != null">
+              {{ fiscalNote.collaborator.person?.name }}</span>
+            <span *ngIf="fiscalNote.ownerStakeholder != null && fiscalNote.ownerStakeholder.id != null && (fiscalNote.collaborator == null || fiscalNote.collaborator.id == null)">
+              {{ fiscalNote.ownerStakeholder.person?.name }}</span>
+        </td>
+        <td>{{ fiscalNote.purchaseOrder?.purchaseOrderCode || '-' }}</td>
+        <td>{{ fiscalNote.quantity }}</td>
+        <td *ngIf="!invoiceFieldBlock">{{ fiscalNote.certificateCodes || '-' }}</td>
+        <td *ngIf="!purchaseFieldBlock">{{ fiscalNote.purchaseCode }}</td>
+        <td>{{ fiscalNote.batchOperation?.batchOperationCode }}</td>
+        <td class="bts-list-actions">
+          <button *ngIf="fiscalNote.batchOperation && fiscalNote.batchOperation.id"
+            (click)="downloadInputFormTicket($event, fiscalNote.batchOperation.id)"
+            type="button"
+            appTooltip="Ticket de ficha de entrada"
+            class="btn btn-success btn-sm"
+            [disabled]="downloadLoading"
+            >
+          <i class="fa fa-print"></i> TFE
+          </button>
+          <button *ngIf="!fiscalNote.batchOperation || !fiscalNote.batchOperation.id"
+            type="button"
+            appTooltip="Nota Fiscal não está vinculada a um Romaneio."
+            class="btn btn-warning btn-sm"
+            [disabled]="downloadLoading"
+          >
+            <i class="fa fa-exclamation-triangle"></i>
+          </button>
+        </td>
+      </tr>
+      <tr *ngIf="fiscalNote.opened">
+        <td colspan="7">
+          <app-transportation-fiscal-note-certificate-list [fiscalNote]="fiscalNote"></app-transportation-fiscal-note-certificate-list>
+        </td>
+      </tr>
+    </template>
+  </tbody>
+  <tfoot>
+    <tr>
+      <th class="col-xs-2"></th>
+      <th class="col-xs-2"></th>
+      <td class="col-xs-2" style="text-align: right; font-weight: bold;">Total de Sacas:</td>
+      <td class="col-xs-1">{{ sumfiscalNotesQuantity }}</td>
+      <th *ngIf="!invoiceFieldBlock" class="col-xs-2"></th>
+      <th *ngIf="!purchaseFieldBlock" class="col-xs-1"></th>
+      <th class="col-xs-1"></th>
+      <th class="col-xs-1 text-center"></th>
+    </tr>
+  </tfoot>
+</table>

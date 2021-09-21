@@ -1,0 +1,161 @@
+<div class="row">
+  <form (ngSubmit)="save()" [formGroup]="form" *ngIf="form" class="form-horizontal">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">Dados de lotes</h3>
+        </div>
+
+        <div class="panel-body">
+          <div class="row">
+            <app-loading *ngIf="loading"></app-loading>
+            <div class="row labels-on-top" *ngIf="!loading">
+              <div class="col-xs-3">
+                <div>
+                  <label class="control-label row" for="batchOriginCode">Lote de origem:</label>
+                  <div class="row">
+                    <app-autocomplete [service]="batchAutocomplete"></app-autocomplete>
+                    <input id="batchOriginCode" type="hidden" formControlName="batchOriginCode"/>
+                    <app-error-message controlName="batchOriginCode" label="Lote de origem"></app-error-message>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-3">
+                <div>
+                  <label class="control-label row" for="batchDestinyCode">Lote de destino:</label>
+                  <div class="row">
+                    <input id="batchDestinyCode" [formControl]="form.get('batchDestinyCode')" type="text"
+                           class="form-control" maxlength="20"/>
+                    <app-error-message controlName="batchDestinyCode" label="Lote de destino"></app-error-message>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-2">
+                <div>
+                  <label class="control-label row" for="quantityTransfer">Quantidade a transferir:</label>
+                  <div class="row">
+                    <input id="quantityTransfer" [formControl]="form.get('quantityTransfer')" type="text"
+                           [textMask]="decimalMask" class="form-control" (change)="kilosToSacks()"/>
+                    <app-error-message controlName="quantityTransfer" label="Quantidade a transferir">
+                    </app-error-message>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-2">
+                <div>
+                  <label class="control-label row" for="quantityBags">Quantidade em sacas:</label>
+                  <div class="row">
+                    <input id="quantityBags" [formControl]="form.get('quantityBags')" type="text"
+                           [textMask]="integerMask" class="form-control" maxlength="10" (change)="sacksToKilos()"/>
+                    <app-error-message controlName="quantityBags" label="Quantidade em sacas"></app-error-message>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-1 ">
+                <div>
+                  <label class="control-label row" for="calcManual">Cálculo manual:</label>
+                  <div class="row form-check-input">
+                    <input id="calcManual" [formControl]="form.get('calcManual')" type="checkbox"/>
+                    <app-error-message controlName="calcManual" label="Cálculo manual"></app-error-message>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-1 ">
+                <label class="control-label row" for="submit">Ação</label>
+                <div class="row">
+                  <button type="submit" class="btn btn-success btn-sm" appTooltip="Adicionar lotes">
+                    <span class="fa fa-plus fa-lg"></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="row labels-on-top" *ngIf="!loading">
+              <div class="col-xs-3">
+                <div>
+                  <label class="control-label row" for="calcManual">Ref. Cliente:</label>
+                  <div class="row">{{form.get('refClient').value}}</div>
+                </div>
+              </div>
+              <div class="col-xs-3">
+                <div>
+                  <label class="control-label row">Certificados:</label>
+                  <div class="row">{{form.get('certificates').value}}</div>
+                </div>
+              </div>
+              <div class="col-xs-2">
+                <div>
+                  <label class="control-label row">Quantidade kgs disponível:</label>
+                  <div class="row">{{form.get('availableWeight').value}}</div>
+                </div>
+              </div>
+              <div class="col-xs-2">
+                <div>
+                  <label class="control-label row">Sacas disponíveis:</label>
+                  <div>{{form.get('availableBags').value}}</div>
+                </div>
+              </div>
+
+            </div>
+
+            <table style="margin-top: 10px;" class="table table-bordered" *ngIf="batchsTransfer.length > 0">
+              <thead>
+              <tr>
+                <th class="col-xs-3 ">
+                  Lote de origem
+                </th>
+                <th class="col-xs-3 ">
+                  Lote de destino
+                </th>
+                <th class="col-xs-2 ">
+                  Quantidade a transferir
+                </th>
+                <th class="col-xs-2 ">
+                  Quantidade em sacas
+                </th>
+                <th class="col-xs-1 ">
+                  Cálculo manual
+                </th>
+                <th class="col-xs-1 ">
+                  Ação
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let batchTransfer of batchsTransfer">
+                <td class="">{{batchTransfer.batchOrigin.batchCode}}</td>
+                <td class="">{{batchTransfer.batchDestinyCode}}</td>
+                <td class="">{{batchTransfer.quantityTransferString}}</td>
+                <td class="">{{batchTransfer.quantityBags}}</td>
+                <td class="">{{batchTransfer.calcManualString}}</td>
+                <td class="bts-list-actions">
+                  <button type="button" (click)="edit(batchTransfer)" class="btn btn-primary btn-sm"
+                          appTooltip="Editar">
+                    <span class="fa fa-edit fa-lg"></span>
+                  </button>
+                  <button type="button" (click)="beforeRemove(batchTransfer)" class="btn btn-danger btn-sm"
+                          appTooltip="Excluir">
+                    <span class="fa fa-trash fa-lg"></span>
+                  </button>
+                </td>
+              </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th colspan="2" class="col-xs-6 text-right">Total:</th>
+                  <th class="col-xs-2">{{totalQuantityTransfer}}</th>
+                  <th class="col-xs-2">{{totalQuantityBags}}</th>
+                  <th colspan="2" class="col-xs-2"></th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<app-confirm *ngIf="closeConfirm.opened" message="Tem certeza que deseja remover a relação de lotes?"
+             (confirm)="remove()" (close)="closeConfirm.close()">
+</app-confirm>

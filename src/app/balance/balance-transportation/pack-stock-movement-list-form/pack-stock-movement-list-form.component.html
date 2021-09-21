@@ -1,0 +1,42 @@
+<div class="box">
+  <div class="box-header">
+    <h3 class="box-title w100">
+      Lista de Embalagens
+    </h3>
+  </div>
+
+  <div class="box-body">
+    <div class="table-responsive">
+      <table class="table table-bordered table-condensed" *ngIf="packStockMovementList.length > 0">
+          <thead>
+              <tr>
+                  <th class="col-xs-2">
+                    Nota fiscal
+                  </th>
+                  <th class="col-xs-3">
+                    Tipo Embalagem
+                  </th>
+                  <th class="col-xs-2">
+                    Quantidade
+                  </th>
+                  <th class="col-xs-2">
+                    Valor unitário
+                  </th>
+                  <th class="col-xs-2">
+                    Valor Total
+                  </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let packStockMovement of packStockMovementList">
+                <td>{{packStockMovement.packStockMovementGroup.fiscalNote.code}}</td>
+                <td>{{packStockMovement.packType.description}}</td>
+                <td>{{packStockMovement.quantityVariation}}</td>
+                <td>{{packStockMovement.unitValue}}</td>
+                <td>{{packStockMovement.totalValueString}}</td>
+              </tr>
+            </tbody>
+        </table>
+    </div>
+  </div>
+</div>

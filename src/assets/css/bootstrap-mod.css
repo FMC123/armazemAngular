@@ -1,0 +1,208 @@
+/***************************************************************
+*** NAVBAR *****************************************************
+***************************************************************/
+.navbar-brand {
+  padding: 10px 15px !important;
+}
+
+/***************************************************************
+*** DROPDOWN ***************************************************
+***************************************************************/
+.dropdown-header {
+  color: #08632e !important;
+  border-bottom: 1px solid #08632e !important;
+  font-size: 16px !important;
+  font-weight: 800 !important;
+  margin: 0px 10px 10px 10px!important;
+  padding: 10px 10px 10px 10px !important;
+}
+
+.dropdown-menu > li > a {
+  padding: 5px 20px !important;
+}
+
+/***************************************************************
+*** PAGE HEADER ************************************************
+***************************************************************/
+.page-header {
+  margin: 10px 0 20px !important;
+}
+
+.page-header h1 {
+  margin-top: 10px !important;
+}
+
+/***************************************************************
+*** BREADCRUMB *************************************************
+***************************************************************/
+.breadcrumb {
+  margin-bottom: 10px !important;
+}
+
+/***************************************************************
+*** RETIRADA DO OUTLINE ****************************************
+***************************************************************/
+.form-control:focus,
+select:focus {
+  outline: 0 !important;
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
+}
+
+.btn:focus,
+.btn:active:focus,
+.btn.active:focus,
+.btn.focus,
+.btn:active.focus,
+.btn.active.focus {
+  outline: inherit !important;
+}
+
+.checkbox input[type="checkbox"]:focus + label::before,
+.radio input[type="radio"]:focus + label::before,
+a:focus {
+  outline: none !important;
+  outline-offset: -2px !important;
+}
+
+/***************************************************************
+*** INPUT GROUP ************************************************
+***************************************************************/
+.input-group-addon {
+  color: #FCFCFC !important;
+}
+
+/***************************************************************
+*** MODAL ******************************************************
+***************************************************************/
+.modal-header {
+  background-color: #FCFCFC;
+  border-bottom: 2px solid #eeeeee;
+  color: #333;
+}
+
+.modal-body {
+  padding: 25px 20px !important;
+  font-size: 16px !important;
+}
+
+.modal-footer {
+  background-color: #eeeeee !important;
+}
+
+@media(max-width:767px) {
+  .modal-footer > .btn {
+    width: 160px !important;
+  }
+}
+
+/***************************************************************
+*** BARRA DE PROGRESSO *****************************************
+***************************************************************/
+.progress-bar {
+  min-width: 2em !important; /* Mantém o texto visível quando a procentagem da barra é pequena */
+}
+
+/***************************************************************
+*** PANEL ******************************************************
+***************************************************************/
+.panel-success > .panel-footer {
+  color: #3c763d !important;
+  background-color: #dff0d8 !important;
+  border-color: #d6e9c6 !important;
+}
+
+.panel-warning > .panel-footer {
+  color: #8a6d3b !important;
+  background-color: #fcf8e3 !important;
+  border-color: #faebcc !important;
+}
+
+.panel-primary > .panel-footer {
+  color: #fff !important;
+  background-color: #337ab7 !important;
+  border-color: #337ab7 !important;
+}
+
+.panel-info > .panel-footer {
+  color: #31708f !important;
+  background-color: #d9edf7 !important;
+  border-color: #bce8f1 !important;
+}
+
+.panel-danger > .panel-footer {
+  color: #a94442 !important;
+  background-color: #f2dede !important;
+  border-color: #ebccd1 !important;
+}
+
+/***************************************************************
+*** PANEL TABLE ************************************************
+***************************************************************/
+.panel-table {
+  border: 0px !important;
+}
+
+.panel-table .panel-title {
+  font-size: 24px;
+}
+
+.panel-table > .panel-heading {
+  background-color: #E1E5E7 !important;
+  border: 0px !important;
+  padding: 15px 15px !important;
+}
+
+.panel-table > .panel-body {
+  padding: 15px !important;
+  background-color: #E1E5E7 !important;
+}
+
+.panel-table > .panel-footer {
+  background-color: #E1E5E7 !important;
+  border: 0 !important;
+}
+
+.panel-table .pagination {
+  margin: 0px !important;
+}
+
+.panel-table ul {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.panel-heading .accordion-toggle:after {
+  font-family: "FontAwesome" !important;
+  content: "\f068" !important;
+  float: right !important;
+  color: grey !important;
+}
+
+.panel-heading.collapsed .accordion-toggle:after {
+    content: "\f067" !important;
+}
+
+.accordion-toggle {
+  font-size: 16px !important;
+}
+
+/***************************************************************
+*** TEXT *******************************************************
+***************************************************************/
+.page-header h1,
+.panel-table .panel-title {
+  color: #555555 !important;
+}
+
+.bg-success {
+  background-color: #dff0d8 !important;
+}
+
+.table{
+  background-color: white;
+}
+
+.table th{
+  background-color: #F5F5F5;
+}

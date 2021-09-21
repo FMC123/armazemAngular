@@ -1,0 +1,46 @@
+<div class="box">
+  <div class="box-body">
+    <div class="row">
+      <div class="col-xs-12">
+          <div class="box-header">
+            <h4 class="box-title clearfix" style="line-height: 2">
+              <span class="fa fa-address-book-o"></span> Contatos
+            </h4>
+          </div>
+          <div class="box-body">
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="table-responsive">
+                  <table class="table table-bordered">
+                    <tr>
+                      <th class="col-xs-3 text-center">Nome</th>
+                      <th class="col-xs-2 text-center">E-mail</th>
+                      <th class="col-xs-1 text-center">Celular</th>
+                      <th class="col-xs-1 text-center">Telefone</th>
+                      <th class="col-xs-1 text-center">Ramal</th>
+                      <th class="col-xs-1 text-center">Fax</th>
+                      <th class="col-xs-1 text-center">Contato Principal</th>
+                      <th class="col-xs-1 text-center">Enviar Relatorio</th>
+                      <th class="col-xs-1 text-center">Enviar Relatorio de Tickt de Peso</th>
+                    </tr>
+
+                    <tr *ngFor="let customerContact of customerContacts">
+                      <td class="text-center">{{ customerContact.name }}</td>
+                      <td class="text-center">{{ customerContact.email }}</td>
+                      <td class="text-center">{{ customerContact.cellPhone ? formatPhone(customerContact.cellPhone) : '' }}</td>
+                      <td class="text-center">{{ customerContact.phone ? formatPhone(customerContact.phone) : '' }}</td>
+                      <td class="text-center">{{ customerContact.extensionLine ? formatPhone(customerContact.extensionLine) : '' }}</td>
+                      <td class="text-center">{{ customerContact.fax ? formatPhone(customerContact.fax): '' }}</td>
+                      <td class="text-center">{{ customerContact.main ? 'SIM' : 'NÃO' }}</td>
+                      <td class="text-center">{{ customerContact.indSendReport ? 'SIM' : 'NÃO' }}</td>
+                      <td class="text-center">{{ customerContact.indSendPackingTicketWeight ? 'SIM' :"NÃO" }}</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

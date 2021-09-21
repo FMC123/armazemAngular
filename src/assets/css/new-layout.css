@@ -1,0 +1,109 @@
+/* Novo layout */
+
+html body {background-color: #F3F3F3;}
+html body header.main-header {background:#fff !important; box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3) !important;}
+html body header.main-header .navbar-custom-menu ul li.user a span.name {display: inline-block;}
+html body div.sidebar-mini header.main-header .navbar {margin-left: 0px !important;}
+html body .main-header .logo {padding: 0 20px !important; position: relative; z-index: 2000; height: 46px !important;}
+html body div.sidebar-mini header.main-header a.logo span.logo-lg img {width:200px;}
+span.navbar-text {color:inherit !important; float:left;}
+.main-header a.sidebar-toggle,
+.main-header a.sidebar-toggle:hover {color: #65853A !important;}
+html body a {color: #333;}
+html body a:hover,
+html body a:active,
+html body a:focus {color: #84a513;}
+html body .user-menu a span small {color:#65853A;}
+html body .user-menu span.arrow-user-menu {float: right; margin-top: 10px; margin-left: 10px;}
+.main-header .navbar-custom-menu, .main-header .navbar-right {margin-right: 20px!important;}
+html body .main-sidebar {background: #F9FAFC;}
+html body .content-wrapper {background-color: inherit;}
+
+html body .main-sidebar .sidebar-menu li a .fa-angle-down {display:block;}
+html body .main-sidebar .sidebar-menu li a .fa-angle-up {display:none;}
+html body .main-sidebar .sidebar-menu li.active a .fa-angle-down {display:none;}
+html body .main-sidebar .sidebar-menu li.active a .fa-angle-up {display:block;}
+html body .main-sidebar .sidebar-menu li a {border:1px solid transparent;}
+html body .main-sidebar .sidebar-menu li a:hover,
+html body .main-sidebar .sidebar-menu li a:active,
+html body .main-sidebar .sidebar-menu li a.active {background: #F3F3F3; border: 1px solid #ddd;}
+
+html body .sidebar-menu > li > a {padding: 10px 20px 10px 20px; font-weight: 600;}
+html body .sidebar-menu li > a > .pull-right-container {right: 20px;}
+
+.box-header {padding:20px 20px 0 20px; border-bottom: 0px !important;}
+div.new-layout .box-header .box-title {font-weight: 600 !important;}
+div.new-layout .content-header {padding: 20px 20px 0 20px !important;}
+div.new-layout .content-header > h1 {font-size: 22px !important;}
+div.new-layout .content {padding-left: 20px !important; padding-right: 20px !important; clear: both;}
+div.new-layout .box {border:0 !important;}
+div.new-layout .box,
+div.new-layout .modal-content {border-radius: 5px !important; box-shadow: 0 0px 3px rgba(0, 0, 0, 0.3) !important;}
+
+/* para deixar select com placeholder no primeiro item */
+div.new-layout select {color: #999 !important;}
+div.new-layout select:focus {color:#555 !important;}
+
+div.new-layout .content-header .buttons {float: right !important;}
+div.new-layout .content-header .breadcrumb {float: none !important; position: inherit !important; right:0 !important; margin-bottom:20px;}
+div.new-layout .content-header .breadcrumb>.active {color:#84a513;}
+div.new-layout .content-header>h1 {display: inline-block !important; margin-bottom:10px;}
+
+div.new-layout .box-body {padding: 20px !important;}
+div.new-layout form .row label,
+div.new-layout .bts-actions {margin-top: 10px;}
+div.new-layout .last-buttons {padding:0 !important;}
+div.new-layout .btn {padding-right:25px; padding-left:25px;}
+div.new-layout .btn-normal {padding: 6px 12px;}
+div.new-layout .btn,
+div.new-layout .pagination {font-weight: 600;}
+html body div.new-layout .btn-default {background-color:#e7e7e7;}
+
+/* botoes para listagens */
+div.new-layout .bts-list-actions {white-space: nowrap; text-align: center;}
+div.new-layout .bts-list-actions .btn {padding: 2px 4px;}
+div.new-layout .bts-list-actions .btn-default,
+div.new-layout .bts-list-actions .btn-primary,
+div.new-layout .bts-list-actions .btn-success,
+div.new-layout .bts-list-actions .btn-info,
+div.new-layout .bts-list-actions .btn-danger,
+div.new-layout .bts-list-actions .btn-warning {background-color: #f4f4f4; border-color: #ddd; color: #444;}
+div.new-layout .bts-list-actions .btn-default:hover,
+div.new-layout .bts-list-actions .btn-default:active,
+div.new-layout .bts-list-actions .btn-default.hover {background-color: #e7e7e7; border-color: #ddd; color:#444;}
+div.new-layout .bts-list-actions .btn-primary:hover,
+div.new-layout .bts-list-actions .btn-primary:active,
+div.new-layout .bts-list-actions .btn-primary.hover {background-color: #367fa9; border-color: #367fa9; color:#fff;}
+div.new-layout .bts-list-actions .btn-success:hover,
+div.new-layout .bts-list-actions .btn-success:active,
+div.new-layout .bts-list-actions .btn-success.hover {background-color: #659323; border-color: #84a513; color:#fff;}
+div.new-layout .bts-list-actions .btn-info:hover,
+div.new-layout .bts-list-actions .btn-info:active,
+div.new-layout .bts-list-actions .btn-info.hover {background-color: #00acd6; border-color: #00acd6; color:#fff;}
+div.new-layout .bts-list-actions .btn-danger:hover,
+div.new-layout .bts-list-actions .btn-danger:active,
+div.new-layout .bts-list-actions .btn-danger.hover {background-color: #d73925; border-color: #d73925; color:#fff;}
+div.new-layout .bts-list-actions .btn-warning:hover,
+div.new-layout .bts-list-actions .btn-warning:active,
+div.new-layout .bts-list-actions .btn-warning.hover {background-color: #e08e0b; border-color: #e08e0b; color:#fff;}
+
+div.new-layout .modal-header,
+div.new-layout .modal-body,
+div.new-layout .modal-footer {border:0 !important; padding: 20px !important;}
+div.new-layout .modal-header {padding-bottom: 0px !important;}
+div.new-layout .modal-footer {padding-top:0px !important;}
+div.new-layout .modal-content {border-radius: 5px !important;}
+
+html body .automation-semaphore {margin-top: 16px !important; width: 16px !important; height: 16px !important; border: 1px solid #ccc !important;}
+html body .ui-pnotify .ui-pnotify-shadow {box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.6) !important;}
+html body .filterStatusColor {border: 1px solid #333; margin-right: 5px; color: #333; display:inline-block;}
+html body .filterStatusColor input {position: relative; top: 3px;}
+
+html body .has-feedback .form-control {padding: 5px 15px !important;}
+
+html body input.form-control.ui-select-search {padding: 3px 15px !important;}
+
+div.new-layout app-receipt .modal-body .autocomplete-holder {margin-top: 16px; margin-bottom: 32px;}
+
+.display-input { display: block !important; }
+.display-input  input.form-control { border-radius: 5px !important; }

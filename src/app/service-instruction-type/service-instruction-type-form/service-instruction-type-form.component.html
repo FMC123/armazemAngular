@@ -1,0 +1,133 @@
+<section class="content-header">
+  <h1>
+    <small>Cadastro</small>
+    Tipos de Instrução de Serviços
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Tipos de Instrução de Serviço', '/service-instruction-type'],
+    ['Cadastro das Tipos de Instrução de Serviços', null]
+  ]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <form
+        (ngSubmit)="save()"
+        [formGroup]="form"
+        *ngIf="form"
+        class="form-horizontal"
+      >
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Formulário</h3>
+          </div>
+
+          <div class="panel-body">
+            <fieldset [disabled]="loading">
+              <div
+                class="form-group"
+                appErrorGroup
+              >
+                <label
+                  class="control-label col-md-2 text-right"
+                  for="code"
+                >
+                  Sigla
+                </label>
+                <div class="col-md-10">
+                  <input
+                    [formControl]="form.get('code')"
+                    [textMask]="typeCodeMask"
+                    id="code"
+                    type="text"
+                    class="form-control"
+                    maxlength="20"
+                    class="form-control uppercase"
+                  />
+                  <app-error-message
+                    controlName="code"
+                    label="Sigla"
+                  ></app-error-message>
+                </div>
+              </div>
+
+              <div
+                class="form-group"
+                appErrorGroup
+              >
+                <label
+                  class="control-label col-md-2 text-right"
+                  for="name"
+                >
+                  Nome
+                </label>
+                <div class="col-md-10">
+                  <input
+                    [formControl]="form.get('name')"
+                    id="name"
+                    type="text"
+                    maxlength="50"
+                    class="form-control"
+                  />
+                  <app-error-message
+                    controlName="name"
+                    label="Nome"
+                  ></app-error-message>
+                </div>
+              </div>
+              <div
+                class="form-group"
+                appErrorGroup
+              >
+                <label
+                  class="control-label col-md-2 text-right"
+                  for="purpose"
+                >Função</label>
+                <div class="col-md-10">
+                  <select
+                    formControlName="purpose"
+                    class="form-control"
+                  >
+                    <option value=''>Selecione um tipo</option>
+                    <option
+                      *ngFor="let purpose of purposes"
+                      [value]="purpose.code"
+                      id="purpose"
+                    >
+                      {{ purpose.name }}
+                    </option>
+                  </select>
+                  <app-error-message
+                    controlName="purpose"
+                    label="Função"
+                  ></app-error-message>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="box-footer">
+            <div class="row">
+              <div class="col-sm-offset-2">
+                <div class="col-sm-10 mb10">
+                  <app-submit-button [loading]="loading">
+                    SALVAR
+                  </app-submit-button>
+                  <a
+                    [class.disabled]="loading"
+                    routerLink="/service-instruction-type"
+                    class="btn btn-default btn-size"
+                  >
+                    VOLTAR
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

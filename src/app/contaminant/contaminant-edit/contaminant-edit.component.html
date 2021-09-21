@@ -1,0 +1,26 @@
+<section class="content-header">
+  <h1>
+    <small>Edição</small>
+    Contaminante
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Contaminantes', '/contaminants'],
+    ['Edição de Contaminante', null]
+  ]"></app-breadcrumb>
+</section>
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+    <div class="box">
+      <div class="box-body">
+        <div class="box-header with-border">
+          <h3 class="box-title">Formulário</h3>
+        </div>
+      </div>
+
+      <app-contaminant-form [contaminant]="contaminant" [loading]="loading" (formChange)="update($event)"></app-contaminant-form>
+    </div>
+    </div>
+  </div>
+</section>

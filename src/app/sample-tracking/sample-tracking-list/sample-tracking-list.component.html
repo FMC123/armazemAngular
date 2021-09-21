@@ -1,0 +1,169 @@
+<div class="new-layout">
+  <section class="content-header">
+    <app-breadcrumb [items]="[
+          ['Início', ''],
+          ['Liga', null]
+          ]"></app-breadcrumb>
+    <h1>
+      Liga
+    </h1>
+  </section>
+
+  <section class="content">
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Filtrar</h3>
+          </div>
+          <div class="box-body">
+            <div class="row margin-bottom">
+              <div class="col-lg-10">
+                <div class="col-lg-2 text-right">
+                  <label>Código/Rótulo</label>
+                </div>
+                <div class="col-lg-4 text-right">
+                  <input type="text" class="form-control" placeholder="Código ou Rótulo" #searchCodeLabelInput
+                    (keyup)="codeLabelSearch.next(searchCodeLabelInput.value)">
+                </div>
+                <div class="col-lg-2 text-right">
+                  <label>Situação</label>
+                </div>
+                <div class="col-lg-4 text-right">
+                  <select class="form-control">
+                    <option>Ativa</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row margin-bottom">
+              <div class="col-lg-10">
+                <div class="col-lg-2 text-right">
+                  <label>Setor Resp</label>
+                </div>
+                <div class="col-lg-4 text-right">
+                  <select class="form-control" (change)="departmentSearch.next($event.target.value)">
+                    <option value=''></option>
+                    <option *ngFor="let department of departments" [value]="department.id">
+                      {{ department.name }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-lg-2 text-right">
+                  <label>Lote</label>
+                </div>
+                <div class="col-lg-4 text-right">
+                  <input type="text" class="form-control" placeholder="Código do lote" #searchBatchCodeInput
+                    (keyup)="batchCodeSearch.next(searchBatchCodeInput.value)">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-10">
+                <div class="col-lg-2 text-right">
+                  <label>Responsável</label>
+                </div>
+                <div class="col-lg-4 text-right">
+                  <select class="form-control" (change)="userSearch.next($event.target.value)">
+                    <option value=''></option>
+                    <option *ngFor="let user of users" [value]="user.id">
+                      {{ user.name }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-lg-6">
+                  <button type="button" class="btn btn-success pull-right">Filtrar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="box">
+
+          <div class="box-header with-border col-lg-12" style="margin-bottom:20px;">
+
+            <div class="col-lg-6">
+              <h3 class="box-title">Lista de Ligas</h3>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="col-lg-6 pull-right">
+                <a routerLink="/sample-tracking/new" class="btn btn-block btn-success">
+                  <span class="fa fa-fw fa-plus"></span> <strong>Rastrear nova liga</strong>
+                </a>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="box-body">
+            <div class="row margin-bottom">
+              <app-no-results *ngIf="!page.data || page.data.length<=0"></app-no-results>
+              <div class="col-lg-12 table-responsive" *ngIf="page.data && page.data.length>0">
+                <table class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th class="col-xs-1 text-center">Código</th>
+                      <th class="col-xs-1 text-center">Rótulo</th>
+                      <th class="col-xs-2 text-center">Responsável</th>
+                      <th class="col-xs-1 text-center">Sacas</th>
+                      <th class="col-xs-1 text-center">Peso</th>
+                      <th class="col-xs-1 text-center">Data</th>
+                      <th class="col-xs-1 text-center">Motivo</th>
+                      <th class="col-xs-1 text-center">Status</th>
+                      <th class="col-xs-2 text-center">Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let sampleTracking of page.data">
+                      <td class="text-center">{{sampleTracking.code}}</td>
+                      <td class="text-center">{{sampleTracking.label}}</td>
+                      <td class="text-center">{{sampleTracking.createdBy.name}}</td>
+                      <td class="text-center">{{calculateTotalSacks(sampleTracking)}}</td>
+                      <td class="text-center">{{calculateTotalQuantity(sampleTracking)}} kg</td>
+                      <td class="text-center">{{sampleTracking.createdDateString}}</td>
+                      <td class="text-center">{{sampleTracking.sampleTrackingMotiveObject.description}}</td>
+                      <td class="text-center">{{sampleTracking.statusObject?.name}}</td>
+                      <td class="bts-list-actions">
+                        <a [routerLink]="['/sample-tracking', sampleTracking.id]" class="btn btn-primary btn-sm"
+                          appTooltip="Detalhes">
+                          <span class="fa fa-search fa-lg"></span>
+                        </a>
+
+                        <a [routerLink]="['/sample-tracking/edit', sampleTracking.id]"
+                          [queryParams]="{sampleTracking: sampleTracking.id}" class="btn btn-primary btn-sm"
+                          appTooltip="Editar" *ngIf="sampleTracking.status !== statusConfirmed">
+                          <span class="fa fa-pencil fa-lg"></span>
+                        </a>
+                        <button type="button" class="btn btn-primary btn-sm" appTooltip="Editar"
+                          *ngIf="sampleTracking.status === statusConfirmed" disabled>
+                          <span class="fa fa-pencil fa-lg"></span>
+                        </button>
+
+                        <button (click)="deleteConfirm.open(sampleTracking.id)" type="button" appTooltip="Excluir"
+                          class="btn btn-danger btn-sm">
+                          <span class="fa fa-trash-o fa-lg"></span>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <app-confirm *ngIf="deleteConfirm.opened" message="Tem certeza que deseja excluir este registro?"
+    (confirm)="delete(deleteConfirm.value)" (close)="deleteConfirm.close()">
+  </app-confirm>
+
+</div>

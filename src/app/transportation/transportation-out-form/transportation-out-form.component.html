@@ -1,0 +1,266 @@
+<div class="new-layout">
+  <section class="content-header">
+    <app-breadcrumb [items]="breadcrumb"></app-breadcrumb>
+    <h1>
+      <small>Cadastro</small>
+      Movimento de Saída
+    </h1>
+  </section>
+
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+        <form [formGroup]="form" *ngIf="form" class="form-horizontal">
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Formulário</h3>
+            </div>
+
+            <div class="box-body">
+              <fieldset [disabled]="loading">
+
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-md-2 text-right">
+                    Produto
+                  </label>
+                  <div class="col-md-10">
+                    <label class="control-label text-right radio-inline">
+                      <input type="radio" value="COFFEE" formControlName="productType"><strong>Café</strong></label>
+                    <label class="control-label text-right radio-inline">
+                      <input type="radio" value="COFFEE_PACKING" formControlName="productType"><strong>Café e embalagem</strong></label>
+                    <label class="control-label text-right radio-inline">
+                      <input type="radio" value="PACKING" formControlName="productType"><strong>Embalagem</strong></label>
+                    <app-error-message controlName="productType" label="Produto"></app-error-message>
+                  </div>
+                </div>
+
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-md-2 text-right">
+                    Data e Hora
+                  </label>
+                  <div class="col-md-10">
+                    {{ transportation.arriveDateString }}
+                  </div>
+                </div>
+
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="carrierId" id="carrierId">
+                    Transportadora
+                  </label>
+                  <div class="col-md-10">
+                    <select formControlName="carrierId" class="form-control">
+                      <option value=''>Selecione uma transportadora</option>
+                      <option *ngFor="let carrier of carriers" [value]="carrier.id">
+                        {{ carrier.person?.name }}
+                      </option>
+                    </select>
+                    <app-error-message controlName="carrierId" label="Transportadora"></app-error-message>
+                  </div>
+                </div>
+
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="driverId">Motorista</label>
+                  <div class="col-md-10">
+                    <app-autocomplete [service]="driverAutocomplete" [placeHolder]="'Selecione o motorista'"></app-autocomplete>
+                    <input type="hidden" id="driverId" formControlName="driverId" />
+                    <app-error-message controlName="driverId" label="Motorista"></app-error-message>
+                  </div>
+                </div>
+
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="vehiclePlate1">
+                    Placa do Veículo 1
+                  </label>
+                  <div class="col-md-10">
+                    <input id="vehiclePlate1" [formControl]="form.get('vehiclePlate1')"
+                      [typeahead]="vehiclePlate1Datasource" type="text" maxlength="8" class="form-control" autocomplete="off" />
+                    <app-error-message controlName="vehiclePlate1" label="Placa do Veículo 1"></app-error-message>
+                  </div>
+                </div>
+
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="vehiclePlate2">
+                    Placa do Veículo 2
+                  </label>
+                  <div class="col-md-10">
+                    <input id="vehiclePlate2" [formControl]="form.get('vehiclePlate2')" type="text" maxlength="8"
+                      class="form-control" [typeahead]="vehiclePlate2Datasource"
+                      autocomplete="off" />
+                    <app-error-message controlName="vehiclePlate2" label="Placa do Veículo 2"></app-error-message>
+                  </div>
+                </div>
+
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="vehiclePlate3">
+                    Placa do Veículo 3
+                  </label>
+                  <div class="col-md-10">
+                    <input id="vehiclePlate3" [formControl]="form.get('vehiclePlate3')" type="text" maxlength="8"
+                      class="form-control" [typeahead]="vehiclePlate3Datasource"
+                      autocomplete="off" />
+                    <app-error-message controlName="vehiclePlate3" label="Placa do Veículo 3"></app-error-message>
+                  </div>
+                </div>
+
+
+<!--                <div class="form-group" appErrorGroup>-->
+<!--                  <label class="control-label col-md-2 text-right" for="maxWeight">-->
+<!--                    Capacidade Máxima-->
+<!--                  </label>-->
+<!--                  <div class="col-md-10">-->
+<!--                    <input id="maxWeight" [formControl]="form.get('maxWeight')"  type="text" [textMask]="decimalMask"-->
+<!--                           maxlength="14"-->
+<!--                      class="form-control" autocomplete="off" />-->
+<!--                    <app-error-message controlName="maxWeight" label="Capacidade Máxima do transporte"></app-error-message>-->
+<!--                  </div>-->
+<!--                </div>-->
+
+              </fieldset>
+            </div>
+          </div>
+        </form>
+
+        <form [formGroup]="formFiscalNote" *ngIf="formFiscalNote && packing" class="form-horizontal">
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Dados da Nota Fiscal</h3>
+            </div>
+
+            <div class="box-body">
+              <fieldset [disabled]="loading">
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="code">
+                    Número
+                  </label>
+                  <div class="col-md-10">
+                    <input id="code" [formControl]="formFiscalNote.get('code')" [textMask]="integerMask" type="text"
+                           maxlength="255" class="form-control" />
+                    <app-error-message controlName="code" label="Número"></app-error-message>
+                  </div>
+                </div>
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="serie">
+                    Série
+                  </label>
+                  <div class="col-md-10">
+                    <input id="serie" [formControl]="formFiscalNote.get('serie')" type="text"
+                           maxlength="255" class="form-control" />
+                    <app-error-message controlName="serie" label="Série"></app-error-message>
+                  </div>
+                </div>
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="emissionDateString">
+                    Data de emissão
+                  </label>
+                  <div class="col-md-10">
+                    <div class="input-group">
+                      <input id="emissionDateString" formControlName="emissionDateString" [textMask]="dateMask"
+                             appDatePicker type="text" class="form-control" />
+                      <div class="input-group-addon clickable">
+                        <span class="fa fa-calendar fa-fw"></span>
+                      </div>
+                    </div>
+                    <app-error-message controlName="emissionDateString" label="Data de emissão"></app-error-message>
+                  </div>
+                </div>
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="totalPrice">
+                    Valor
+                  </label>
+                  <div class="col-md-10">
+                    <input id="totalPrice" [formControl]="formFiscalNote.get('totalPrice')" type="text" [textMask]="decimalMask"
+                           maxlength="255" class="form-control" />
+                    <app-error-message controlName="totalPrice" label="Valor"></app-error-message>
+                  </div>
+                </div>
+
+                <div class="form-group" appErrorGroup *ngIf="replaceStakeholderForCollaborator">
+                  <label class="control-label col-md-2 text-right" for="collaboratorId">
+                    Cliente
+                  </label>
+                  <div class="col-md-10">
+                    <app-autocomplete [service]="collaboratorAutocomplete"></app-autocomplete>
+                    <input id="collaboratorId" type="hidden" formControlName="collaboratorId" />
+                    <app-error-message controlName="collaboratorId" label="Cliente"></app-error-message>
+                  </div>
+                </div>
+
+                <div class="form-group" appErrorGroup *ngIf="!replaceStakeholderForCollaborator">
+                  <label class="control-label col-md-2 text-right" for="ownerStakeholderId">
+                    Depositante
+                  </label>
+                  <div class="col-md-10">
+                    <app-autocomplete [service]="ownerAutocomplete"></app-autocomplete>
+                    <input id="ownerStakeholderId" type="hidden" formControlName="ownerStakeholderId" />
+                    <app-error-message controlName="ownerStakeholderId" label="Remetente"></app-error-message>
+                  </div>
+                </div>
+
+                <app-pack-stock-movement-list-transportation [hidden]="!packing" [fiscalNote] = "this.fiscalNote"></app-pack-stock-movement-list-transportation>
+
+                <div class="form-group" appErrorGroup>
+                  <div class="col-md-12 text-right">
+                    <button type="button" (click)="salvarNf(null)" class="btn btn-primary mb10">
+                      Adicionar nota fiscal
+                    </button>
+                    <div
+                      *ngIf="submitted && (!transportation.fiscalNotes || !transportation.fiscalNotes.length)"
+                      class='text-danger'>
+                      É obrigatório ao menos uma nota fiscal!
+                    </div>
+                  </div>
+                </div>
+
+              </fieldset>
+            </div>
+          </div>
+        </form>
+
+
+        <!-- lista de notas fiscais -->
+        <div class="box" *ngIf="packing">
+          <div class="box-header">
+            <h3 class="box-title w100">
+              Lista de Notas Fiscais
+            </h3>
+          </div>
+          <div class="box-body">
+            <app-no-results *ngIf="!transportation.fiscalNotes || transportation.fiscalNotes<=0"></app-no-results>
+            <app-transportation-fiscal-note-memory-list [transportation]="transportation"
+                                                        [enabledCertificatesWriteable]="false"
+                                                        (edit)="openFiscalNoteForm($event)"></app-transportation-fiscal-note-memory-list>
+          </div>
+        </div>
+
+        <div class="box">
+          <div class="box-footer">
+            <div class="row">
+              <div class="col-sm-offset-2">
+                <div class="col-sm-10 mb10">
+                  <button (click)="save()" [disabled]="loading" type="button" class="btn btn-success">
+                    Salvar
+                  </button>
+                  <button (click)="clean()" [disabled]="loading" type="button" class="btn btn-danger">
+                    Limpar
+                  </button>
+                  <a [class.disabled]="loading" [routerLink]="backLink" class="btn btn-default btn-size">
+                    VOLTAR
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <app-alert *ngIf="alertDriverExpired.opened"
+             title="CNH Vencida"
+             message="{{driverAlertMessage}}"
+             (close)="alertDriverExpired.close()"></app-alert>
+
+</div>
+
+

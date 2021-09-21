@@ -1,0 +1,127 @@
+<div class="new-layout">
+  <section class="content-header">
+    <app-breadcrumb [items]="[
+          ['Início', ''],
+          ['Liga', null]
+          ]"></app-breadcrumb>
+    <h1>
+      Detalhes da Liga
+    </h1>
+  </section>
+
+  <section class="content">
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Dados da Liga</h3>
+          </div>
+          <div class="box-body">
+            <div class="row">
+              <div class="col-lg-12">
+                <table class="table table-bordered">
+                  <tbody>
+                    <tr>
+                      <th class="col-xs-4 text-right">Código</th>
+                      <td class="col-xs-8" style="background-color: white; color: black;">
+                        {{sampleTracking.code}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="col-xs-4 text-right">Rótulo</th>
+                      <td class="col-xs-8" style="background-color: white; color: black;">
+                        {{sampleTracking.label}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="col-xs-4 text-right">Responsável</th>
+                      <td class="col-xs-8" style="background-color: white; color: black;">
+                        {{sampleTracking.createdBy.name}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="col-xs-4 text-right">Sacas</th>
+                      <td class="col-xs-8" style="background-color: white; color: black;">
+                        SACAS
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="col-xs-4 text-right">Peso</th>
+                      <td class="col-xs-8" style="background-color: white; color: black;">
+                        PESO
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="col-xs-4 text-right">Data</th>
+                      <td class="col-xs-8" style="background-color: white; color: black;">
+                        {{sampleTracking.createdDateString}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="col-xs-4 text-right">Motivo</th>
+                      <td class="col-xs-8" style="background-color: white; color: black;">
+                        {{sampleTracking.sampleTrackingMotiveObject.description}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="col-xs-4 text-right">Status</th>
+                      <td class="col-xs-8" style="background-color: white; color: black;">
+                        {{sampleTracking.statusObject?.name}}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Lista de Amostras Reservadas da Liga</h3>
+          </div>
+          <div class="box-body">
+            <div class="row">
+              <div class="col-lg-12">
+                <table class="table table-bordered">
+                  <tbody>
+                    <tr>
+                      <th class="col-xs-2 text-center">Arm</th>
+                      <th class="col-xs-2 text-center">Lote(s)</th>
+                      <th class="col-xs-2 text-center">Sacas</th>
+                      <th class="col-xs-2 text-center">Peso</th>
+                      <th class="col-xs-4 text-center">Amostra</th>
+                    </tr>
+                    <tr *ngFor="let sample of sampleTracking.markupGroup.samples">
+                      <td class="text-center">{{sample.sample?.warehouse?.code}} - {{sample.sample?.warehouse?.shortName}}
+                      </td>
+                      <td class="text-center">{{sample.sample?.batchCodes}}</td>
+                      <td class="text-center">{{calculateTotalSacks(sample.sample)}}</td>
+                      <td class="text-center">{{calculateTotalQuantity(sample.sample)}} kg</td>
+                      <td class="text-center">{{sample.sample?.barcode}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <a routerLink="/sample-tracking" class="btn btn-default btn-size">
+          Voltar
+        </a>
+      </div>
+    </div>
+
+  </section>
+
+</div>

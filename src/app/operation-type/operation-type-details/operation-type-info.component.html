@@ -1,0 +1,57 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title clearfix" style="line-height: 2">
+     <i class="fa fa-cubes"></i> Dados do Tipo de Operação
+    </h4>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-xs-6">
+        <app-info-table [data]="leftColumn"></app-info-table>
+      </div>
+      <div class="col-xs-6">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="box">
+  <div class="box-body">
+    <div class="row">
+      <div class="col-xs-12">
+          <div class="box-header">
+            <h4 class="box-title clearfix" style="line-height: 2">
+              <i class="fa fa-connectdevelop "></i> Tipo de Entrada
+            </h4>
+          </div>
+          <div class="box-body">
+            <div class="row">
+              <div class="col-xs-12">
+                <table class="table table-bordered">
+                  <tr>
+                    <th class="col-xs-2 text-center">Código</th>
+                    <th class="col-xs-3 text-center">Descrição</th>
+                    <th class="col-xs-1 text-center">Cotação</th>
+                    <th class="col-xs-1 text-center">ISS</th>
+                    <th class="col-xs-1 text-center">Desconto</th>
+                    <th class="col-xs-2 text-center">Tipo de Industria</th>
+                    <th class="col-xs-2 text-center">Sigla Lote</th>
+                  </tr>
+                  <tr *ngFor="let serviceItem of items">
+                    <td class="text-center">{{ serviceItem.code }}</td>
+                    <td class="text-center">{{ serviceItem.description }}</td>
+                    <td class="text-center">{{ serviceItem.indQuoteVal ? "SIM":"NÃO" }}</td>
+                    <td class="text-center">{{ serviceItem.indIss ? "SIM":"NÃO" }}</td>
+                    <td class="text-center">{{ serviceItem.indDiscount ? "SIM":"NÃO"}}</td>
+                    <td class="text-center">{{ serviceItem.industrialType }}</td>
+                    <td class="text-center">{{ serviceItem.batchMask }}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

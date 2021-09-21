@@ -1,0 +1,23 @@
+<app-breadcrumb [items]="[
+  ['Início', '']
+]"></app-breadcrumb>
+
+<div class="page-header">
+  <h1 class="text-success">Detalhes do Grupo de Serviço</h1>
+</div>
+
+<app-service-group-item-info [serviceGroupItem]="serviceGroupItem" *ngIf="serviceGroupItem"></app-service-group-item-info>
+<app-service-group-item-price-list [serviceGroupItem]="serviceGroupItem" *ngIf="serviceGroupItem"></app-service-group-item-price-list>
+
+ <div class="panel panel-default">
+  <div class="panel-footer">
+    <div class="row">
+      <div class="col-xs-12 mb10">
+        <a [routerLink]="['/service-group', serviceGroupItem.serviceGroup.id]"
+           class="btn btn-success btn-size">
+          Voltar
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

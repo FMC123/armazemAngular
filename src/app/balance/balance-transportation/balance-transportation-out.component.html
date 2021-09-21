@@ -1,0 +1,62 @@
+<div class="new-layout">
+
+  <section class="content-header">
+    <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Balança', '/balance'],
+    [transportation.vehiclePlate1, null]
+  ]"></app-breadcrumb>
+    <h1>Balança</h1>
+  </section>
+
+  <section class="content">
+    <app-balance-weight></app-balance-weight>
+
+    <app-balance-transportation-fiscal-note-list *ngIf="packing" [balanceTransportationService]="this.balanceTransportationOutService"></app-balance-transportation-fiscal-note-list>
+
+    <app-balance-transportation-out-batch-operation-list [transportation]="transportation" *ngIf="!packing">
+    </app-balance-transportation-out-batch-operation-list>
+
+    <app-shipping-data-detail [transportation]="transportation" *ngIf="!packing"></app-shipping-data-detail>
+
+    <app-balance-transportation-batch-operation-weighing-all *ngIf="!loading  && !packing && isWeighingModeGeneral">
+    </app-balance-transportation-batch-operation-weighing-all>
+
+    <app-pack-stock-movement-list-form [fiscalNotes]="balanceTransportationOutService.transportation.fiscalNotes" *ngIf="packing"></app-pack-stock-movement-list-form>
+
+    <app-balance-transportation-unit *ngIf="packing" [balanceTransportationService]="this.balanceTransportationOutService"></app-balance-transportation-unit>
+
+    <div class="row">
+      <div class="col-xs-12">
+
+        <button *ngIf="allowFinishBoarding()" type="button" class="btn btn-success" [disabled]="loading"
+          (click)="finishBoarding()">Finalizar Embarque</button>
+
+        <!-- na saída da armazém é outro relatório de ticket de peso -->
+        <button class="btn btn-primary" [disabled]="loading" (click)="downloadWeightTicket()"
+          *ngIf="transportation.batchOperationOut.type != 'W_OUT' && transportation.batchOperationOut.markupGroup && !packing">
+          <i class="fa fa-print"></i> Ticket de Peso
+        </button>
+
+        <button class="btn btn-primary" [disabled]="loading" (click)="downloadWeightTicketOut()"
+          *ngIf="transportation.batchOperationOut.type == 'W_OUT' && transportation.batchOperationOut.markupGroup && !packing">
+          <i class="fa fa-print"></i> Ticket de Peso
+        </button>
+
+        <button class="btn btn-primary" [disabled]="loading" (click)="downloadWeightTicketOutPackagingOnly()"
+                *ngIf="packing">
+          <i class="fa fa-print"></i> Ticket de Peso
+        </button>
+
+        <button class="btn btn-primary" [disabled]="loading" (click)="printInternalOutputControl()"
+                *ngIf="!packing">
+          <i class="fa fa-print"></i> Controle Interno
+        </button>
+
+        <a [class.disabled]="loading" routerLink="/balance" class="btn btn-default btn-size"> Voltar</a>
+      </div>
+    </div>
+
+  </section>
+
+</div>

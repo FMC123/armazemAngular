@@ -1,0 +1,43 @@
+<div class="box">
+  <div class="box-body">
+    <div class="row">
+      <div class="col-xs-12">
+          <div class="box-header">
+            <h4 class="box-title clearfix" style="line-height: 2">
+                <span class="fa fa-map-marker"></span> Endereços
+            </h4>
+          </div>
+          <div class="box-body">
+            <div class="row">
+              <div class="col-xs-12">
+                <table class="table table-bordered">
+                  <tr>
+                    <th class="col-xs-1 text-center">Logradouro</th>
+                    <th class="col-xs-1 text-center">Número</th>
+                    <th class="col-xs-1 text-center">Complemento</th>
+                    <th class="col-xs-1 text-center">CEP</th>
+                    <th class="col-xs-1 text-center">Tipo de Endereço</th>
+                    <th class="col-xs-1 text-center">Principal</th>
+                    <th class="col-xs-1 text-center">Município</th>
+                    <th class="col-xs-1 text-center">UF</th>
+                    <th class="col-xs-1 text-center">País</th>
+                  </tr>
+                  <tr *ngFor="let address of addresses">
+                    <td class="text-center">{{ address.publicPlace }}</td>
+                    <td class="text-center">{{ address.number }}</td>
+                    <td class="text-center">{{ address.complement }}</td>
+                    <td class="text-center">{{ address.zipCode }}</td>
+                    <td class="text-center">{{ address.typeAddress ? address.typeAddress.name : ''}}</td>
+                    <td class="text-center">{{ address.main ? 'SIM' : 'NÃO' }}</td>
+                    <td class="text-center">{{ address.city ? address.city.name : '' }}</td>
+                    <td class="text-center">{{ address.uf ? address.uf.name : '' }}</td>
+                    <td class="text-center">{{ address.country ? address.country.name : '' }}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+<section class="content-header">
+  <h1>
+    <small>Detalhes</small>
+    Bebida
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Motivos', '/motive-control'],
+    ['Detalhes dos Motivos', null]
+  ]"></app-breadcrumb>
+</section>
+
+<app-drink-list-info [incidentMotive]="incidentMotive" *ngIf="incidentMotive"></app-drink-list-info>
+
+ <div class="panel panel-default">
+  <div class="panel-footer">
+    <div class="row">
+      <div class="col-xs-12 mb10">
+        <a routerLink="/motive-control"
+           class="btn btn-success btn-size">
+          Voltar
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

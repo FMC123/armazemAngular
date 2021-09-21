@@ -1,0 +1,198 @@
+<section class="content-header">
+  <h1>
+    <small> Cadastro </small>
+    Controle de Warrants
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Controle de Warrants','/warrant-control'],
+    ['Cadastro', null]
+  ]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <form (ngSubmit)="save()" [formGroup]="form" class="form-horizontal" *ngIf="form" >
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Formulário</h3>
+          </div>
+
+          <div class="panel-body">
+
+            <fieldset [disabled]="loading">
+
+              <div class="form-group row">
+                <div appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="code" >Número do Warrant</label>
+                  <div class="col-md-4">
+                    <input id="code" formControlName="code" type="text" maxlength="50" class="form-control" disabled/>
+                  </div>
+                </div>
+                <div appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="client">Cliente</label>
+                  <div class="col-md-4" >
+                    <app-autocomplete *ngIf="!editing" [service]="ownerAutocomplete"></app-autocomplete>
+                    <input *ngIf="editing" type="text" class="form-control" disabled value="{{client?.label}}">
+                    <input type="hidden" class="form-control" formControlName="client" id="client"/>
+                    <app-error-message controlName="client" label="Cliente"></app-error-message>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <div appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="emissionDate">Data de Emissão</label>
+                  <div class="col-md-4">
+                    <div class="input-group">
+                      <input id="emissionDate" formControlName="emissionDate" type="text"
+                             class="form-control"
+                             [textMask]="dateMask"
+                             appDatePicker />
+                      <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+                    </div>
+                    <app-error-message controlName="emissionDate" label="Data de Emissão"></app-error-message>
+                  </div>
+                </div>
+                <div appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="expires">Validade</label>
+                  <div class="col-md-4">
+                    <div class="input-group" *ngIf="!warrantData.useExpiresExtension">
+                      <input id="expires" formControlName="expires" type="text"
+                             class="form-control"
+                             [textMask]="dateMask"
+                             appDatePicker/>
+                      <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+                    </div>
+                    <input id="expiresDisabled"
+                           formControlName="expires"
+                           type="text"
+                           class="form-control"
+                           *ngIf="warrantData.useExpiresExtension"/>
+                    <app-error-message controlName="expires" label="Validade"></app-error-message>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <div appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="packType">Armazenamento</label>
+                  <div class="col-md-4">
+                    <select formControlName="packType" class="form-control" id="packType">
+                      <option value=''>Selecione um tipo de armazenamento</option>
+                      <option *ngFor="let pack of packTypes" [value]="pack.id">
+                        {{ pack.description }}
+                      </option>
+                    </select>
+                    <app-error-message controlName="packType" label="Armazenamento"></app-error-message>
+                  </div>
+                </div>
+                <div appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="storageService">Serviço de Armazenamento</label>
+                  <div class="col-md-4">
+                    <app-autocomplete [service]="storageAutocomplete"></app-autocomplete>
+                    <input type="hidden" class="form-control" formControlName="storageService" id="storageService"/>
+                    <app-error-message controlName="storageService" label="Serviço de Armazenamento"></app-error-message>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group row" appErrorGroup>
+                <div appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="expeditionService">Serviço de Expedição</label>
+                  <div class="col-md-4">
+                    <app-autocomplete [service]="expeditionAutocomplete"></app-autocomplete>
+                    <input type="hidden" class="form-control" formControlName="expeditionService" id="expeditionService"/>
+                    <app-error-message controlName="expeditionService" label="Serviço de Expedição"></app-error-message>
+                  </div>
+                </div>
+                <div appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="insuranceService">Serviço de Seguro</label>
+                  <div class="col-md-4">
+                    <app-autocomplete [service]="insuranceAutocomplete"></app-autocomplete>
+                    <input type="hidden" class="form-control" formControlName="insuranceService" id="insuranceService"/>
+                    <app-error-message controlName="insuranceService" label="Serviço de Seguro"></app-error-message>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="endorsementText">Texto de endosso</label>
+                <div class="col-md-10">
+                  <textarea id="endorsementText" formControlName="endorsementText" type="text" class="form-control text-area"  rows="3"></textarea>
+                  <app-error-message controlName="endorsementText" label="Texto de endosso"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <div appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="retentionQuantity">Quilos no Warrant (kg)</label>
+                  <div class="col-md-4">
+                    <input id="retentionQuantity" formControlName="retentionQuantity"
+                           type="text"
+                           [textMask]="decimalMask"
+                           (keydown)="setQuantity($event.target.value)"
+                           maxlength="12"
+                           class="form-control" />
+                    <app-error-message controlName="retentionQuantity" label="Quilos no Warrant"></app-error-message>
+                  </div>
+                </div>
+                <div appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="sacksQuantity">Sacas no Warrant</label>
+                  <div class="col-md-4">
+                    <input id="sacksQuantity" formControlName="sacksQuantity" type="text" class="form-control"
+                           [textMask]="integerMask"
+                           maxlength="10"/>
+                    <app-error-message controlName="sacksQuantity" label="Sacas no Warrant"></app-error-message>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="retentionStatus">Status</label>
+                <div class="col-md-10">
+                  <select formControlName="retentionStatus" class="form-control" id="retentionStatus">
+                    <option value=''>Selecione um status</option>
+                    <option *ngFor="let item of status" [value]="item.index">
+                      {{ item.name }}
+                    </option>
+                  </select>
+                  <app-error-message controlName="retentionStatus" label="Status"></app-error-message>
+                </div>
+              </div>
+
+              <app-warrant-control-batch-selection
+                [retentionBatches]="this.retentionBatches"
+                [ownerFixed]="this.ownerAutocomplete.value"
+                [totalQuantity]="this.form.value.retentionQuantity"
+                [totalSacksQuantity]="this.form.value.sacksQuantity"
+                (quantityChange)="handleQuantitySacksChange()"
+                [isEditable]="true" >
+              </app-warrant-control-batch-selection>
+
+
+            </fieldset>
+
+          </div>
+
+          <div class="box-footer">
+            <div class="row">
+              <div class="col-sm">
+                <div class="col-sm-10 mb10">
+                  <app-submit-button [loading]="loading">
+                    SALVAR
+                  </app-submit-button>
+                  <a [class.disabled]="loading" class="btn btn-default btn-size" (click)="cancel()">
+                    VOLTAR
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,134 @@
+<div class="row">
+    <form (ngSubmit)="save()" [formGroup]="form" *ngIf="form" class="form-horizontal">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">Dados na Nota Fiscal de Industrialização</h3>
+        </div>
+
+        <div class="panel-body">
+          <div class="row" >
+            <div class="col-xs-12" style="margin-bottom: 10px;">
+              <app-loading *ngIf="loading"></app-loading>
+              <div *ngIf="!loading">
+                <div class="col-xs-3">
+                    Código
+                </div>
+                <div class="col-xs-3">
+                    Data de Emissão
+                </div>
+                <div class="col-xs-3">
+                    Valor
+                </div>
+                <div class="col-xs-3">
+                    Ação
+                </div>
+                <div class="col-xs-3">
+                    <div>
+                        <input 
+                          formControlName="fiscalNoteCode" 
+                          type="text" 
+                          class="form-control" 
+                          id="fiscalNoteCode" />
+                        <app-error-message 
+                          controlName="fiscalNoteCode" 
+                          label="Código"></app-error-message>
+                      </div>
+                </div>
+                <div class="col-xs-3">
+                    <div>
+                        <div class="input-group">
+                          <input 
+                            id="fiscalNoteDate" 
+                            type="text" 
+                            [textMask]="dateMask" 
+                            appDatePicker
+                            formControlName="fiscalNoteDate" 
+                            class="form-control">
+                          <div class="input-group-addon clickable">
+                            <span class="fa fa-calendar fa-fw"></span>
+                          </div>
+                        </div>
+                        <app-error-message 
+                          controlName="fiscalNoteDate" 
+                          label="Data de Emissão"></app-error-message>
+                      </div>
+                </div>
+                <div class="col-xs-3">
+                    <div>
+                        <input 
+                          formControlName="fiscalNoteValue" 
+                          type="number" 
+                          class="form-control" 
+                          id="fiscalNoteValue" />
+                        <app-error-message 
+                          controlName="fiscalNoteValue" 
+                          label="Valor"></app-error-message>
+                      </div>
+                </div>
+                <div class="col-xs-3">
+                    <button
+                    type="submit"
+                    class="btn btn-success btn-sm"
+                    appTooltip="Adicionar nota fiscal">
+                    <span class="fa fa-plus fa-lg"></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <table style="margin-top: 10px;" class="table table-bordered" *ngIf=" industrializationFiscalNotes.length > 0">
+                <thead>
+                    <tr>
+                        <th class="col-xs-3 text-center">
+                            Código
+                        </th>
+                        <th class="col-xs-3 text-center">
+                            Data de Emissão
+                        </th>
+                        <th class="col-xs-3 text-center">
+                            Valor
+                        </th>
+                        <th class="col-xs-3 text-center">
+                            Ação
+                        </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let fiscal of industrializationFiscalNotes">
+                      <td class="text-center">{{fiscal.code}}</td>
+                      <td class="text-center">{{fiscal.emissionDateString}}</td>
+                      <td class="text-center">{{fiscal.totalPrice}}</td>
+                      <td class="text-center">
+                        <button
+                          type="button"
+                          (click)="edit(fiscal)"
+                          class="btn btn-primary btn-sm"
+                          appTooltip="Editar"
+                        >
+                          <span class="fa fa-edit fa-lg"></span>
+                        </button>
+                        <button
+                          type="button"
+                          (click)="beforeRemove(fiscal)"
+                          class="btn btn-danger btn-sm"
+                          appTooltip="Excluir"
+                        >
+                          <span class="fa fa-trash fa-lg"></span>
+                      </button>
+                      </td>
+                    </tr>
+                  </tbody>
+              </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    </form>
+  </div>
+
+  <app-confirm
+    *ngIf="closeConfirm.opened"
+    message="Tem certeza que deseja remover a nota fiscal?"
+    (confirm)="remove()"
+    (close)="closeConfirm.close()">
+</app-confirm>

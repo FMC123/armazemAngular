@@ -1,0 +1,196 @@
+<section class="content-header">
+  <h1>
+    <small>Cadastro</small>
+    Endereço
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Pessoa', '/person'],
+    ['Cadastro de Endereço', null]
+  ]"></app-breadcrumb>
+ </section>
+
+ <section class="content">
+  <form
+    [formGroup]="form"
+    *ngIf="form"
+    class="form-horizontal"
+  >
+
+    <div class="box">
+      <div class="box-header with-border">
+        <div class="box-title">Formulário</div>
+      </div>
+
+      <div class="panel-body">
+        <fieldset [disabled]="loading">
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-md-2 text-right" for="publicPlace">Logradouro*</label>
+            <div class="col-md-10">
+              <input
+                id="publicPlace"
+                formControlName="publicPlace"
+                type="text"
+                maxlength="21"
+                class="form-control"
+                />
+              <app-error-message controlName="publicPlace" label="Logradouro"></app-error-message>
+            </div>
+          </div>
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-md-2 text-right" for="number">Número*</label>
+            <div class="col-md-10">
+              <input
+                id="number"
+                formControlName="number"
+                type="text"
+                [textMask]="integerMask"
+                maxlength="20"
+                class="form-control"
+                />
+              <app-error-message controlName="number" label="Numero"></app-error-message>
+            </div>
+          </div>
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-md-2 text-right" for="complement">Complemento</label>
+            <div class="col-md-10">
+              <input
+                id="complement"
+                formControlName="complement"
+                type="text"
+                maxlength="18"
+                class="form-control"
+                />
+              <app-error-message controlName="complement" label="Complemento"></app-error-message>
+            </div>
+          </div>
+        <div class="form-group" appErrorGroup>
+            <label class="control-label col-md-2 text-right" for="neighbourhood">Bairro*</label>
+            <div class="col-md-10">
+              <input
+                id="neighbourhood"
+                formControlName="neighbourhood"
+                type="text"
+                maxlength="200"
+                class="form-control"
+                />
+              <app-error-message controlName="neighbourhood" label="Bairro"></app-error-message>
+            </div>
+          </div>
+
+        <div class="form-group" appErrorGroup>
+            <label class="control-label col-md-2 text-right" for="zipCode">CEP*</label>
+            <div class="col-md-10">
+              <input
+                id="zipCode"
+                formControlName="zipCode"
+                type="text"
+                [textMask]="zipCodeMask"
+                class="form-control"
+                />
+              <app-error-message controlName="zipCode" label="CEP"></app-error-message>
+            </div>
+          </div>
+
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-md-2 text-right" for="main">
+              Endereço Principal?
+            </label>
+            <div class="col-md-1">
+              <input
+                [formControl]="form.get('main')"
+                type="checkbox"
+              />
+              <app-error-message controlName="main" label="Endereço Principal"></app-error-message>
+            </div>
+          </div>
+
+          <fieldset class="form-group" appErrorGroup>
+            <label class="control-label col-md-2 text-right">Tipo de Endereço*</label>
+            <div class="col-md-10" >
+              <select formControlName="typeAddress"
+                      class="form-control">
+                <option value="">Selecione um tipo de Endereço </option>
+                <option *ngFor="let typeAddress of typesAddress" [ngValue]="typeAddress">
+                  {{ typeAddress.name }}
+                </option>
+              </select>
+              <app-error-message controlName="typeAddress" label="Tipo Endereço"></app-error-message>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-group" appErrorGroup>
+            <label class="control-label col-md-2 text-right">País*</label>
+            <div class="col-md-10" >
+              <select
+                formControlName="countryId"
+                class="form-control"
+                >
+                <option value="">Selecione um país </option>
+                <option *ngFor="let country of countrys" [ngValue]="country">
+                  {{ country.name }}
+                </option>
+              </select>
+              <app-error-message controlName="countryId" label="País"></app-error-message>
+            </div>
+          </fieldset>
+
+        <fieldset class="form-group" appErrorGroup>
+          <label class="control-label col-md-2 text-right">Estado*</label>
+          <div class="col-md-10" >
+            <select
+              formControlName="ufId"
+              class="form-control"
+            >
+              <option value="">Selecione uma UF </option>
+              <option *ngFor="let uf of ufs" [ngValue]="uf">
+                {{ uf.name }}
+              </option>
+            </select>
+            <app-error-message controlName="ufId" label="Estado"></app-error-message>
+          </div>
+        </fieldset>
+
+
+        <fieldset class="form-group" appErrorGroup>
+            <label class="control-label col-md-2 text-right">Município*</label>
+            <div class="col-md-10" >
+              <select formControlName="cityId"
+                      class="form-control">
+                <option value="">Selecione uma município </option>
+                <option *ngFor="let city of citys" [ngValue]="city">
+                  {{ city.name }}
+                </option>
+              </select>
+              <app-error-message controlName="cityId" label="Município"></app-error-message>
+            </div>
+          </fieldset>
+        </fieldset>
+      </div>
+
+      <div class="box-footer">
+        <div class="row">
+          <div class="col-sm-offset-2">
+            <div class="col-sm-10 mb10">
+              <button
+                type="button"
+                (click)="save()"
+                class="btn btn-success btn-size"
+              >
+                SALVAR
+              </button>
+              <button
+                type="button"
+                [class.disabled]="loading"
+                (click)="returnFormPerson()"
+                class="btn btn-size"
+              >
+                VOLTAR
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</section>

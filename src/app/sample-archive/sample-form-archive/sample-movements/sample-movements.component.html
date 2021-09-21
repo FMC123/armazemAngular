@@ -1,0 +1,31 @@
+<div class="new-layout">
+  <section class="content-header">
+    <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Gestão de Amostras', '/sample'],
+    [sample.barcode, null]
+  ]"></app-breadcrumb>
+    <h1>
+      <small>Solicitação de amostra</small>
+      Gestão de Amostras
+    </h1>
+  </section>
+
+  <section class="content">
+    <app-sample-movements-info [sample]="sample" *ngIf="sample"></app-sample-movements-info>
+
+    <app-sample-movem-hist-list-form [sample]="sample" *ngIf="sample"></app-sample-movem-hist-list-form>
+
+    <div class="row">
+      <div class="col-xs-12">
+<!--        <a [class.disabled]="loading" onclick="window.history.back()" class="btn btn-default btn-size">-->
+<!--          VOLTAR-->
+<!--        </a>-->
+
+        <a [class.disabled]="loading" [routerLink]="['/sample-archive']" class="btn btn-default btn-size">
+          VOLTAR
+        </a>
+      </div>
+    </div>
+  </section>
+</div>

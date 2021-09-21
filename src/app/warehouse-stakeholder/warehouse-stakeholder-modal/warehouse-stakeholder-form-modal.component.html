@@ -1,0 +1,59 @@
+<div class="modal fade" appModal [shownCallback]="focusOnInput()" (close)="close.emit(null)" tabindex="-1"
+  role="dialog">
+
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <form (ngSubmit)="submit()" [formGroup]="form" *ngIf="form" class="form-horizontal">
+        <div class="modal-header">
+          <h3 class="modal-title">{{titleModel}}</h3>
+        </div>
+        <div class="modal-body">
+          <fieldset [disabled]="loading">
+
+            <div class="row">
+              <div class="col-md-6 col-xs-12" appErrorGroup>
+                <label for="personName">{{labelNameStakeholder}}</label>
+                <input id="personName" class="form-control" formControlName="personName" maxlength="50"
+                  placeholder="Informe o nome" />
+                <app-error-message controlName="personName" label="{{labelNameStakeholder}}"></app-error-message>
+              </div>
+
+              <div class="col-md-6 col-xs-12" appErrorGroup>
+                <label for="document">Documento</label>
+                <input id="document" class="form-control" formControlName="document" maxlength="20"
+                  placeholder="Informe o documento" [textMask]="integerMask" />
+                <app-error-message controlName="document" label="Documento"></app-error-message>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12 col-xs-12" appErrorGroup>
+                <label class="control-label text-right radio-inline">
+                  <input type="radio" value="PHYSICAL" formControlName="personType"><strong>Pessoa Física</strong></label>
+                <label class="control-label text-right radio-inline">
+                  <input type="radio" value="JURIDICAL" formControlName="personType"><strong>Pessoa Jurídica</strong></label>
+                <app-error-message controlName="personType" label="Tipo da pessoa"></app-error-message>
+              </div>
+            </div>
+
+          </fieldset>
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-default btn-size" data-dismiss="modal" style="float:left">
+            Cancelar
+          </button>
+
+          <button type="button" class="btn btn-default btn-size" (click)="clearForm()">
+            Limpar
+          </button>
+
+          <app-submit-button [loading]="loading">
+            Salvar
+          </app-submit-button>
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

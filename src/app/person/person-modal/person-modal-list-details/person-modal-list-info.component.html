@@ -1,0 +1,46 @@
+<div class="box">
+  <div class="box-body">
+    <h4 class="box-title clearfix" style="line-height: 2">
+      <span class="fa fa-user-o"></span>
+      Dados da Pessoa
+    </h4>
+  </div>
+  <div class="box">
+    <div class="box-body">
+      <div class="row">
+        <div class="col-xs-12">
+          <fieldset>
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2" for="name">Nome</label>
+                <div class="col-md-4">
+                  <input readonly="true" id="name" type="text" class="form-control" value="{{person.name}}" />
+                </div>
+                <label class="control-label col-md-2" for="personType">Tipo de Pessoa</label>
+                <div class="col-md-4">
+                    <input readonly="true" id="personType" type="text" class="form-control" value="{{person.personTypeName}}" />
+                </div>
+              </div>
+              <div class="form-group row" appErrorGroup>
+                <label class="control-label col-md-2"  for="document">Documento</label>
+                <div class="col-md-4">
+                  <input readonly="true" id="document" type="text" class="form-control" value="{{person.documentFormat}}" />
+                </div>
+
+                <label class="control-label col-md-2" for="tradingName">Nome Usual</label>
+                <div class="col-md-4">
+                  <input readonly="true" id="tradingName" type="text" class="form-control" value="{{person.tradingName}}" />
+                </div>
+              </div>
+              <div class="form-group row" appErrorGroup>
+                  <label class="control-label col-md-2" for="active">Situação</label>
+                  <div class="col-md-4">
+                    <input readonly="true" id="active" type="text" class="form-control" value="{{person.active? 'Ativo' : 'Inativo'}}" />
+                  </div>
+              </div>
+            </fieldset>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

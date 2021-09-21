@@ -1,0 +1,109 @@
+<div class="box">
+  <div class="box-header">
+    <h3 class="box-title w100"></h3>
+  </div>
+
+  <div class="box-body">
+    <form class="form-horizontal" (ngSubmit)="submit()" *ngIf="form" [formGroup]="form"
+          (keydown.enter)="$event.preventDefault();">
+      <fieldset [disabled]="loading">
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-xs-4 col-md-2 text-right" for="charged">
+            Já cobrados
+          </label>
+          <div class="col-xs-8 col-md-2">
+            <select formControlName="charged" class="form-control" id="charged">
+              <option *ngFor="let c of chargedTypes" [value]="c.code">
+                {{ c.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-xs-4 col-md-2 text-right" for="reprocess">
+            Reprocessar
+          </label>
+          <div class="col-xs-8 col-md-2">
+            <input id="reprocess"
+                   formControlName="reprocess"
+                   type="checkbox"
+                   class="checkbox"/>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-xs-4 col-md-2 text-right" for="createdDateStartString">Período</label>
+          <div class="col-xs-8 col-md-5">
+            <div class="row">
+              <div class="col-xs-6">
+                <div class="input-group">
+                  <input type="text" [textMask]="dateMask" appDatePicker formControlName="createdDateStartString"
+                         id="createdDateStartString" placeholder="Início" class="form-control"/>
+                  <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+                </div>
+                <app-error-message controlName="createdDateStartString" label="Data inicial"></app-error-message>
+              </div>
+              <div class="col-xs-6">
+                <div class="input-group">
+                  <input type="text" [textMask]="dateMask" appDatePicker formControlName="createdDateEndString"
+                         placeholder="Fim" class="form-control"/>
+                  <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+                </div>
+                <app-error-message controlName="createdDateEndString" label="Data final"></app-error-message>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-xs-4 col-md-2 text-right" for="stakeholderId">Cliente</label>
+          <div class="col-xs-8 col-md-5" appErrorGroup>
+            <app-autocomplete [service]="ownerAutocomplete"></app-autocomplete>
+            <input type="hidden" class="form-control" formControlName="stakeholderId" id="stakeholderId"/>
+            <app-error-message controlName="stakeholderId" label="Cliente"></app-error-message>
+
+            <!-- lista de clientes selecionados -->
+            <div style="margin:10px 0;">
+              <div class="row col-xs-12" style="padding-bottom:5px;" *ngFor="let client of clients">
+                <div class="col-xs-1 bts-list-actions">
+                  <button (click)="removeClient(client.id)" type="button" appTooltip="Remover"
+                          class="btn btn-danger btn-sm">
+                    <span class="fa fa-trash-o fa-lg"></span>
+                  </button>
+                </div>
+                <div class="col-xs-10">{{client.person.name}}</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </fieldset>
+
+      <div class="form-group">
+        <div class="col-xs-offset-4 col-xs-12 col-md-10 col-md-offset-2">
+
+          <button [disabled]="loading" [class.has-spinner]="loading" type="submit" class="btn btn-size btn-success">
+            <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+            Pesquisar
+          </button>
+
+          <button type="button" (click)="buildForm()" class="btn btn-size btn-default">Limpar</button>
+
+          <button [disabled]="clients.length == 0 || loading" [class.has-spinner]="loading" type="button"
+                  class="btn btn-size btn-success" (click)="addChargeModal.open()">
+            <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+            Adicionar acréscimo/desconto
+          </button>
+
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<app-charging-generation-add-modal *ngIf="addChargeModal.opened"
+                                   [clients]="clients" (close)="addChargeModalClose($event)">
+</app-charging-generation-add-modal>

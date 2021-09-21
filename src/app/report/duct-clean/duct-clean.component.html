@@ -1,0 +1,77 @@
+<section class="content-header">
+    <h1>
+      Relatório de Limpeza dos Duto
+    </h1>
+    <app-breadcrumb [items]="[
+          ['Início', ''],
+          ['Relatório de Limpeza dos Duto', null]
+        ]"></app-breadcrumb>
+  </section>
+  <section class="content-header">
+    <div class="box">
+      <div class="box-header">
+        <h3 class="box-title w100">
+          Filtro
+        </h3>
+      </div>
+      <div class="box-body">
+        <form class="form-horizontal" [formGroup]="form" (keydown.enter)="$event.preventDefault();">
+          <fieldset [disabled]="loading">
+            <div class="form-group" appErrorGroup>
+                <label class="control-label col-xs-4 col-md-2 text-right" for="batchCode">Lote</label>
+                <div class="col-xs-8 col-md-10">
+                    <input type="text"
+                     formControlName="batchCode"
+                     class="form-control">
+                    <app-error-message controlName="batchCode" label="Lote"></app-error-message>
+                </div>
+              </div>
+            <div class="form-group" appErrorGroup>
+              <label class="control-label col-xs-4 col-md-2 text-right" for="createdDateStartString">Data</label>
+              <div class="col-xs-8 col-md-10">
+                <div class="row">
+                  <div class="col-xs-6">
+                    <div class="input-group">
+                      <input type="text"
+                             [textMask]="dateMask"
+                              appDatePicker
+                              formControlName="createdDateStartString"
+                              placeholder="Início"
+                              class="form-control">
+                      <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+                    </div>
+                    <app-error-message controlName="createdDateStartString" label="Data Inicial"></app-error-message>
+                  </div>
+                  <div class="col-xs-6">
+                    <div class="input-group">
+                      <input type="text"
+                             [textMask]="dateMask"
+                              appDatePicker
+                              formControlName="createdDateEndString"
+                              placeholder="Fim"
+                              class="form-control">
+                      <div class="input-group-addon clickable">
+                        <span class="fa fa-calendar fa-fw"></span>
+                      </div>
+                    </div>
+                    <app-error-message controlName="createdDateEndString" label="Data Final"></app-error-message>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+          </fieldset>
+          <div class="form-group">
+            <div class="col-xs-offset-4 col-xs-8 col-sm-offset-2 col-sm-10">
+              <button (click)="submit()" type="button" class="btn btn-size btn-success">
+                <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+                ABRIR
+              </button>
+              <button type="button" (click)="buildForm()" class="btn btn-size btn-default">LIMPAR</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>

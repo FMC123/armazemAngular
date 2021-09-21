@@ -1,0 +1,6 @@
+<app-map-history-sidebar></app-map-history-sidebar>
+
+<div class="map-container text-center">
+  <app-loading *ngIf="loading"></app-loading>
+  <app-map-positions *ngIf="service.positions" [hidden]="loading"></app-map-positions>
+</div>

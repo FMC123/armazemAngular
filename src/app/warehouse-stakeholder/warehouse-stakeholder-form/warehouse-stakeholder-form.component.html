@@ -1,0 +1,279 @@
+<div class="new-layout">
+  <section class="content-header">
+    <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Clientes e Fornecedores', '/warehouse-stakeholder/'],
+    ['Cadastro Cliente e Fornecedor', null]
+  ]"></app-breadcrumb>
+    <h1>
+      <small>Cadastro</small>
+      Cliente e Fornecedor
+    </h1>
+  </section>
+
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+        <form (ngSubmit)="save()" [formGroup]="form" *ngIf="form" class="form-horizontal">
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Formulário</h3>
+            </div>
+            <div class="box-body">
+              <fieldset [disabled]="loading">
+                <div>
+                  <fieldset [disabled]="loading">
+                    <div class="form-group row" appErrorGroup>
+                      <div class="col-md-12">
+                        <app-person-modal-find
+                          [bootMode]="(warehouseStakeholder && warehouseStakeholder.id) ? 'editable': 'default'"
+                          formControlName="personId"></app-person-modal-find>
+                        <app-error-message controlName="personId" label="Pessoa"></app-error-message>
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+
+                <app-warehouse-stakeholder-certificate *ngIf="warehouseStakeholder.id" [stakeholder]="warehouseStakeholder"></app-warehouse-stakeholder-certificate>
+
+                <div *ngIf="newStakeholderLobby">
+                  <div class="box">
+                    <div class="box-header with-border">
+                      <h3 class="box-title">Dados de Cobrança</h3>
+                    </div>
+                    <div class="box-body">
+                      <fieldset>
+                        <div class="form-group" appErrorGroup>
+                          <label class="control-label col-md-2" for="generateCharging">Executar cálculo de cobrança</label>
+                          <div class="col-md-4 col-sm-1">
+                            <select id="generateCharging" formControlName="generateCharging" class="form-control">
+                              <option value="true">Sim</option>
+                              <option value="false">Não</option>
+                            </select>
+                            <app-error-message controlName="generateCharging" label="Executar cálculo de cobrança">
+                            </app-error-message>
+                          </div>
+                        </div>
+
+                        <div class="form-group" appErrorGroup>
+                          <label class="control-label col-md-2" for="observation1">Observação 1</label>
+                          <div class="col-md-10">
+                            <input id="observation1" formControlName="observation1" type="text" maxlength="100"
+                              class="form-control" />
+                            <app-error-message controlName="observation1" label="Observação 1"></app-error-message>
+                          </div>
+                        </div>
+                        <div class="form-group" appErrorGroup>
+                          <label class="control-label col-md-2" for="observation2">Observação 2</label>
+                          <div class="col-md-10">
+                            <input id="observation2" formControlName="observation2" type="text" maxlength="100"
+                              class="form-control" />
+                            <app-error-message controlName="observation2" label="Observação 2"></app-error-message>
+                          </div>
+                        </div>
+                        <div class="form-group" appErrorGroup>
+                          <label class="control-label col-md-2" for="observation3">Observação 3</label>
+                          <div class="col-md-10">
+                            <input id="observation3" formControlName="observation3" type="text" maxlength="100"
+                              class="form-control " />
+                            <app-error-message controlName="observation3" label="Observação 3"></app-error-message>
+                          </div>
+                        </div>
+                      </fieldset>
+                      <div class="form-group row">
+                        <fieldset appErrorGroup>
+                          <label class="control-label col-md-2 text-right">Tabela de Serviço</label>
+                          <div class="col-md-4">
+                            <select formControlName="serviceGroup" class="form-control">
+                              <option value="">Selecione um Tabela de Serviço</option>
+                              <option *ngFor="let serviceGroup of serviceGroups" [value]="serviceGroup.id">
+                                {{ serviceGroup.code }} - {{ serviceGroup.description }}
+                              </option>
+                            </select>
+                            <app-error-message controlName="serviceGroup" label="Tabela de serviço"></app-error-message>
+                          </div>
+                          <label class="control-label col-md-2" for="chargeType">Cobrança Tipo de Café</label>
+                          <div class="col-md-4 col-sm-1">
+                            <select id="chargeType" formControlName="chargeType" class="form-control">
+                              <option value="true">Sim</option>
+                              <option value="false">Não</option>
+                            </select>
+                            <app-error-message controlName="chargeType" label="Cobraça Tipo de Café">
+                            </app-error-message>
+                          </div>
+                        </fieldset>
+                      </div>
+                      <div class="form-group row" appErrorGroup>
+                        <fieldset appErrorGroup>
+                          <label class="control-label col-md-2 text-right">Código de Armazenamento</label>
+                          <div class="col-md-4 ">
+                            <select formControlName="storageService" class="form-control">
+                              <option value="">Selecione um serviceItem</option>
+                              <option *ngFor="let serviceItem of serviceItens" [value]="serviceItem.id">
+                                {{ serviceItem.code }} - {{ serviceItem.description }}
+                              </option>
+                            </select>
+                            <app-error-message controlName="storageService" label="Código de Armazenamento">
+                            </app-error-message>
+                          </div>
+                          <label class="control-label col-md-2 text-right">Código de Seguro</label>
+                          <div class="col-md-4">
+                            <select formControlName="insuranceService" class="form-control">
+                              <option value="">Selecione um serviceItem</option>
+                              <option *ngFor="let serviceItem of serviceItens" [value]="serviceItem.id">
+                                {{ serviceItem.code }} - {{ serviceItem.description }}
+                              </option>
+                            </select>
+                            <app-error-message controlName="insuranceService" label="Código de Seguro">
+                            </app-error-message>
+                          </div>
+                        </fieldset>
+
+                        <fieldset appErrorGroup>
+                          <label class="control-label col-md-2 text-right">Código de aluguel de Embalagem</label>
+                          <div class="col-md-4 col-sm-1">
+                            <select formControlName="rentService" class="form-control">
+                              <option value="">Selecione um serviço</option>
+                              <option *ngFor="let serviceItem of serviceItens" [value]="serviceItem.id">
+                                {{ serviceItem.code }} - {{ serviceItem.description }}
+                              </option>
+                            </select>
+                            <app-error-message controlName="rentService" label="Código de aluguel de Embalagem">
+                            </app-error-message>
+                          </div>
+
+                        </fieldset>
+
+                        <label class="control-label col-md-2" for="chargeType">Cobrança de Carregamento / Descarregamento de Embalagens</label>
+                        <div class="col-md-4 col-sm-1">
+                          <select id="chargePackLoadUnload" formControlName="chargePackLoadUnload" class="form-control">
+                            <option value="true">Sim</option>
+                            <option value="false">Não</option>
+                          </select>
+                          <app-error-message controlName="chargePackLoadUnload" label="Cobranca de Carregamento/Descarregamento de embalagens">
+                          </app-error-message>
+                        </div>
+
+                      </div>
+                      <div class="box box-default mt20">
+                        <div class="box-header with-border">
+                          <h3 class="box-title">Dados do período de Carência</h3>
+                        </div>
+                        <div class="box-body">
+                          <div class="form-group row" appErrorGroup>
+                            <label class="control-label col-md-2" for="inChargePeriodGrace">Cobrança Lote de
+                              Entrada</label>
+                            <div class="col-md-4 col-sm-1">
+                              <input id="inChargePeriodGrace" formControlName="inChargePeriodGrace" type="text"
+                                [textMask]="decimalMask" maxlength="3" class="form-control" />
+                              <app-error-message controlName="inChargePeriodGrace" label="Cobrança Lote de Entrada">
+                              </app-error-message>
+                            </div>
+                            <label class="control-label col-md-2" for="rebenefitChargePeriodGrace">Cobrança Lote de
+                              Rebeneficio</label>
+                            <div class="col-md-4 col-sm-1">
+                              <input id="rebenefitChargePeriodGrace" formControlName="rebenefitChargePeriodGrace"
+                                type="text" [textMask]="decimalMask" maxlength="3" class="form-control" />
+                              <app-error-message controlName="rebenefitChargePeriodGrace"
+                                label="Cobrança Lote de Rebeneficio"></app-error-message>
+                            </div>
+                          </div>
+
+                          <div class="form-group row" appErrorGroup>
+
+                            <fieldset appErrorGroup>
+                              <label class="control-label col-md-2 text-right">Código de Armazenamento</label>
+                              <div class="col-md-4 col-sm-1">
+                                <select formControlName="storageServiceCarencia" class="form-control">
+                                  <option value="">Selecione um serviceItem</option>
+                                  <option *ngFor="let serviceItem of serviceItens" [value]="serviceItem.id">
+                                    {{ serviceItem.code }} - {{ serviceItem.description }}
+                                  </option>
+                                </select>
+                                <app-error-message controlName="storageServiceCarencia" label="Código de Armazenamento">
+                                </app-error-message>
+                              </div>
+                              <label class="control-label col-md-2 text-right">Código de Seguro</label>
+                              <div class="col-md-4 col-sm-1">
+                                <select formControlName="insuranceServiceCarencia" class="form-control">
+                                  <option value="">Selecione um serviceItem</option>
+                                  <option *ngFor="let serviceItem of serviceItens" [value]="serviceItem.id">
+                                    {{ serviceItem.code }} - {{ serviceItem.description }}
+                                  </option>
+                                </select>
+                                <app-error-message controlName="insuranceServiceCarencia" label="Código de Seguro">
+                                </app-error-message>
+                              </div>
+                            </fieldset>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="box box-default mt20">
+                    <div class="box-header with-border">
+                      <h3 class="box-title">Dados de Amostra</h3>
+                    </div>
+                    <div class="box-body">
+                      <div class="form-group row" appErrorGroup>
+                        <label class="control-label col-md-2" for="outSampleQty">Quantidade de saída</label>
+                        <div class="col-md-4 col-sm-1">
+                          <input id="outSampleQty" formControlName="outSampleQty" type="text" [textMask]="integerMask"
+                            maxlength="2" class="form-control" />
+                          <app-error-message controlName="outSampleQty" label="Quantidade de saída"></app-error-message>
+                        </div>
+                        <label class="control-label col-md-2" for="inSampleQty">Quantidade de lote Entrada</label>
+                        <div class="col-md-4 col-sm-1">
+                          <input id="inSampleQty" formControlName="inSampleQty" type="text" [textMask]="integerMask"
+                            maxlength="2" class="form-control" />
+                          <app-error-message controlName="inSampleQty" label="Quantidade de lote Entrada">
+                          </app-error-message>
+                        </div>
+                      </div>
+                      <div class="form-group row" appErrorGroup>
+                        <label class="control-label col-md-2" for="checkServiceGuideClosing">Ao fechar Instrução de
+                          Serviço
+                          Verificar da Instrução: Pó, Pedra, Amostra.</label>
+                        <div class="col-md-4 col-sm-1">
+                          <select id="checkServiceGuideClosing" formControlName="checkServiceGuideClosing"
+                            class="form-control">
+                            <option value="true">Sim</option>
+                            <option value="false">Não</option>
+                          </select>
+                          <app-error-message controlName="checkServiceGuideClosing"
+                            label="Ao fechar Instrução de Serviço Verificar da Instrução: Pó, Pedra, Amostra.">
+                          </app-error-message>
+                        </div>
+                        <label class="control-label col-md-2" for="gsSampleQty">Quantidade GS</label>
+                        <div class="col-md-4 col-sm-1">
+                          <input id="gsSampleQty" formControlName="gsSampleQty" type="text" [textMask]="integerMask"
+                            maxlength="2" class="form-control" />
+                          <app-error-message controlName="gsSampleQty" label="Quantidade na Instrução de Serviço">
+                          </app-error-message>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+            <div class="box-footer">
+              <div class="row">
+                <div class="col-sm-offset-2">
+                  <div class="col-sm-10 mb10">
+                    <app-submit-button [loading]="loading">
+                      Salvar
+                    </app-submit-button>
+                    <a [class.disabled]="loading" routerLink="/warehouse-stakeholder" class="btn btn-default btn-size">
+                      Voltar
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>

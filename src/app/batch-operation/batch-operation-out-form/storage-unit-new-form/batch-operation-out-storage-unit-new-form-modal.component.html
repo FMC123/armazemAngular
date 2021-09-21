@@ -1,0 +1,160 @@
+<div
+  class="modal fade"
+  appModal
+  [shownCallback]="focusOnInput()"
+  (close)="close.emit(null)"
+  tabindex="-1"
+  role="dialog"
+>
+<div class="modal-dialog modal-lg" role="document">
+  <div class="modal-content">
+    <form
+      (ngSubmit)="submit()"
+      [formGroup]="form"
+      *ngIf="form"
+      class="form-horizontal"
+    >
+      <div class="modal-header">
+        <h3 class="modal-title">Embarque de unidade de armazenamento</h3>
+      </div>
+      <div class="modal-body">
+        <fieldset [disabled]="loading">
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-md-2 text-right">
+              Lote
+            </label>
+            <div class="col-md-10">
+              {{ markupGroupBatch.batch.batchCode }}
+            </div>
+          </div>
+
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-md-2 text-right">
+              Progresso
+            </label>
+            <div class="col-md-10">
+              {{ markupGroupBatch.batch.batchCode }} - {{ markupGroupBatch.quantityString }} <app-kilos-to-sacks [value]="markupGroupBatch.quantity"></app-kilos-to-sacks> / {{ markupGroupBatch.currentQuantityString }} <app-kilos-to-sacks [value]="markupGroupBatch.currentQuantity"></app-kilos-to-sacks>
+            </div>
+          </div>
+
+          <div class="form-group" appErrorGroup *ngIf="this.transportation && this.transportation.maxSacks && this.transportation.maxSacks > 0">
+            <label class="control-label col-md-2 text-right">
+              Limite de Transporte
+            </label>
+            <div class="col-md-10">
+              {{this.transportation.maxWeightLimit}} kg ({{this.transportation?.maxSacks}}sc)
+            </div>
+          </div>
+
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-md-2 text-right">
+              Autorizado
+            </label>
+            <div class="col-md-10">
+              <td>{{getAuthorizedInfo(markupGroupBatch.batch.id)}}</td>
+            </div>
+          </div>
+
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-md-2 text-right" for="storageUnitId">
+              Unidade de armazenamento*
+            </label>
+            <div class="col-md-10">
+              <select formControlName="storageUnitId" class="form-control" id="storageUnitId">
+                <option value=''>Selecione uma unidade de armazenamento</option>
+                <option *ngFor="let storageUnit of storageUnits" [value]="storageUnit.id">
+                  {{ storageUnit.tagLabel }} - {{storageUnit.location}}
+                </option>
+              </select>
+              <app-error-message controlName="storageUnitId" label="Unidade de armazenamento"></app-error-message>
+            </div>
+          </div>
+
+          <div class="form-group" appErrorGroup>
+            <label
+              class="control-label col-md-2 text-right"
+              for="quantityString"
+            >
+              Peso*
+            </label>
+            <div class="col-md-8">
+              <input
+                id="quantityString"
+                class="form-control"
+                formControlName="quantityString"
+                [textMask]="decimalMask"
+                maxlength="12"
+              />
+              <app-error-message controlName="quantityString" label="Peso"></app-error-message>
+            </div>
+            <div class="col-md-2">
+              {{ unitType }}
+            </div>
+          </div>
+
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-md-2 text-right">
+              Peso restante
+            </label>
+            <div class="col-md-10">
+              <input
+                class="form-control"
+                [value]="remainingWeightString"
+                disabled
+              />
+            </div>
+          </div>
+
+          <div *ngIf="locationEnabled" class="form-group" appErrorGroup>
+            <label class="control-label col-md-2 text-right" for="positionId">
+              Localização de devolução*
+            </label>
+            <div class="col-md-4">
+              <select id="positionId" formControlName="positionId" class="form-control">
+                <option value=''>Selecione uma posição</option>
+                <option *ngFor="let position of positions" [value]="position.id">
+                  {{ position.nameCode }}
+                </option>
+              </select>
+              <app-error-message controlName="positionId" label="Posição"></app-error-message>
+            </div>
+
+            <div
+              class="col-md-3"
+              *ngIf="stacks && stacks.length"
+            >
+              <select formControlName="stackId" class="form-control">
+                <option value=''>Selecione uma pilha</option>
+                <option *ngFor="let isStack of stacks" [value]="isStack.id">
+                  {{ isStack.code }}
+                </option>
+              </select>
+              <app-error-message controlName="stackId" label="Pilha"></app-error-message>
+            </div>
+
+            <div
+              class="col-md-3"
+              *ngIf="stacks && stacks.length"
+            >
+              <input
+                formControlName="stackHeight"
+                [textMask]="integerMask"
+                class="form-control"
+              />
+              <app-error-message controlName="stackHeight" label="Altura"></app-error-message>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-size" data-dismiss="modal">
+          CANCELAR
+        </button>
+        <app-submit-button [loading]="loading">
+          SALVAR
+        </app-submit-button>
+      </div>
+    </form>
+  </div>
+</div>
+</div>

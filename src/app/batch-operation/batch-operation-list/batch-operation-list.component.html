@@ -1,0 +1,365 @@
+<style>
+  td.td-img-type {
+    padding: 0px;
+  }
+
+  td.td-img-type div {
+    padding: 8px;
+  }
+
+  td.td-img-type span {
+    background-color: transparent !important;
+    color: yellow !important;
+    position: relative;
+    top: 5px;
+    right: 5px;
+    float: right;
+  }
+
+  @media (min-width: 768px) {
+    .modal-sm.modal-custom-size {
+      width: 350px;
+    }
+  }
+</style>
+
+<div class="new-layout">
+  <section class="content-header">
+    <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Entrada/Saída de estoque', null]
+  ]"></app-breadcrumb>
+    <h1>
+      Entrada/Saída de estoque
+    </h1>
+  </section>
+
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+
+        <app-batch-operation-filter [filterChangedData]="filterChangedData" (filterChange)="filterList($event)" [loading]="loading">
+        </app-batch-operation-filter>
+
+        <div class="box">
+          <div class="box-header">
+            <div class="box-title">
+              Entrada/Saída de estoque
+            </div>
+            <div class="pull-right" *ngIf="isArmazemGeral">
+              <a routerLink="movement" class="btn btn-success btn-size">
+                <span class="fa fa-plus fa-fw"></span>
+                <strong>Nova Movimentação</strong>
+              </a>
+            </div>
+          </div>
+
+          <div class="box-body">
+            <app-loading *ngIf="loading"></app-loading>
+            <div *ngIf="!loading">
+              <app-no-results *ngIf="!page.data || page.data.length<=0"></app-no-results>
+              <div class="table-responsive" *ngIf="page.data && page.data.length>0">
+                <table class="table table-striped table-bordered table-hover">
+                  <thead>
+                  <tr>
+                    <th class="col-xs-1" appSort="type" [instance]="page">
+                      Tipo
+                    </th>
+                    <th class="col-xs-1" appSort="createdDate" [instance]="page">
+                      Data
+                    </th>
+                    <th class="col-xs-1">
+                      NF-Embarque / Romaneio
+                    </th>
+                    <th *ngIf="isArmazemGeral" class="col-xs-1">
+                      Lotes / IS
+                    </th>
+                    <th *ngIf="isArmazemGeral" class="col-xs-1">
+                      Ref. Cliente
+                    </th>
+                    <th *ngIf="!isArmazemGeral" class="col-xs-1">
+                      Lotes
+                    </th>
+                    <th *ngIf="isArmazemGeral" class="col-xs-2" appSort="collaborator.person.name" [instance]="page">
+                      Cliente
+                    </th>
+                    <th *ngIf="!isArmazemGeral" class="col-xs-2" appSort="collaborator.person.name" [instance]="page">
+                      Cliente
+                    </th>
+                    <th class="col-xs-1" appSort="sacksQuantity" [instance]="page">
+                      Quantidade
+                    </th>
+                    <th class="col-xs-1">
+                      P. Bruto / Tara
+                    </th>
+                    <th class="col-xs-1" appSort="netWeight" [instance]="page">
+                      P. Líquido / Armazenado
+                    </th>
+                    <th class="col-xs-2 text-center">
+                      Ação
+                    </th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let batchOperation of page.data"
+                      [style.background-color]="batchOperation.typeObject.color">
+                    <td *ngIf="batchOperation.typeObject.route === 'IN'"
+                        class="label-success text-center td-img-type">
+
+                        <span *ngIf="batchOperation.errorMessageIntegrationProcafe != null"
+                              class="fa far fa-exclamation-triangle fa-lg"
+                              appTooltip="{{batchOperation.errorMessageIntegrationProcafe}}"></span>
+
+                      <div>
+                        <img *ngIf="batchOperation.typeObject.code === 'W_IN'" height="32" width="32"
+                             src="./assets/img/bo_in.png" appTooltip={{batchOperation.typeObject.name}} />
+                        <img *ngIf="batchOperation.typeObject.code === 'P_IN'" height="42" width="32"
+                             src="./assets/img/bo_p_to_w.png" appTooltip={{batchOperation.typeObject.name}} />
+                        <img *ngIf="batchOperation.typeObject.code === 'OT_IN'" height="32" width="32"
+                             src="./assets/img/bo_transf.png" appTooltip={{batchOperation.typeObject.name}} />
+
+                      </div>
+                    </td>
+                    <td *ngIf="batchOperation.typeObject.route === 'OUT'"
+                        class="label-danger text-center td-img-type">
+
+                        <span *ngIf="batchOperation.errorMessageIntegrationProcafe != null"
+                              class="fa far fa-exclamation-triangle fa-lg"
+                              appTooltip="{{batchOperation.errorMessageIntegrationProcafe}}"></span>
+
+                      <div>
+                        <img *ngIf="batchOperation.typeObject.code === 'W_OUT'" height="32" width="32"
+                             src="./assets/img/bo_exit.png" appTooltip={{batchOperation.typeObject.name}} />
+                        <img *ngIf="batchOperation.typeObject.code === 'P_OUT'" height="42" width="32"
+                             src="./assets/img/bo_w_to_p.png" appTooltip={{batchOperation.typeObject.name}} />
+                        <img *ngIf="batchOperation.typeObject.code === 'OT_OUT'" height="32" width="32"
+                             src="./assets/img/bo_transf.png" appTooltip={{batchOperation.typeObject.name}} />
+
+                      </div>
+                    </td>
+                    <td>{{batchOperation.createdDateString}}</td>
+                    <td>{{batchOperation.fiscalNoteOrSellCode}} / {{batchOperation.batchOperationCode}}</td>
+                    <td>
+                      <div *ngIf="isArmazemGeral">
+                        <div *ngIf="batchOperation.type === 'P_IN' || batchOperation.type === 'P_OUT'">
+                          {{batchOperation.serviceInstruction?.code}}
+                        </div>
+                        <div *ngIf="batchOperation.type !== 'P_IN' && batchOperation.type !== 'P_OUT'">
+                          <div *ngFor="let batch of batchOperation.batches">
+                            {{ batch.batchCode }}
+                          </div>
+                        </div>
+
+                      </div>
+                      <div *ngIf="!isArmazemGeral">
+                        <div *ngFor="let batch of batchOperation.batches">
+                          {{ batch.batchCode }}
+                        </div>
+                      </div>
+                    </td>
+                    <td *ngIf="isArmazemGeral">
+                      {{batchOperation.refClient}}
+
+                    </td>
+                    <td>{{ getCollaboratorName(batchOperation) }}</td>
+                    <td>
+                      {{batchOperation.sacksQuantity}} SC
+                    </td>
+                    <td>{{batchOperation.grossWeightString}} / {{batchOperation.taraString}}</td>
+                    <td>{{batchOperation.netWeightString}} / {{batchOperation.storedWeightString}}</td>
+                    <td class="bts-list-actions">
+                      <button *ngIf="batchOperation.type === 'W_IN'" (click)="submitWeightPdf(batchOperation.id)"
+                              type="button" appTooltip="Gerar Relatório de Romaneio de Entrada/Ticket de Peso"
+                              class="btn btn-sm btn-success">
+                        <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+                        <span class="fa fa-envelope-o"></span>
+                      </button>
+
+                      <button *ngIf="batchOperation.type === 'W_IN'" (click)="submitPdf(batchOperation.id)"
+                              type="button" appTooltip="Gerar Relatório de Romaneio de Entrada"
+                              class="btn btn-sm btn-success">
+                        <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+                        <span class="fa fa-file-pdf-o"></span>
+                      </button>
+
+                      <button *ngIf="batchOperation.type === 'W_OUT'" type="button"
+                              (click)="submitExitReportPdf(batchOperation.id)"
+                              appTooltip="Gerar Relatório de Romaneio de Saída" class="btn btn-sm btn-success">
+                        <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+                        <span class="fa fa-file-pdf-o"></span>
+                      </button>
+
+                      <button *ngIf="batchOperation.type === 'OT_IN'" (click)="submitPdf(batchOperation.id)"
+                              type="button" appTooltip="Gerar Relatório de Romaneio de Entrada"
+                              class="btn btn-sm btn-success">
+                        <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+                        <span class="fa fa-file-pdf-o"></span>
+                      </button>
+
+                      <button *ngIf="batchOperation.type === 'OT_OUT'" type="button"
+                              (click)="submitExitReportPdf(batchOperation.id)"
+                              appTooltip="Gerar Relatório de Romaneio de Saída" class="btn btn-sm btn-success">
+                        <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+                        <span class="fa fa-file-pdf-o"></span>
+                      </button>
+
+                      <!--                        tela de detalhes não existe ainda -->
+                      <!--                        <a *ngIf="batchOperation.allowView"-->
+                      <!--                          (click)="navigateToEdit(batchOperation)"-->
+                      <!--                          class="btn btn-primary btn-sm" appTooltip="Detalhes">-->
+                      <!--                          <span class="fa fa-search fa-lg"></span>-->
+                      <!--                        </a>-->
+
+                      <a *ngIf="batchOperation.allowEdit || (batchOperation.isStored && isAdmin)"
+                         (click)="navigateToEdit(batchOperation)"
+                         class="btn btn-primary btn-sm" appTooltip="Editar">
+                        <span class="fa fa-pencil fa-lg"></span>
+                      </a>
+
+                      <a *ngIf="batchOperation.type === 'OT_IN'"
+                         (click)="navigateToEdit(batchOperation)"
+                         class="btn btn-primary btn-sm" appTooltip="Detalhes">
+                        <span class="fa fa-search fa-lg"></span>
+                      </a>
+
+                      <a *ngIf="batchOperation.allowEditMobile && batchOperation.type !== 'OT_IN' && batchOperation.type !== 'OT_OUT'"
+                         (click)="switchShowOnMobile(batchOperation.id, !batchOperation.showOnMobileDevices)"
+                         [className]="batchOperation.showOnMobileDevices ? 'btn btn-info btn-sm' : 'btn btn-warning btn-sm'"
+                         appTooltip="{{batchOperation.showOnMobileDevices ? 'Desabilitar visualização nos dispositivos móveis. Atualmente habilitado' : 'Habilitar visualização nos dispositivos móveis. Atualmente desabilitado'}}">
+                        <span class="fa fa-tablet fa-lg"></span>
+                      </a>
+
+                      <button *ngIf="batchOperation.allowDelete" (click)="deleteConfirm.open(batchOperation.id)"
+                              type="button" appTooltip="Excluir" class="btn btn-danger btn-sm">
+                        <span class="fa fa-trash-o fa-lg"></span>
+                      </button>
+
+                      <button *ngIf="batchOperation.allowCancel" (click)="cancelConfirm.open(batchOperation)"
+                              type="button" appTooltip="Cancelar" class="btn btn-danger btn-sm">
+                        <span class="fa fa-undo fa-lg"></span>
+                      </button>
+
+                      <button *ngIf="isAdmin && batchOperation.type === 'W_OUT'" (click)="printFitilho(batchOperation)" type="button" appTooltip="Imprimir Fitilho"
+                              class="btn btn-success btn-sm">
+                        <i class="fa fa-print"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="text-right">
+                <app-pagination *ngIf="!loading" [instance]="page"></app-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <app-confirm *ngIf="deleteConfirm.opened" message="Tem certeza que deseja excluir este registro?"
+               (confirm)="delete(deleteConfirm.value)" (close)="deleteConfirm.close()">
+  </app-confirm>
+
+  <app-confirm *ngIf="cancelConfirm.opened" message="Tem certeza que deseja cancelar este registro?"
+               (confirm)="cancelTransfer(cancelConfirm.value)" (close)="cancelConfirm.close()">
+  </app-confirm>
+
+  <!-- modal para impressão do relatório de fitlho -->
+  <div class="modal fade" appModal (close)="opcoesRelFitilhoModal.close()" tabindex="-1" role="dialog"
+       *ngIf="opcoesRelFitilhoModal.opened">
+
+    <div class="modal-dialog modal-sm modal-custom-size" role="document">
+      <div class="modal-content">
+        <form (ngSubmit)="gerarRelatorioFitilho()" [formGroup]="formFitilho" class="form-horizontal">
+          <div class="modal-header">
+            <h3 class="modal-title">Impressão Fitilho</h3>
+          </div>
+          <div class="modal-body">
+            <fieldset>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-xs-5 text-right" for="batchIdSelectedId">
+                  Lote
+                </label>
+                <div class="col-xs-7">
+                  <select formControlName="batchIdSelectedId" class="form-control" id="batchIdSelectedId">
+                    <option value=''>Selecione um lote</option>
+                    <option *ngFor="let batch of batches" [value]="batch.id">
+                      {{ batch.batchCode }}
+                    </option>
+                  </select>
+                  <app-error-message controlName="batchIdSelectedId" label="Lote"></app-error-message>
+                </div>
+              </div>
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-xs-5 text-right" for="ref">
+                  Referência
+                </label>
+                <div class="col-xs-7">
+                  <input id="ref" class="form-control" formControlName="ref" />
+                  <app-error-message controlName="ref" label="Referência"></app-error-message>
+                </div>
+              </div>
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-xs-5 text-right" for="senderTitle">
+                  Titulo Remetente
+                </label>
+                <div class="col-xs-7">
+                  <input id="senderTitle" class="form-control" formControlName="senderTitle" />
+                  <app-error-message controlName="senderTitle" label="Titulo Remetente"></app-error-message>
+                </div>
+              </div>
+              <div class="form-group" appErrorGroup>
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-xs-5 text-right" for="sender">
+                    Remetente
+                  </label>
+                  <div class="col-xs-7">
+                    <input id="sender" class="form-control" formControlName="sender" />
+                    <app-error-message controlName="sender" label="Remetente"></app-error-message>
+                  </div>
+                </div>
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-xs-5 text-right" for="senderTitle">
+                    Titulo Remetente
+                  </label>
+                  <div class="col-xs-7">
+                    <input id="senderTitle" class="form-control" formControlName="senderTitle" />
+                    <app-error-message controlName="senderTitle" label="Remetente"></app-error-message>
+                  </div>
+                </div>
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-xs-5 text-right" for="provenance">
+                    Procedência
+                  </label>
+                  <div class="col-xs-7">
+                    <input id="provenance" class="form-control" formControlName="provenance" />
+                    <app-error-message controlName="provenance" label="Proveniência"></app-error-message>
+                  </div>
+                </div>
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-xs-5 text-right" for="qtdeVias">Qtde. Vias</label>
+                  <div class="col-xs-7">
+                    <input id="qtdeVias" class="form-control" formControlName="qtdeVias" [textMask]="integerMask"
+                           maxlength="2" />
+                    <app-error-message controlName="qtdeVias" label="Qtde. Vias"></app-error-message>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default btn-size" data-dismiss="modal">
+              CANCELAR
+            </button>
+            <app-submit-button [loading]="loading">
+              IMPRIMIR
+            </app-submit-button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

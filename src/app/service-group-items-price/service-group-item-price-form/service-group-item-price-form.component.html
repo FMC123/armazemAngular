@@ -1,0 +1,111 @@
+<app-breadcrumb [items]="[
+  ['Início', ''],
+  ['Tabela de Serviço', '/service-group-item-price'],
+  ['Cadastro de Serviço', null]
+]"></app-breadcrumb>
+
+<div class="page-header">
+  <h1 class="text-success">Cadastro do Item de Serviço</h1>
+</div>
+
+<form (ngSubmit)="save()"
+      [formGroup]="form"
+      *ngIf="form"
+      class="form-horizontal">
+
+  <div class="panel panel-default mt20">
+    <div class="panel-heading">
+      <div class="panel-title">Formulário</div>
+    </div>
+
+    <div class="panel-body">
+      <fieldset [disabled]="loading">
+        <fieldset [disabled]="!!serviceGroupItemPrice.serviceGroupItem.serviceItem" class="form-group" appErrorGroup>
+          <label class="control-label col-md-2 text-right">Item</label>
+          <div class="col-md-10" >
+
+            <select formControlName="itemId"
+                    class="form-control">
+              <option value="">Selecione um serviceItem </option>
+              <option *ngFor="let serviceItem of itemList" [value]="serviceItem.id">
+                {{ serviceItem.code }} - {{ serviceItem.description }}
+              </option>
+            </select>
+            <app-error-message controlName="itemId" label="Item"></app-error-message>
+          </div>
+        </fieldset>
+
+        <fieldset appErrorGroup>
+         <div class="form-group" appErrorGroup>
+           <label class="control-label col-md-2 text-right" for="initialRangeString">Inicial</label>
+           <div class="col-md-10">
+             <div class="input-group">
+               <input id="initialRangeString"
+                      formControlName="initialRangeString"
+                      [textMask]="dateMask"
+                      appDatePicker type="text" class="form-control" />
+               <div class="input-group-addon clickable">
+                 <span class="fa fa-calendar fa-fw"></span>
+               </div>
+             </div>
+             <app-error-message controlName="initialRangeString" label="Inicio"></app-error-message>
+           </div>
+         </div>
+        </fieldset>
+
+        <fieldset appErrorGroup>
+         <div class="form-group" appErrorGroup>
+           <label class="control-label col-md-2 text-right" for="finalRangeString">Final</label>
+           <div class="col-md-10">
+             <div class="input-group">
+               <input id="finalRangeString"
+                      formControlName="finalRangeString"
+                      [textMask]="dateMask"
+                      appDatePicker type="text" class="form-control" />
+               <div class="input-group-addon clickable">
+                 <span class="fa fa-calendar fa-fw"></span>
+               </div>
+             </div>
+             <app-error-message controlName="finalRangeString" label="Fim"></app-error-message>
+           </div>
+         </div>
+        </fieldset>
+
+        <fieldset appErrorGroup>
+         <div class="form-group" appErrorGroup>
+           <label class="control-label col-md-2 text-right" for="price">Valor</label>
+           <div class="col-md-10">
+             <input id="price"
+                      [textMask]="decimalMask5Digits"
+                     [formControl]="form.get('price')"
+                     type="text"
+                     maxlength="20"
+                     class="form-control" />
+             <app-error-message controlName="price" label="Preço"></app-error-message>
+           </div>
+         </div>
+        </fieldset>
+
+      </fieldset>
+    </div>
+
+    <div class="panel-footer">
+      <div class="row">
+        <div class="col-sm-offset-2">
+          <div class="col-sm-10 mb10">
+            <app-submit-button [loading]="loading">
+              Salvar
+            </app-submit-button>
+            <a
+                [routerLink]="['/service-group-item/', serviceGroupItemPrice.serviceGroupItem.id]"
+                [queryParams]="{serviceGroupId: serviceGroupItemPrice.serviceGroupItem.serviceGroup.id}"
+                  class="btn btn-success btn-size">
+              Voltar
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</form>

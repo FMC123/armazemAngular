@@ -1,0 +1,25 @@
+
+<section class="content-header">
+    <h1>
+      Histórico do Lote
+    </h1>
+    <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Histórico de Lotes','/batch-log'],
+    ['Histórico do Lote', null]
+  ]"></app-breadcrumb>
+  </section>
+
+  <section class="content">
+
+ <app-batch-log-list-info [batchLog]="batchLog" *ngIf="batchLog"></app-batch-log-list-info>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <a routerLink="/batch-log"
+          class="btn btn-default btn-size">
+        VOLTAR
+      </a>
+    </div>
+  </div>
+  </section>

@@ -1,0 +1,155 @@
+<div class="box">
+  <div class="box-header">
+    <h3 class="box-title w100">
+      Romaneio de Saída
+    </h3>
+  </div>
+
+  <div class="box-body">
+    <app-loading *ngIf="loading"></app-loading>
+    <p *ngIf="!loading && !batchOperationOut">
+      Não há lotes para este transporte
+    </p>
+    <div class="table-responsive">
+      <table
+        *ngIf="!loading && batchOperationOut"
+        class="table table-bordered table-condensed"
+      >
+        <thead>
+        <tr>
+          <th class="col-xs-2">Data</th>
+          <th class="col-xs-1">Romaneio</th>
+          <th class="col-xs-1">Qt. Sacas</th>
+          <th class="col-xs-1">P. Bruto</th>
+          <th class="col-xs-1">Tara</th>
+          <th class="col-xs-1">P. Liquido</th>
+          <th class="col-xs-1">Auditor</th>
+          <th class="col-xs-1">Status</th>
+          <th class="col-xs-4 bts-list-actions">Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ batchOperationOut.createdDateString }}</td>
+            <td>{{ batchOperationOut.batchOperationCode }}</td>
+            <td>{{ sacksQuantityCalc }}</td>
+            <td>
+              <div *ngIf="editGross !== batchOperationOut.id || !allowManualWeighing"
+                   (click)="setEditGross(batchOperationOut)"
+                   [class.clickable]="true"
+              >{{ batchOperationOut.grossWeightString ? batchOperationOut.grossWeightString : '0'  }}</div>
+
+              <input *ngIf="editGross === batchOperationOut.id && allowManualWeighing"
+                     type="text"
+                     class="form-control"
+                     [textMask]="decimalMask"
+                     [(ngModel)]="batchOperationOut.grossWeightString"/>
+
+              <button *ngIf="editGross === batchOperationOut.id && allowManualWeighing"
+                      (click)="saveGross(batchOperationOut)"
+                      type = "button"
+                      class="btn btn-success btn-xs fa fa-check"
+              ></button>
+
+              <button *ngIf="editGross === batchOperationOut.id && allowManualWeighing"
+                      (click)="unsetEditGross()"
+                      type = "button"
+                      class="btn btn-danger btn-xs fa fa-close"
+              ></button>
+
+            </td>
+            <td>
+              <div *ngIf="editTare !== batchOperationOut.id || !allowManualWeighing"
+                   (click)="setEditTare(batchOperationOut)"
+                   [class.clickable]="true"
+              >{{ batchOperationOut.taraString ? batchOperationOut.taraString : 'batchOperationOut.taraString' }}</div>
+
+              <input *ngIf="editTare === batchOperationOut.id && allowManualWeighing"
+                     type="text"
+                     class="form-control"
+                     [textMask]="decimalMask"
+                     [(ngModel)]="batchOperationOut.taraString"/>
+
+              <button *ngIf="editTare === batchOperationOut.id && allowManualWeighing"
+                      (click)="saveTare(batchOperationOut)"
+                      type = "button"
+                      class="btn btn-success btn-xs fa fa-check"
+              ></button>
+
+              <button *ngIf="editTare === batchOperationOut.id && allowManualWeighing"
+                      (click)="unsetEditTare()"
+                      type = "button"
+                      class="btn btn-danger btn-xs fa fa-close"
+              ></button>
+
+            </td>
+            <td>{{ batchOperationOut.netWeightString }}</td>
+            <td>{{ batchOperationOut.auditor?.name }}</td>
+            <td>{{ batchOperationOut.statusObject.name }}</td>
+            <td class="bts-list-actions">
+              <button
+                *ngIf="allowWeightGross(batchOperationOut)"
+                (click)="weighGross(batchOperationOut)"
+                type = "button"
+                appTooltip="Pesar o Bruto e validar para carregamento"
+                class="btn btn-default btn-sm"
+              >
+                <i class="fa fa-balance-scale"></i>B
+              </button>
+
+              <button
+                (click)="weighTare(batchOperationOut)"
+                type = "button"
+                appTooltip="Pesar a Tara"
+                class="btn btn-default btn-sm"
+              >
+                <i class="fa fa-balance-scale"></i>T
+              </button>
+
+              <button
+                *ngIf="transportation.statusObject.code !== 'FECHADO'"
+                type = "button"
+                (click)="associateWithShippingAuthorization(transportation)"
+                appTooltip="Vincular a uma Autorização de Embarque"
+                class="btn btn-warning btn-sm"
+              >
+                <i class="fa fa-chain"></i>
+              </button>
+
+              <button
+                *ngIf="transportation.statusObject.code !== 'FECHADO'"
+                type = "button"
+                (click)="automationRouteModal.open(null)"
+                appTooltip="Desepejar Romaneio"
+                class="btn btn-default btn-sm"
+              >
+                <i class="fa fa-download"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<app-confirm
+  *ngIf="deleteConfirm.opened"
+  message="Tem certeza que deseja excluir este registro?"
+  (confirm)="delete(deleteConfirm.value)"
+  (close)="deleteConfirm.close()">
+</app-confirm>
+
+<app-transportation-shipping-authorization-modal
+  *ngIf="shippingAuthorizationModal.opened"
+  (close)="shippingAuthorizationModal.close()"
+  [transportation]="shippingAuthorizationModal.value"
+>
+</app-transportation-shipping-authorization-modal>
+
+<app-automation-route-out-modal
+  *ngIf="automationRouteModal.opened"
+  [batchOperation]="batchOperationOut"
+  (close)="automationRouteModal.close()"
+></app-automation-route-out-modal>
+

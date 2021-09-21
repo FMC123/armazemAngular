@@ -1,0 +1,137 @@
+<div class="box filter">
+  <div class="box-header">
+    <h3 class="box-title col-xs-10">
+      Filtro
+    </h3>
+    <a class="col-xs-2" style="text-align: right; margin-bottom: 5px;" data-toggle="collapse" href="#filtroCollapse" role="button">
+      <span class="glyphicon glyphicon-filter"></span>
+    </a>
+</div>
+
+  <div class="box-body collapse" id="filtroCollapse" aria-expanded="false">
+    <form
+      class="form-horizontal"
+      (ngSubmit)="submit()"
+      *ngIf="form"
+      [formGroup]="form"
+      (keydown.enter)="$event.preventDefault();"
+    >
+      <fieldset [disabled]="loading">
+
+        <div class="form-group">
+          <label
+            class="control-label col-xs-4 col-md-2 text-right"
+            for="originBatchCode">
+            Lote de Origem
+          </label>
+          <div class="col-xs-8 col-md-10">
+            <input
+              id="originBatchCode"
+              class="form-control"
+              formControlName="originBatchCode"
+              maxlength="255"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label
+            class="control-label col-xs-4 col-md-2 text-right"
+            for="destinationBatchCode">
+            Lote de Destino
+          </label>
+          <div class="col-xs-8 col-md-10">
+            <input
+              id="destinationBatchCode"
+              class="form-control"
+              formControlName="destinationBatchCode"
+              maxlength="255"/>
+          </div>
+        </div>
+<!--        lote ok-->
+
+        <div class="form-group">
+          <label class="control-label col-xs-4 col-md-2 text-right" for="createdDateStartString">Data</label>
+          <div class="col-xs-8 col-md-10">
+            <div class="row">
+              <div class="col-xs-6">
+                <div class="input-group">
+                  <input
+                    id="createdDateStartString"
+                    type="text"
+                    [textMask]="dateMask"
+                    appDatePicker
+                    formControlName="createdDateStartString"
+                    placeholder="Início"
+                    class="form-control"
+                  />
+                  <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+                </div>
+              </div>
+              <div class="col-xs-6">
+                <div class="input-group">
+                  <input
+                    type="text"
+                    [textMask]="dateMask"
+                    appDatePicker
+                    formControlName="createdDateEndString"
+                    placeholder="Fim"
+                    class="form-control"
+                  />
+                  <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+<!--        data ok-->
+
+        <div class="form-group">
+          <label class="control-label col-xs-4 col-md-2 text-right" for="clientId">
+            Cliente
+          </label>
+          <div class="col-xs-8 col-md-10">
+            <app-autocomplete [service]="clientAutocomplete"></app-autocomplete>
+            <input id="clientId" type="hidden" formControlName="clientId"/>
+          </div>
+        </div>
+<!--        cliente ok-->
+
+        <div class="form-group">
+          <label class="control-label col-xs-4 col-md-2 text-right" for="type">
+            Tipo
+          </label>
+          <div class="col-xs-8 col-md-10">
+            <ng-select
+              id="type"
+              #typeSelect
+              [multiple]="true"
+              [items]="convertToNgSelect(types)"
+              (data)="refreshValues($event, 'type')"
+              placeholder="Nenhum tipo selecionado">
+            </ng-select>
+          </div>
+        </div>
+
+      </fieldset>
+      <div class="form-group">
+        <div class="col-xs-offset-4 col-xs-8 col-sm-offset-2 col-sm-10">
+          <button
+            [disabled]="loading"
+            [class.has-spinner]="loading"
+            type="submit"
+            class="btn btn-size btn-success"
+          >
+            <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+            PESQUISAR
+          </button>
+
+          <button
+            type="button"
+            (click)="buildForm(true)"
+            class="btn btn-size btn-default"
+          >LIMPAR</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

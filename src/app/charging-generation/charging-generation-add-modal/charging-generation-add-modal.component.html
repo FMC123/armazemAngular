@@ -1,0 +1,84 @@
+<div class="modal fade" appModal [shownCallback]="focusOnInput()" (close)="close.emit(null)" tabindex="-1"
+  role="dialog">
+
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <form (ngSubmit)="submit()" [formGroup]="form" *ngIf="form" class="form-horizontal">
+        <div class="modal-header">
+          <h3 class="modal-title">Inclusão manual de cobrança</h3>
+        </div>
+        <div class="modal-body">
+          <fieldset [disabled]="loading">
+
+            <div class="row">
+              <div class="col-xs-6" appErrorGroup>
+                <label for="referenceDate">Data de referência</label>
+                <div class="input-group">
+                  <input type="text" [textMask]="dateMask" appDatePicker formControlName="referenceDate"
+                    class="form-control" />
+                  <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+                </div>
+                <app-error-message controlName="referenceDate" label="Data de referência"></app-error-message>
+              </div>
+              <div class="col-xs-6" appErrorGroup>
+                <label for="price">Valor</label>
+                <input id="price" formControlName="price" type="text" [textMask]="decimalMask" class="form-control"
+                  maxlength="12" />
+                <app-error-message controlName="price" label="Valor"></app-error-message>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-xs-12" appErrorGroup>
+                <label for="stakeholderId">Cliente</label>
+                <select formControlName="stakeholderId" class="form-control" id="stakeholderId">
+                  <option *ngFor="let c of clients" [value]="c.id">
+                    {{c.label}}
+                  </option>
+                </select>
+                <app-error-message controlName="stakeholderId" label="Cliente"></app-error-message>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-xs-12" appErrorGroup>
+                <label for="serviceItemId">Serviço</label>
+                <select formControlName="serviceItemId" class="form-control" id="serviceItemId">
+                  <option *ngFor="let s of services" [value]="s.id">
+                    {{s.label}}
+                  </option>
+                </select>
+                <app-error-message controlName="serviceItemId" label="Serviço"></app-error-message>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-xs-12" appErrorGroup>
+                <label for="observation">Observação</label>
+                <input type="text" formControlName="observation" class="form-control"
+                  id="observation" maxlength="100" />
+                <app-error-message controlName="observation" label="Observação"></app-error-message>
+              </div>
+            </div>
+
+          </fieldset>
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-default btn-size" data-dismiss="modal" style="float:left">
+            Cancelar
+          </button>
+
+          <button type="button" class="btn btn-default btn-size" (click)="clearForm()">
+            Limpar
+          </button>
+
+          <app-submit-button [loading]="loading">
+            Salvar
+          </app-submit-button>
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

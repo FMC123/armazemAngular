@@ -1,0 +1,26 @@
+<section class="content-header">
+  <h1>
+    <small>Detalhe</small>
+    Gerenciar Mapa
+  </h1>
+  <app-breadcrumb [items]="[
+  ['Início', ''],
+  ['Gerenciar Mapa','/position-layer'],
+  [positionLayer.code, null]
+]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <app-position-layer-list-info [positionLayer]="positionLayer" *ngIf="positionLayer"></app-position-layer-list-info>
+
+  <app-position-list [positionLayer]="positionLayer" *ngIf="positionLayer"></app-position-list>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <a routerLink="/position-layer"
+          class="btn btn-default btn-size">
+        VOLTAR
+      </a>
+    </div>
+  </div>
+</section>

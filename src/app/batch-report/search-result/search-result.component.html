@@ -1,0 +1,12 @@
+<section class="content">
+  <div class="box-header">
+    <h3 class="box-title">{{batch.warehouse.name}}</h3>
+  </div>
+  <div class="box-body">
+    <app-batch-report-remote  *ngIf="batch && !batch.warehouse.local" [parent]="this" [batch]="batch"></app-batch-report-remote>
+    <app-batch-report-in  *ngIf="batch && batch.warehouse.local === true" [parent]="this" [batch]="batch"></app-batch-report-in>
+    <app-batch-report-stock  *ngIf="batch && batch.warehouse.local === true"  [batch]="batch"></app-batch-report-stock>
+    <app-batch-report-exchange *ngIf="batch && batch.warehouse.local === true"  [batch]="batch"></app-batch-report-exchange>
+    <app-batch-report-out *ngIf="batch && batch.warehouse.local === true" [parent]="this"  [batch]="batch"></app-batch-report-out>
+  </div>
+</section>

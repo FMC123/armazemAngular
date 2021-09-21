@@ -1,0 +1,166 @@
+<style>
+  .custom_row {margin: 0 0 12px 0 !important;}
+  .custom_row .custom_col {padding:2px !important;}
+  .custom_row .custom_col .text-danger {padding:2px !important;}
+  .custom_row .custom_col label {display:block !important;}
+</style>
+
+<div class="box">
+
+  <div class="box-header">
+    <h3 class="box-title">Serviços</h3>
+  </div>
+  <div class="box-body">
+    <form [formGroup]="form" (ngSubmit)="validateCharge()" *ngIf="form">
+      <div class="row, custom_row" *ngIf="isEditable">
+
+        <div class="col-xs-7 text-left custom_col">
+          <label for="itemId">Nome</label>
+          <app-autocomplete [loading]="loading" [service]="itemsAutocomplete" [instant]="true"></app-autocomplete>
+          <input type="hidden" class="form-control" formControlName="itemId" id="itemId" />
+          <app-error-message controlName="itemId" label="Nome do serviço"></app-error-message>
+        </div>
+
+        <div class="col-xs-2 text-left custom_col">
+          <label for="additionalServiceSacksQuantity">Qtde Sacas</label>
+          <!--desabilitado-->
+<!--          <input [formControl]="form.get('additionalServiceSacksQuantity')" type="text"-->
+<!--            class="form-control" *ngIf="!isConfirmed()" disabled />-->
+          <!--habilitado-->
+          <input [attr.disabled]="loading? '' : null" [formControl]="form.get('additionalServiceSacksQuantity')" type="text" [textMask]="integerMask"
+            maxlength="10" class="form-control" id="additionalServiceSacksQuantity" />
+          <app-error-message controlName="additionalServiceSacksQuantity" label="Qtde Sacas"></app-error-message>
+        </div>
+        <div class="col-xs-2 text-left custom_col">
+          <label for="chargeSacksQuantity">Sacas Cobrança</label>
+          <input [attr.disabled]="loading? '' : null" [formControl]="form.get('chargeSacksQuantity')" type="text" [textMask]="integerMask"
+            maxlength="10" class="form-control" id="chargeSacksQuantity" />
+          <app-error-message controlName="chargeSacksQuantity" label="Sacas Cobrança"></app-error-message>
+        </div>
+
+        <!-- não tem mais observação
+        <div class="col-xs-6 text-left custom_col">
+          <label for="observation">Observação</label>
+          <input [formControl]="form.get('observation')" type="text" class="form-control" id="observation" />
+          <app-error-message controlName="observation" label="Observação"></app-error-message>
+        </div>
+        -->
+
+        <div class="col-xs-1 text-left custom_col">
+          <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+          <button type="submit" class="btn btn-success btn-normal"
+           appTooltip="Adicionar"
+           [class.disabled]="loading" [class.has-spinner]="loading" [disabled]="loading">
+            <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+            Adicionar
+          </button>
+        </div>
+      </div>
+    </form>
+    <div class="row">
+      <div class="col-xs-12">
+        <table class="table table-bordered table-condensed"
+          *ngIf="serviceInstruction.services != null && serviceInstruction.services.length > 0">
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Serviço</th>
+              <th>Qtde Sacas</th>
+              <th>Cobrança</th>
+              <!--<th>Observação</th>-->
+              <th *ngIf="isEditable" class="text-center">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let service of serviceInstruction.services">
+              <td>{{ service.item.code }}</td>
+              <td>{{ service.item.description }}</td>
+              <td>{{ service.serviceSacksQuantity }}</td>
+              <td>
+                {{ service.chargeSacksQuantity }}
+                <!--<i *ngIf="showAlertIcon(service) && service?.chargeMessage" appTooltip="{{service?.chargeMessage}}" class="fa fa-exclamation-circle" style="float: right"></i>-->
+                <i *ngIf="showAlertIcon(service)"
+                   [attr.data-original-title]="alertIconTooltip(service)"
+                   appTooltip="{{alertIconTooltip(service)}}"
+                   class="fa fa-exclamation-triangle"
+                   style="color: orange;float: right"></i>
+                <i *ngIf="approved(service)"
+                   [attr.data-original-title]="alertIconTooltip(service)"
+                   appTooltip="{{alertIconTooltip(service)}}"
+                   class="fa fa-check-circle"
+                   style="color: #398439;float: right"></i>
+                <i *ngIf="disapproved(service)"
+                   [attr.data-original-title]="alertIconTooltip(service)"
+                   appTooltip="{{alertIconTooltip(service)}}"
+                   class="fa fa-times-circle"
+                   style="color: red;float: right"></i>
+              </td>
+              <!--<td>{{ service.observation }}</td>-->
+              <td class="bts-list-actions" *ngIf="isEditable">
+
+                <button (click)="approveConfirm.open(service)"
+                        type="button"
+                        appTooltip="Aprovar"
+                        class="btn btn-success btn-success btn-sm"
+                        [class.disabled]="loading"
+                        [disabled]="loading"
+                        *ngIf="hasAuditPermission() && showApproveButton(service)">
+                  <span class="fa fa-check-circle fa-lg"></span>
+                </button>
+
+                <button (click)="disapproveConfirm.open(service)"
+                        type="button"
+                        appTooltip="Reprovar"
+                        class="btn btn-danger btn-sm"
+                        [class.disabled]="loading"
+                        [disabled]="loading"
+                        *ngIf="hasAuditPermission() && showApproveButton(service)">
+                  <span class="fa fa-times-circle fa-lg"></span>
+                </button>
+
+                <button (click)="edit(service)" type="button" appTooltip="Editar" class="btn btn-primary btn-sm"
+                        [disabled]="(isConfirmed() && service.serviceSacksQuantity == null) || loading"
+                        [class.disabled]="loading">
+                  <span class="fa fa-edit fa-lg"></span>
+                </button>
+
+                <!-- só pode remover após a confirmação os itens adicionais (com sacas adicionais) -->
+                <button (click)="remove(service)" type="button" appTooltip="Excluir" class="btn btn-danger btn-sm"
+                  [disabled]="(isConfirmed() && service.serviceSacksQuantity == null) || loading"
+                  [class.disabled]="loading">
+                  <span class="fa fa-trash-o fa-lg"></span>
+                </button>
+
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<app-confirm
+  *ngIf="approveConfirm.opened"
+  message="Tem certeza que deseja aprovar o desconto?"
+  (confirm)="approve(approveConfirm.value)"
+  (close)="approveConfirm.close()">
+</app-confirm>
+
+<app-confirm
+  *ngIf="disapproveConfirm.opened"
+  message="Tem certeza que deseja reprovar o desconto?"
+  (confirm)="disapprove(disapproveConfirm.value)"
+  (close)="disapproveConfirm.close()">
+</app-confirm>
+
+<app-text-input-modal
+  *ngIf="chargeMessageModal.opened"
+  [title]="'Desconto de cobrança'"
+  [description]="'Motivo'"
+  (confirm)="save($event)"
+  (close)="chargeMessageModal.close()">
+</app-text-input-modal>
+
+

@@ -1,0 +1,166 @@
+<div class="box">
+  <div
+    class="box-header with-border clickable"
+    (click)="collapsed=!collapsed"
+    [class.collapsed]="collapsed"
+  >
+    <h4 class="box-title accordion-toggle">
+      <i class="fa fa-search"></i> Pesquisa
+    </h4>
+  </div>
+  <div class="panel-body" [hidden]="collapsed">
+    <form class="form-horizontal"
+          (ngSubmit)="submit()"
+          *ngIf="form"
+          [formGroup]="form">
+      <fieldset [disabled]="loading">
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-xs-4 text-right" for="clientName">Depositante</label>
+          <div class="col-xs-8">
+            <input id="clientName"
+                   formControlName="clientName"
+                   type="text"
+                   class="form-control" />
+            <app-error-message controlName="clientName" label="Depositante"></app-error-message>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-xs-4 text-right" for="batchOperationCode">Romaneio</label>
+          <div class="col-xs-8">
+            <input id="batchOperationCode"
+                   formControlName="batchOperationCode"
+                   type="text"
+                   class="form-control" />
+            <app-error-message controlName="batchOperationCode" label="Romaneio"></app-error-message>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-xs-4 text-right" for="batchCode">Lote</label>
+          <div class="col-xs-8">
+            <input id="batchCode"
+                   formControlName="batchCode"
+                   type="text"
+                   class="form-control" />
+            <app-error-message controlName="batchCode" label="Lote"></app-error-message>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-xs-4 text-right" for="batchCode">Ref. Cliente</label>
+          <div class="col-xs-8">
+            <input id="refClient" maxlength="20"
+                   formControlName="refClient"
+                   type="text"
+                   class="form-control" />
+            <app-error-message controlName="refClient" label="Ref. Cliente"></app-error-message>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-xs-4 text-right" for="tagCode">Tag</label>
+          <div class="col-xs-8">
+            <input id="tagCode"
+                   formControlName="tagCode"
+                   type="text"
+                   class="form-control" />
+            <app-error-message controlName="tagCode" label="Tag"></app-error-message>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-xs-4 text-right" for="fullPosition">Posição</label>
+          <div class="col-xs-8">
+            <input id="fullPosition"
+                   formControlName="fullPosition"
+                   type="text"
+                   class="form-control" />
+            <app-error-message controlName="fullPosition" label="Posição"></app-error-message>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-xs-4 text-right" for="markupGroupId">Certificado</label>
+          <div class="col-xs-8">
+            <select formControlName="certificateId" class="form-control">
+              <option value="">Selecione um certificado</option>
+              <option *ngFor="let certificate of certificates" [value]="certificate.id">
+                {{ certificate.name }}
+              </option>
+            </select>
+            <app-error-message controlName="markupGroupId" label="Marcador"></app-error-message>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-xs-4 text-right" for="markupGroupId">Marcador</label>
+          <div class="col-xs-8">
+            <app-autocomplete
+              *ngIf="markupGroupAutocomplete"
+              [service]="markupGroupAutocomplete"
+              [instant]="true"
+            ></app-autocomplete>
+            <input type="hidden" formControlName="markupGroupId" id="markupGroupId"/>
+            <app-error-message controlName="markupGroupId" label="Marcador"></app-error-message>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-xs-4 text-right" for="itemType" id="itemType">Classificação</label>
+          <div class="col-xs-8">
+            <select formControlName="itemType" class="form-control" >
+              <option value = "">Escolha um item classificatório</option>
+              <option *ngFor="let classItem of classItens" [value]="classItem.id">
+                {{ classItem.name }}
+              </option>
+            </select>
+            <app-error-message controlName="itemType" label="Classificação"></app-error-message>
+          </div>
+        </div>
+
+        <div class="form-group"  *ngIf="selectedClasstype != null">
+          <label class="control-label col-xs-4 text-right" for="markupGroupId">Valor</label>
+          <div class="col-xs-8">
+            <!-- campo de texto -->
+            <input *ngIf="selectedClasstype != null && selectedClasstype.type == 'STRING'"
+                   id="itemValueString" class="form-control" placeholder="Digite o texto de procura"
+                   formControlName="classificationValue" maxlength="255" />
+
+            <!-- intervalo de dados -->
+            <input *ngIf="selectedClasstype != null && selectedClasstype.type == 'INTERVAL'"
+                   id="itemValueIntervalMin" class="form-control" placeholder="Valor mínimo"
+                   [textMask]="unlimitedDecimalMask" formControlName="itemValueIntervalMin" maxlength="50" />
+            <!-- intervalo de dados -->
+            <input *ngIf="selectedClasstype != null && selectedClasstype.type == 'INTERVAL'"
+                   id="itemValueIntervalMax" class="form-control" placeholder="Valor máximo"
+                   [textMask]="unlimitedDecimalMask" formControlName="itemValueIntervalMax" maxlength="50" />
+
+            <!-- seleção de valores -->
+            <select *ngIf="selectedClasstype != null && selectedClasstype.type == 'ENUMERATOR'"
+                    formControlName="itemValueEnum" id="itemValueEnum" class="form-control">
+              <option value=''>Selecione um valor</option>
+              <option *ngFor="let value of selectedClasstypeEnums" [value]="value">
+                {{ value }}
+              </option>
+            </select>
+
+          </div>
+        </div>
+
+
+
+      </fieldset>
+      <div class="form-group">
+        <div class="col-xs-9">
+          <app-submit-button btnClass="btn btn-block btn-success" [loading]="loading">
+            PESQUISAR
+          </app-submit-button>
+        </div>
+        <div class="col-xs-2">
+          <button type="button" (click)="buildForm();clearSearch();" class="btn btn-size btn-default">LIMPAR</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

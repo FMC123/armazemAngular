@@ -1,0 +1,168 @@
+<style>
+  .custom_row {
+    margin: 0 0 12px 0 !important;
+  }
+
+  .custom_row .custom_col {
+    padding: 2px !important;
+  }
+
+  .custom_row .custom_col .text-danger {
+    padding: 2px !important;
+  }
+
+  .custom_row .custom_col label {
+    display: block !important;
+  }
+</style>
+<div class="box" *ngIf="(expectedResults.length && !isModal) || (isModal && taskBatches.length)">
+  <div class="box-header">
+    <h3 class="box-title">Resultado Esperado</h3>
+  </div>
+  <div class="box-body">
+    <form [formGroup]="form" (ngSubmit)="save()" *ngIf="isModal">
+      <div class="row, custom_row" style="margin-bottom: 12px;" *ngIf="isEditable">
+
+        <div class="col-xs-2 text-left custom_col">
+          <label for="observation_expected">Descrição</label>
+          <input [formControl]="form.get('observation')" type="text" maxlength="500" class="form-control"
+            id="observation_expected" [disabled]="loading"/>
+          <app-error-message controlName="observation" label="Descrição"></app-error-message>
+        </div>
+
+        <div class="col-xs-2 text-left custom_col">
+          <label for="observation_expected">Peneira</label>
+          <select formControlName="strainerId" class="form-control" id="strainerId" [disabled]="loading">
+            <option value=''>Selecione uma peneira</option>
+            <option *ngFor="let strainer of strainers" [value]="strainer.id">
+              {{ strainer.description }}
+            </option>
+          </select>
+          <app-error-message controlName="strainerId" label="Peneira"></app-error-message>
+        </div>
+
+        <div class="col-xs-1 text-left custom_col">
+          <label for="percentage_expected">%</label>
+          <input [formControl]="form.get('percentage')" type="text" [textMask]="integerMask" maxlength="18"
+            class="form-control" id="percentage_expected" (change)="percentualAlterado()" [disabled]="loading"/>
+          <app-error-message controlName="percentage" label="%"></app-error-message>
+        </div>
+
+        <div class="col-xs-1 text-left custom_col">
+          <label for="quantity_expected">Qtde.</label>
+          <input [formControl]="form.get('quantity')" type="text" [textMask]="integerMask" maxlength="18"
+            class="form-control" id="quantity_expected" disabled [(ngModel)]="quantidade"/>
+          <app-error-message controlName="quantity" label="Quantidade"></app-error-message>
+        </div>
+
+        <div class="col-xs-1 text-right custom_col">
+          <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+          <input [formControl]="form.get('createBatchWhenConfirm')" type="checkbox" [disabled]="loading"/>
+        </div>
+
+        <div class="col-xs-1 text-left custom_col">
+          <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+          <label>Criar Lote ao confirmar:</label>
+        </div>
+
+        <div class="col-xs-2 text-left custom_col">
+          <label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+          <input [formControl]="form.get('batchResult')" type="text" maxlength="20" class="form-control" id="batchResult"  [placeholder]="placeHolderStr()" disabled/>
+        </div>
+
+        <div class="col-xs-2 text-right custom_col">
+          <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+          <button type="submit" class="btn btn-success btn-normal" appTooltip="Adicionar"
+          [class.disabled]="loading" [class.has-spinner]="loading" [disabled]="loading">
+            <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+            Adicionar
+          </button>
+        </div>
+      </div>
+    </form>
+    <!-- <div class="row" *ngIf="isModal">
+      <div class="col-xs-12">
+        <table class="table table-bordered table-condensed"
+          *ngIf="expectedResults != null && expectedResults.length > 0">
+          <thead>
+            <tr>
+              <th>Descrição</th>
+              <th>Peneira</th>
+              <th>%</th>
+              <th>Quantidade</th>
+              <th>Quantidade de Sacas</th>
+              <th>Data</th>
+              <th>Lote resultante</th>
+              <th>Usuário</th>
+              <th *ngIf="isEditable" class="text-center">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let expectedResult of editOrNewList">
+              <td>{{ expectedResult.observation }}</td>
+              <td>{{ expectedResult.strainer.description }}</td>
+              <td>{{ expectedResult.percentage }}</td>
+              <td>{{ expectedResult.quantity }}</td>
+              <td>{{ expectedResult.quantitySacks }}</td>
+              <td>{{ expectedResult.createdDateString }}</td>
+              <td>{{ expectedResult.batchResultString }}</td>
+              <td>{{ expectedResult.user?.name }}</td>
+              <td class="bts-list-actions" *ngIf="isEditable">
+                <button (click)="edit(expectedResult)" type="button" appTooltip="Editar" class="btn btn-primary btn-sm" [disabled]="loading">
+                  <span class="fa fa-edit fa-lg"></span>
+                </button>
+                <button (click)="remove(expectedResult)" type="button" appTooltip="Excluir" [disabled]="loading"
+                  class="btn btn-danger btn-sm"
+                  *ngIf="!expectedResult.createdResultBatch?.batchCode">
+                  <span class="fa fa-trash-o fa-lg"></span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div> -->
+    <div class="row">
+      <div class="col-xs-12">
+        <table class="table table-bordered table-condensed"
+          *ngIf="expectedResults != null && expectedResults.length > 0">
+          <thead>
+            <tr>
+              <th>Descrição</th>
+              <th>Peneira</th>
+              <th>%</th>
+              <th>Quantidade</th>
+              <th>Quantidade de Sacas</th>
+              <th>Data</th>
+              <th>Lote resultante</th>
+              <th>Usuário</th>
+              <th *ngIf="isEditable" class="text-center">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let expectedResult of expectedResults">
+              <td>{{ expectedResult.observation }}</td>
+              <td>{{ expectedResult.strainer.description }}</td>
+              <td>{{ expectedResult.percentage }}</td>
+              <td>{{ expectedResult.quantity }}</td>
+              <td>{{ expectedResult.quantitySacks }}</td>
+              <td>{{ expectedResult.createdDateString }}</td>
+              <td>{{ expectedResult.batchResultString }}</td>
+              <td>{{ expectedResult.user?.name }}</td>
+              <td class="bts-list-actions" *ngIf="isEditable">
+                <button (click)="edit(expectedResult)" type="button" appTooltip="Editar" class="btn btn-primary btn-sm" [disabled]="loading">
+                  <span class="fa fa-edit fa-lg"></span>
+                </button>
+                <button (click)="remove(expectedResult)" type="button" appTooltip="Excluir" [disabled]="loading"
+                  class="btn btn-danger btn-sm"
+                  *ngIf="!expectedResult.createdResultBatch?.batchCode">
+                  <span class="fa fa-trash-o fa-lg"></span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

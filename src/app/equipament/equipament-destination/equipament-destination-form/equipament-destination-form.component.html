@@ -1,0 +1,104 @@
+<section class="content-header">
+    <h1>
+      <small>Cadastro</small>
+      Destino/Rota
+    </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Equipamentos', '/equipament'],
+    [equipamentOrigin.code, '/equipament/' + equipamentOrigin.id ],
+    ['Cadastro de destinos/rotas', null]
+  ]"></app-breadcrumb>
+
+</section>
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <form
+        (ngSubmit)="save()"
+        [formGroup]="form"
+        *ngIf="form"
+        class="form-horizontal"
+      >
+        <div class="box">
+          <div class="box-header with-border">
+            <div class="box-title">Formulário</div>
+          </div>
+
+          <div class="box-body">
+            <fieldset [disabled]="loading">
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="destinationDescription">
+                  Nome e descrição do destino
+                </label>
+                <div class="col-md-10">
+                  <input
+                    id="destinationDescription"
+                    [formControl]="form.get('destinationDescription')"
+                    type="text"
+                    maxlength="255"
+                    class="form-control"
+                  />
+                  <app-error-message controlName="destinationDescription" label="Descrição do destino"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="equipamentTarget">
+                  Equipamento destino
+                </label>
+                <div class="col-md-10" *ngIf="equipaments && equipaments.length">
+                  <select id="equipamentTarget" formControlName="equipamentTarget" class="form-control">
+                    <option value="">Selecione um equipamento</option>
+                    <option *ngFor="let equipament of equipaments" [value]="equipament.id">
+                      {{ equipament.code }} {{ equipament.description }}
+                    </option>
+                  </select>
+                  <app-error-message controlName="equipamentTarget" label="Equipamento destino"></app-error-message>
+                </div>
+                <div class="col-md-10" *ngIf="!equipaments || !equipaments.length">
+                  <i class="fa fa-spinner fa-spin"></i> Carregando...
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="equipIdentifier">
+                  Direção
+                </label>
+                <div class="col-md-10">
+                  <select id="equipIdentifier" formControlName="equipIdentifier" class="form-control">
+                    <option value="">Selecione uma direção</option>
+                    <option *ngFor="let equipametDestinationsIdentifier of equipametDestinationsIdentifiers" [value]="equipametDestinationsIdentifier.code" >
+                      {{ equipametDestinationsIdentifier.name }}
+                    </option>
+                  </select>
+                  <app-error-message controlName="equipIdentifier" label="Direção"></app-error-message>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="box-footer">
+            <div class="row">
+              <div class="col-sm-offset-2">
+                <div class="col-sm-10 mb10">
+                  <app-submit-button [loading]="loading">
+                    SALVAR
+                  </app-submit-button>
+                  <a
+                    [class.disabled]="loading"
+                    [routerLink]="['/equipament', equipamentOrigin.id]"
+                    class="btn btn-default btn-size"
+                  >
+                    VOLTAR
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

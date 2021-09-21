@@ -1,0 +1,368 @@
+<div
+  class="modal fade"
+  appModal
+  (close)="close.emit(null)"
+  tabindex="-1"
+  role="dialog"
+>
+  <div
+    class="modal-dialog modal-lg"
+    role="document"
+  >
+    <div class="modal-content">
+      <div
+        *ngIf="automationType.code === 'RECEIVING'"
+        class="form-group"
+      >
+        <div class="form-horizontal">
+          <div class="modal-header">
+            <h3 class="modal-title">Recebimento do Lote
+              <b>{{batch.batchCode}}</b>
+            </h3>
+          </div>
+          <div class="modal-body col-md-12 text-center">
+            <label class="control-label">Posição do Lote:
+              <b>{{currentPositionBatch}}</b>
+            </label>
+          </div>
+
+          <div class="modal-body col-md-12">
+            <div class="row">
+              <div class="col-md-4 text-center">
+                <label class="control-label text-right">Posição Origem</label>
+                <select
+                  [(ngModel)]="recevingPositionId"
+                  class="form-control"
+                >
+                  <option value=''>Selecione uma posição</option>
+                  <option
+                    *ngFor="let position of optionsForReceiving"
+                    [value]="position.id"
+                  >
+                    {{positionToShow(position)}}
+                  </option>
+                </select>
+              </div>
+              <div *ngIf="!allowReceivingMoveBatch">
+                <div class="col-md-4 text-center">
+                  <label class="control-label text-right">Posição Destino</label>
+                  <select
+                    [(ngModel)]="recevingAutomationRouteId"
+                    class="form-control"
+                  >
+                    <option value=''>Selecione uma posição</option>
+                    <option
+                      *ngFor="let route of availableRoutesForReceiving"
+                      [value]="route.id"
+                    >
+                      {{automationRouteToShow(route)}}
+
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-2 text-center">
+                  <label class="control-label text-center">Vincular Lote</label>
+                  <button
+                    [disabled]="disableLinkBatch"
+                    class="btn btn-sucess btn-lg"
+                    (click)="linkBatch = true"
+                    appTooltip="Víncular o Lote na Posição de Destino"
+                  >
+                    <span class="fa fa-compress fa-md"></span>
+                  </button>
+
+                </div>
+                <div class="col-md-2 text-center">
+                  <label class="control-label text-center">Desvincular Lote</label>
+                  <button
+                    [disabled]="disableLinkBatch"
+                    class="btn btn-sucess btn-lg"
+                    (click)="unLinkBatch = true"
+                    appTooltip="Desvincular o Lote da Posição de Destino"
+                  >
+                    <span class="fa fa-expand fa-md"></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          *ngIf="allowAutomationRouteReceving"
+          class="modal-body col-md-12"
+        >
+          <div class="row">
+            <div class="col-md-6 text-center">
+              <button
+                [disabled]="disableButtonReceiving"
+                type="button"
+                class="btn btn-success btn-circle"
+                style="padding: 20px"
+                (click)="initReceivingAutomation = true"
+              >
+                <app-loading *ngIf="loading"></app-loading>
+                <span *ngIf="!loading"> INICIAR
+                  <br>RECEBIMENTO</span>
+              </button>
+            </div>
+            <div class="col-md-6 text-center">
+              <button
+                type="button"
+                class="btn btn-danger btn-circle"
+                style="padding: 20px"
+                (click)="finalizeReceivingAutomation = true"
+              >
+                <app-loading *ngIf="loading"></app-loading>
+                <span *ngIf="!loading"> FINALIZAR
+                  <br>RECEBIMENTO</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div
+          *ngIf="allowReceivingMoveBatch"
+          class="modal-body col-md-12"
+        >
+          <div class="row">
+            <div class="col-md-6 text-center">
+              <button
+                type="button"
+                class="btn btn-success btn-circle"
+                style="padding: 20px"
+                (click)="receivingMoveTo()"
+              >
+                MOVER LOTE
+              </button>
+            </div>
+            <div class="col-md-6 text-center">
+              <button
+                *ngIf="allowCloseReceiving && allowReceivingMoveBatch"
+                (click)="closeReceivingConfirm = true"
+                type="button"
+                class="btn btn-warning btn-circle"
+                style="padding: 20px"
+              >
+                FINALIZAR
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div
+        *ngIf="automationType.code === 'BAGGING'"
+        class="form-group"
+      >
+        <div class="form-horizontal">
+          <div class="modal-header">
+            <h3 class="modal-title">Embegamento do Lote
+              <b>{{batch.batchCode}}</b>
+            </h3>
+          </div>
+          <div class="modal-body col-md-12 text-center">
+            <label class="control-label">Posição do Lote:
+              <b>{{currentPositionBatch}}</b>
+            </label>
+          </div>
+
+          <div class="modal-body col-md-12">
+            <div class="row">
+              <div class="col-md-4 text-center">
+                <label class="control-label text-right">Posição Origem</label>
+                <select
+                  [(ngModel)]="baggingPositionId"
+                  class="form-control"
+                >
+                  <option value=''>Selecione uma posição</option>
+                  <option
+                    *ngFor="let position of optionsForBagging"
+                    [value]="position.id"
+                  >
+                    {{positionToShow(position)}}
+                  </option>
+                </select>
+              </div>
+              <div *ngIf="!allowBaggingMoveBatch">
+                <div class="col-md-4 text-center">
+                  <label class="control-label text-right">Posição Destino</label>
+                  <select
+                    [(ngModel)]="baggingAutomationRouteId"
+                    class="form-control"
+                  >
+                    <option value=''>Selecione uma posição</option>
+                    <option
+                      *ngFor="let route of availableRoutesForBagging"
+                      [value]="route.id"
+                    >
+                      {{automationRouteToShow(route)}}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-2 text-center">
+                  <label class="control-label text-center">Vincular Lote</label>
+                  <button
+                    [disabled]="disableLinkBatchBagging"
+                    class="btn btn-sucess btn-lg"
+                    (click)="linkBatch = true"
+                    appTooltip="Víncular o Lote na Posição de Destino"
+                  >
+                    <span class="fa fa-compress fa-md"></span>
+                  </button>
+                </div>
+                <div class="col-md-2 text-center">
+                  <label class="control-label text-center">Desvincular Lote</label>
+                  <button
+                    [disabled]="disableLinkBatchBagging"
+                    class="btn btn-sucess btn-lg"
+                    (click)="unLinkBatch = true"
+                    appTooltip="Desvincular o Lote da Posição de Destino"
+                  >
+                    <span class="fa fa-expand fa-md"></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          *ngIf="allowAutomationRouteBagging"
+          class="modal-body col-md-12"
+        >
+          <div class="row">
+            <div class="col-md-4 text-center">
+              <button
+                [disabled]="disableButtonBagging"
+                type="button"
+                class="btn btn-success btn-circle"
+                style="padding: 20px"
+                (click)="initBaggingAutomation = true"
+              >
+                <app-loading *ngIf="loading"></app-loading>
+                <span *ngIf="!loading">INICIAR
+                  <br>EMBEGAMENTO</span>
+              </button>
+
+            </div>
+            <div class="col-md-4 text-center">
+              <button
+                [disabled]="disableSuspendAutomation"
+                (click)="suspendBaggingAutomation = true"
+                type="button"
+                class="btn btn-warning btn-circle"
+                style="padding: 20px"
+              >
+                <app-loading *ngIf="loading"></app-loading>
+                <span *ngIf="!loading">FINALIZAR AUTOMAÇÃO
+                  <br>DO EMBEGAMENTO</span>
+              </button>
+            </div>
+            <div class="col-md-4 text-center">
+              <button
+                [disabled]="disableButtonFinalizeBagging"
+                type="button"
+                class="btn btn-danger btn-circle"
+                style="padding: 20px"
+                (click)="finalizeBaggingAutomation = true"
+              >
+                <app-loading *ngIf="loading"></app-loading>
+                <span *ngIf="!loading">FINALIZAR EMBEGAMENTO
+                  <br>NO SISTEMA</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div
+          *ngIf="allowBaggingMoveBatch"
+          class="modal-body col-md-12"
+        >
+          <div class="row">
+            <div class="col-md-6 text-center">
+              <button
+                type="button"
+                class="btn btn-success btn-circle"
+                style="padding: 20px"
+                (click)="baggingMoveTo()"
+              >
+                MOVER LOTE
+              </button>
+            </div>
+            <div class="col-md-6 text-center">
+              <button
+                *ngIf="allowCloseReceiving && allowBaggingMoveBatch"
+                (click)="closeReceivingConfirm = true"
+                type="button"
+                class="btn btn-warning btn-circle"
+                style="padding: 20px"
+              >
+                FINALIZAR
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <app-confirm-inline
+          *ngIf="closeReceivingConfirm"
+          (confirm)="closeReceivingConfirmHandler($event)"
+        >
+        </app-confirm-inline>
+
+        <app-confirm-inline
+          *ngIf="initReceivingAutomation"
+          (confirm)="initReceivingAutomationHandler($event)"
+        >
+        </app-confirm-inline>
+
+        <app-confirm-inline
+          *ngIf="finalizeReceivingAutomation"
+          (confirm)="finalizeReceivindAutomationHandler($event)"
+        >
+        </app-confirm-inline>
+
+        <app-confirm-inline
+          *ngIf="initBaggingAutomation"
+          (confirm)="initBaggingAutomationHandler($event)"
+        >
+        </app-confirm-inline>
+
+        <app-confirm-inline
+          *ngIf="suspendBaggingAutomation"
+          (confirm)="suspendBaggingAutomationHandler($event)"
+        >
+        </app-confirm-inline>
+
+        <app-confirm-inline
+          *ngIf="finalizeBaggingAutomation"
+          (confirm)="finalizeBaggingAutomationHandler($event)"
+        >
+        </app-confirm-inline>
+
+        <app-confirm-inline
+          *ngIf="linkBatch"
+          (confirm)="linkBatchHandler($event)"
+        >
+        </app-confirm-inline>
+
+        <app-confirm-inline
+          *ngIf="unLinkBatch"
+          (confirm)="unLinkBatchHandler($event)"
+        >
+        </app-confirm-inline>
+
+        <button
+          type="button"
+          class="btn btn-default btn-size"
+          data-dismiss="modal"
+        >
+          FECHAR
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

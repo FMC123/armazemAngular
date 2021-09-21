@@ -1,0 +1,59 @@
+<section class="content-header">
+  <h1>
+    Relatório de Inconsistências de Estoque
+  </h1>
+  <app-breadcrumb [items]="[
+        ['Início', ''],
+        ['Relatório de Inconsistências de Estoque', null]
+      ]"></app-breadcrumb>
+</section>
+<section class="content-header">
+  <div class="box">
+    <div class="box-header">
+      <h3 class="box-title w100">
+        Filtro
+      </h3>
+    </div>
+    <div class="box-body">
+      <form class="form-horizontal" [formGroup]="form" (keydown.enter)="$event.preventDefault();">
+        <fieldset [disabled]="loading">
+          <div class="form-group" appErrorGroup>
+              <label class="control-label col-xs-4 col-md-2 text-right" for="batchCode">Lote</label>
+              <div class="col-xs-2 col-md-3">
+                  <input type="text"
+                   formControlName="batchCode"
+                   class="form-control">
+                  <app-error-message controlName="batchCode" label="Lote"></app-error-message>
+              </div>
+            </div>
+
+            <div class="form-group" appErrorGroup>
+              <label class="control-label col-md-2 text-right" for="collaboratorId">
+                Cliente
+              </label>
+              <div class="col-md-5">
+                <app-autocomplete [service]="collaboratorAutocomplete"></app-autocomplete>
+                <input type="hidden" formControlName="collaboratorId"/>
+                <app-error-message controlName="collaboratorId" label="Cliente"></app-error-message>
+              </div>
+            </div>
+
+        </fieldset>
+        <div class="form-group">
+          <div class="col-xs-offset-4 col-xs-8 col-sm-offset-2 col-sm-10">
+            <button (click)="submitPdf()" type="button" class="btn btn-size btn-success">
+              <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+              ABRIR PDF
+            </button>
+
+            <button (click)="submitCsv()" type="button" class="btn btn-size btn-success">
+              <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+              ABRIR CSV
+            </button>
+
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

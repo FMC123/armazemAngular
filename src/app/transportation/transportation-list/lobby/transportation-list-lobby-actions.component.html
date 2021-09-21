@@ -1,0 +1,43 @@
+<button
+  *ngIf="transportation.allowCancelRelease"
+  (click)="onCancelReleaseClick($event)"
+  class="btn btn-success btn-sm"
+  appTooltip="Cancelar liberação"
+  [disabled]="loading">
+  <span class="fa fa-close fa-lg"></span>
+</button>
+
+<button
+  *ngIf="transportation.allowClose"
+  (click)="onCloseClick($event)"
+  class="btn btn-default btn-sm"
+  appTooltip="Finalizar"
+  [disabled]="loading">
+  <span class="fa fa-check fa-lg"></span>
+</button>
+
+<button
+  *ngIf="transportation.allowEdit"
+  (click)="onEditClick($event)"
+  class="btn btn-primary btn-sm"
+  appTooltip="Editar">
+  <span class="fa fa-pencil fa-lg"></span>
+</button>
+
+<button
+  *ngIf="transportation.allowDelete"
+  (click)="onDeleteClick($event)"
+  type="button"
+  appTooltip="Excluir"
+  class="btn btn-danger btn-sm">
+  <span class="fa fa-trash-o fa-lg"></span>
+</button>
+
+<button
+  [hidden]="!transportation.allowCancelEnter"
+  (click)="cancelAllowEnter($event)"
+  [disabled]="loading"
+  class="btn btn-default btn-sm"
+  appTooltip="Cancelar autorização de entrada">
+  <span class="fa fa-hand-o-left fa-lg"></span>
+</button>

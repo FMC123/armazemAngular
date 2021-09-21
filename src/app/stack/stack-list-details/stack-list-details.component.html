@@ -1,0 +1,28 @@
+<section class="content-header">
+  <h1>
+    <small>Cadastro</small>
+    Pilha
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Gerenciar Mapa','/position-layer'],
+    [stack.position.positionLayer.code, '/position-layer/'+stack.position.positionLayer.id],
+    ['Detalhe de Posição', null],
+    [stack.position.code, '/position/'+stack.position.id],
+    ['Detalhe de Pilha', null],
+    [stack.code, null]
+  ]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <app-stack-list-info [stack]="stack" *ngIf="stack"></app-stack-list-info>
+
+  <div class="row">
+    <div class="col-xs-12 mb10">
+      <a    [routerLink]="['/position/'+stack.position.id]"
+        class="btn btn-default btn-size">
+        VOLTAR
+      </a>
+    </div>
+  </div>
+</section>

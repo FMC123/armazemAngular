@@ -1,0 +1,80 @@
+<div class="box">
+  <div class="box-header">
+    <h3 class="box-title w100">
+      Pesar lotes
+    </h3>
+  </div>
+
+  <div class="box-body" *ngIf="transportation">
+    <fieldset [disabled]="loading">
+      <div class="col-xs-12">
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-md-2 text-right">Peso Bruto</label>
+          <div class="col-md-8">
+            <input
+              type="text"
+              [(ngModel)]="transportation.grossWeightString"
+              class="form-control"
+              [textMask]="decimalMask"
+              [disabled]="!allowManualWeighing || loading"
+            />
+          </div>
+          <div class="col-md-2">
+            <button
+              type="button"
+              class="btn btn-sm btn-primary"
+              (click)="weighGross()"
+              [disabled]="loading"
+            >
+              Pesar
+            </button>
+            <button
+              type="button"
+              class="btn btn-sm btn-success"
+              (click)="saveGross()"
+              *ngIf="allowManualWeighing"
+              [disabled]="loading"
+            >
+              Salvar
+            </button>
+          </div>
+        </div>
+
+        <br/>
+        <br>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-md-2 text-right">Tara</label>
+          <div class="col-md-8">
+            <input
+              type="text"
+              [(ngModel)]="transportation.tareWeightString"
+              class="form-control"
+              [textMask]="decimalMask"
+              [disabled]="!allowManualWeighing || loading"
+            />
+          </div>
+          <div class="col-md-2">
+            <button
+              type="button"
+              class="btn btn-sm btn-primary"
+              (click)="weighTare()"
+              [disabled]="loading"
+            >
+              Pesar
+            </button>
+            <button
+              type="button"
+              class="btn btn-sm btn-success"
+              (click)="saveTare()"
+              *ngIf="allowManualWeighing"
+              [disabled]="loading"
+            >
+              Salvar
+            </button>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+</div>

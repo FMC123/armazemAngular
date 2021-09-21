@@ -1,0 +1,13 @@
+<div class="row">
+  <div class="col-xs-2">
+    <app-map-zone-sidebar></app-map-zone-sidebar>
+  </div>
+  <div class="col-xs-10 text-center">
+    <div style="margin: 10px">
+      <app-map-zone-list></app-map-zone-list>
+    </div>
+    <div >
+      <app-map-zone-positions *ngIf="positions" [hidden]="loading"></app-map-zone-positions>
+    </div>
+  </div>
+</div>

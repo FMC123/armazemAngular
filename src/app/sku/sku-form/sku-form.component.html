@@ -1,0 +1,135 @@
+<form class="form-horizontal"
+      (ngSubmit)="submit()"
+      [formGroup]="form"
+      *ngIf="form">
+
+  <div class="box-body">
+    <fieldset [disabled]="loading">
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-md-4 text-right" for="product">Produto</label>
+            <div class="col-md-8">
+              <input id="product"
+                     formControlName="product"
+                     type="text"
+                     class="form-control"/>
+              <app-error-message controlName="product" label="Produto"></app-error-message>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-md-4 text-right" for="description">Descrição</label>
+            <div class="col-md-8">
+              <input id="description"
+                     formControlName="description"
+                     type="text"
+                     class="form-control"/>
+              <app-error-message controlName="description" label="Descrição"></app-error-message>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-md-4 text-right" for="code">Código</label>
+            <div class="col-md-8">
+              <input id="code"
+                     formControlName="code"
+                     type="text"
+                     class="form-control"/>
+              <app-error-message controlName="code" label="Código"></app-error-message>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-md-4 text-right" for="measurement_unit">Unidade de Medida</label>
+            <div class="col-md-8">
+              <input id="measurement_unit"
+                     formControlName="measurement_unit"
+                     type="text"
+                     class="form-control"/>
+              <app-error-message controlName="measurement_unit" label="Unidade de Medida"></app-error-message>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-md-4 text-right" for="measurement_acronym">Sigla de Medição</label>
+            <div class="col-md-8">
+              <input id="measurement_acronym"
+                     formControlName="measurement_acronym"
+                     type="text"
+                     class="form-control"/>
+              <app-error-message controlName="measurement_acronym" label="Sigla de Medição"></app-error-message>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-md-4 text-right" for="sku_quantity">Quantidade SKU</label>
+            <div class="col-md-8">
+              <input id="sku_quantity"
+                     formControlName="sku_quantity"
+                     type="text"
+                     class="form-control"/>
+              <app-error-message controlName="sku_quantity" label="Quantidade SKU"></app-error-message>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-md-4 text-right" for="sku_group">Grupo SKU</label>
+            <div class="col-md-8">
+              <app-autocomplete [service]="skuAutocomplete" (output)="outputChange($event)"></app-autocomplete>
+              <input id="sku_group" type="hidden" formControlName="sku_group" class="form-control" (input)="test($event)"/>
+              <app-error-message controlName="sku_group" label="Grupo SKU"></app-error-message>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-md-4 text-right" for="sack_size">Tamanho de Saca</label>
+            <div class="col-md-8">
+              <input id="sack_size"
+                     formControlName="sack_size"
+                     type="text"
+                     class="form-control"/>
+              <app-error-message controlName="sack_size" label="Tamanho de saca"></app-error-message>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </fieldset>
+  </div>
+
+  <div class="box-footer">
+    <div class="row">
+      <div class="col-sm-offset-2">
+        <div class="col-sm-10 mb10">
+          <app-submit-button [loading]="loading">
+            SALVAR
+          </app-submit-button>
+          <a [class.disabled]="loading"
+             routerLink="/sku"
+             class="btn btn-default btn-size">
+            VOLTAR
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</form>

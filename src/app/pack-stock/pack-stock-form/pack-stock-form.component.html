@@ -1,0 +1,155 @@
+<section class="content-header">
+  <h1>
+    <small>Cadastro</small>
+    <span *ngIf="!group.indStockOut">Entrada de embalagem</span>
+    <span *ngIf="group.indStockOut">Saída de embalagem</span>
+  </h1>
+  <app-breadcrumb [items]="breadcrumb"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <form
+        (ngSubmit)="save()"
+        [formGroup]="form"
+        *ngIf="form"
+        class="form-horizontal"
+      >
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Formulário</h3>
+          </div>
+
+          <div class="box-body">
+            <fieldset [disabled]="loading">
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="registrationDateString">
+                  Data
+                </label>
+                <div class="col-md-10">
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      [textMask]="dateMask"
+                      appDatePicker
+                      formControlName="registrationDateString"
+                      class="form-control"
+                    >
+                    <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+                  </div>
+                  <app-error-message controlName="registrationDateString" label="Data"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="ownerId">
+                  Proprietário
+                </label>
+                <div class="col-md-10">
+                  <app-autocomplete [service]="ownerAutocomplete"></app-autocomplete>
+                  <input type="hidden" formControlName="ownerId"/>
+                  <app-error-message controlName="ownerId" label="Proprietário"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label
+                  class="control-label col-md-2 text-right"
+                  for="document"
+                >
+                  Documento
+                </label>
+                <div class="col-md-10">
+                  <input
+                    id="document"
+                    class="form-control"
+                    formControlName="document"
+                    maxlength="255"
+                  />
+                  <app-error-message controlName="document" label="Documento"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label
+                  class="control-label col-md-2 text-right"
+                  for="observation"
+                >
+                  Observações
+                </label>
+                <div class="col-md-10">
+                  <input
+                    id="observation"
+                    class="form-control"
+                    formControlName="observation"
+                    maxlength="255"
+                  />
+                  <app-error-message controlName="observation" label="Observações"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label
+                  class="control-label col-md-2 text-right"
+                >
+                  Embalagens
+                </label>
+                <div class="col-md-10">
+                  <button
+                    type="button"
+                    class="btn btn-primary mb10"
+                    (click)="openMovementForm()"
+                  >
+                    NOVA MOVIMENTAÇÃO DE EMBALAGEM
+                  </button>
+                  <div
+                    *ngIf="submitted && (!group.movements || !group.movements.length)"
+                    class='text-danger'
+                  >
+                    É obrigatório ao menos uma movimentação de embalagem!
+                  </div>
+
+                  <app-pack-stock-movement-list
+                    [group]="group"
+                    (edit)="openMovementForm($event)"
+                  ></app-pack-stock-movement-list>
+                </div>
+              </div>
+
+            </fieldset>
+          </div>
+
+          <div class="box-footer">
+            <div class="row">
+              <div class="col-sm-offset-2">
+                <div class="col-sm-10 mb10">
+                  <app-submit-button [loading]="loading">
+                    SALVAR
+                  </app-submit-button>
+                  <a
+                    [class.disabled]="loading"
+                    routerLink="/pack-stock"
+                    class="btn btn-default btn-size"
+                  >
+                    VOLTAR
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<app-pack-stock-movement-form-modal
+  *ngIf="movementFormModal.opened"
+  [movement]="movement"
+  (save)="addOrUpdateMovement($event)"
+  (close)="movementFormModal.close()"
+  [indStockOut]="group.indStockOut"
+>
+</app-pack-stock-movement-form-modal>

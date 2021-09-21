@@ -1,0 +1,25 @@
+<div class="box">
+  <div class="box-header with-border" (click)="collapse()">
+    <h3 class="box-title">Estoque</h3>
+    <span class="pull-right-container">
+      <i *ngIf="collapsed" class="fa fa-angle-down fa-2x pull-right"></i>
+      <i *ngIf="!collapsed" class="fa fa-angle-up fa-2x pull-right"></i>
+    </span>
+  </div>
+
+  <div class="box-body">
+    <div class="row" [hidden]="collapsed">
+      <div class="col-xs-12">
+        <app-loading *ngIf="!error && loading"></app-loading>
+
+        <p class="text-danger" *ngIf="error">Ops, ocorreu um erro</p>
+
+        <div *ngIf="!error && !loading">
+          <p>Total armazenado (SC): <strong>{{ stockPanel.totalSacksTruncated }}</strong></p>
+          <p>Total armazenado (KG): <strong>{{ stockPanel.totalKilosString }}</strong></p>
+          <p>Total de embalagens utilizadas: <strong>{{ stockPanel.totalBigBag }}</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

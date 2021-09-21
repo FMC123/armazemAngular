@@ -1,0 +1,268 @@
+
+<section class="content-header">
+  <h1>
+    <small>Cadastro</small>
+    Fazenda
+  </h1>
+  <app-breadcrumb [items]="[
+  ['Início', ''],
+  ['Fazenda', '/farm'],
+  ['Cadastro de Fazenda', null]
+  ]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <form
+      (ngSubmit)="save()"
+      [formGroup]="form"
+      *ngIf="form"
+      class="form-horizontal">
+
+      <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Formulário</h3>
+          </div>
+
+          <div class="box-body">
+            <fieldset [disabled]="loading">
+
+            <div class="form-group" appErrorGroup>
+              <label class="control-label col-md-2 text-right" for="name">Código</label>
+              <div class="col-md-10">
+                <input id="code"
+                  formControlName="code"
+                  type="text"
+                  maxlength="100"
+                  class="form-control uppercase" />
+                  <app-error-message controlName="code" label="Código"></app-error-message>
+               </div>
+            </div>
+
+             <div class="form-group" appErrorGroup>
+              <label class="control-label col-md-2 text-right" for="name">Nome</label>
+              <div class="col-md-10">
+                <input id="name"
+                formControlName="name"
+                type="text"
+                maxlength="200"
+                class="form-control uppercase" />
+                <app-error-message controlName="name" label="Nome"></app-error-message>
+              </div>
+            </div>
+            <div class="form-group" appErrorGroup>
+              <label class="control-label col-md-2 text-right" for="cnpj">CNPJ</label>
+              <div class="col-md-10">
+                <input id="cnpj"
+                formControlName="cnpj"
+                type="text"
+                maxlength="18"
+                class="form-control uppercase" />
+                <app-error-message controlName="cnpj" label="CNPJ"></app-error-message>
+              </div>
+            </div>
+
+            <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="stateRegistration">Registro Estadual</label>
+                <div class="col-md-10">
+                  <input id="stateRegistration"
+                  formControlName="stateRegistration"
+                  type="text"
+                  maxlength="50"
+                  class="form-control uppercase" />
+                  <app-error-message controlName="stateRegistration" label="Registro Estadual"></app-error-message>
+                </div>
+              </div>
+
+            <div class="form-group" appErrorGroup>
+              <label class="control-label col-md-2 text-right" for="longitude">Longetude</label>
+              <div class="col-md-10">
+                <input id="longitude"
+                formControlName="longitude"
+                type="text"
+                maxlength="50"
+                class="form-control uppercase" />
+                <app-error-message controlName="longitude" label="Longetude"></app-error-message>
+              </div>
+            </div>
+
+            <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="latitude">Latitude</label>
+                <div class="col-md-10">
+                  <input id="latitude"
+                  formControlName="latitude"
+                  type="text"
+                  maxlength="50"
+                  class="form-control uppercase" />
+                  <app-error-message controlName="latitude" label="Latitude"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="farmPercentage">% Comprometida da Propiedade</label>
+                  <div class="col-md-10">
+                    <input id="farmPercentage"
+                    formControlName="farmPercentage"
+                    type="text"
+                    maxlength="50"
+                    class="form-control uppercase" />
+                    <app-error-message controlName="farmPercentage" label="% Comprometida da Propiedade"></app-error-message>
+                  </div>
+                </div>
+
+                <div class="form-group" appErrorGroup>
+                    <label class="control-label col-md-2 text-right" for="farmSize">Tamanho da Propiedade</label>
+                    <div class="col-md-10">
+                      <input id="farmSize"
+                      formControlName="farmSize"
+                      type="text"
+                      maxlength="50"
+                      class="form-control uppercase" />
+                      <app-error-message controlName="farmSize" label="Tamanho da Propiedade"></app-error-message>
+                    </div>
+                  </div>
+
+                  <div class="form-group" appErrorGroup>
+                      <label class="control-label col-md-2 text-right" for="farmSizeUnit">Unidade do Tamanho da Propiedade</label>
+                      <div class="col-md-10">
+                          <select
+                                [formControl]="form.get('farmSizeUnit')"
+                              >
+                                <option value="hm²">hm²</option>
+                              </select>
+
+                        <app-error-message controlName="farmSizeUnit" label="Unidade do Tamanho da Propiedade"></app-error-message>
+                      </div>
+                    </div>
+
+
+
+            <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="publicPlace">*Logradouro</label>
+                <div class="col-md-10">
+                  <input id="publicPlace"
+                          formControlName="publicPlace"
+                          type="text"
+                          maxlength="21"
+                          class="form-control uppercase" />
+                  <app-error-message controlName="publicPlace" label="Logradouro"></app-error-message>
+                </div>
+              </div>
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="number">*Número</label>
+                <div class="col-md-10">
+                  <input id="number"
+                          formControlName="number"
+                          type="text"
+                          maxlength="200"
+                          class="form-control uppercase" />
+                  <app-error-message controlName="number" label="Numero"></app-error-message>
+                </div>
+              </div>
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="complement">Complemento</label>
+                <div class="col-md-10">
+                  <input id="complement"
+                          formControlName="complement"
+                          type="text"
+                          maxlength="18"
+                          class="form-control uppercase" />
+                  <app-error-message controlName="complement" label="Complemento"></app-error-message>
+                </div>
+              </div>
+            <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="neighbourhood">*Bairro</label>
+                <div class="col-md-10">
+                  <input id="neighbourhood"
+                          formControlName="neighbourhood"
+                          type="text"
+                          maxlength="200"
+                          class="form-control uppercase" />
+                  <app-error-message controlName="neighbourhood" label="Bairro"></app-error-message>
+                </div>
+              </div>
+
+            <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="zipCode">*CEP</label>
+                <div class="col-md-10">
+                  <input id="zipCode"
+                          formControlName="zipCode"
+                          type="text"
+                          maxlength="9"
+                          class="form-control uppercase" />
+                  <app-error-message controlName="zipCode" label="CEP"></app-error-message>
+                </div>
+              </div>
+
+              <fieldset class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right">*País</label>
+                <div class="col-md-10" >
+
+                  <select formControlName="countryId"
+                          class="form-control">
+                    <option value="">Selecione um país </option>
+                    <option *ngFor="let country of countrys" [value]="country.id">
+                      {{ country.name }}
+                    </option>
+                  </select>
+                  <app-error-message controlName="countryId" label="País"></app-error-message>
+                </div>
+              </fieldset>
+
+            <fieldset class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right">*Estado</label>
+                <div class="col-md-10" >
+                  <select formControlName="ufId"
+                          class="form-control">
+                    <option value="">Selecione uma UF </option>
+                    <option *ngFor="let uf of ufs" [value]="uf.id">
+                      {{ uf.ufInitials }}
+                    </option>
+                  </select>
+                  <app-error-message controlName="ufId" label="Estado"></app-error-message>
+                </div>
+              </fieldset>
+
+
+             <fieldset class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right">*Cidade</label>
+                <div class="col-md-10" >
+
+                  <select formControlName="cityId"
+                          class="form-control">
+                    <option value="">Selecione uma cidade </option>
+                    <option *ngFor="let city of citys" [value]="city.id">
+                      {{ city.name }}
+                    </option>
+                  </select>
+                  <app-error-message controlName="cityId" label="Cidade"></app-error-message>
+                </div>
+              </fieldset>
+
+
+
+          </fieldset>
+        </div>
+
+        <div class="box-footer">
+          <div class="row">
+            <div class="col-sm-offset-2">
+              <div class="col-sm-10 mb10">
+                <app-submit-button [loading]="loading">
+                  Salvar
+                </app-submit-button>
+                <a [class.disabled]="loading"
+                [routerLink]="['/farm']"
+                class="btn btn-success btn-size">
+                Voltar
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+</div>
+</section>

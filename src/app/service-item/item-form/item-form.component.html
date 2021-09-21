@@ -1,0 +1,138 @@
+<div class="new-layout">
+  <section class="content-header">
+    <app-breadcrumb [items]="[
+      ['Início', ''],
+      ['Itens e Serviços', '/service-item'],
+      ['Cadastro de Itens e Serviços', null]
+    ]"></app-breadcrumb>
+    <h1>
+      <small>Cadastro</small>
+      Itens
+    </h1>
+  </section>
+
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+        <form (ngSubmit)="save()" [formGroup]="form" *ngIf="form" class="form-horizontal">
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Formulário</h3>
+            </div>
+
+            <div class="panel-body">
+              <fieldset [disabled]="loading">
+
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="code">*Código</label>
+                  <div class="col-md-10">
+                    <input id="code" formControlName="code" type="text" [textMask]="integerMask" maxlength="200"
+                      class="form-control uppercase" />
+                    <app-error-message controlName="code" label="Código"></app-error-message>
+                  </div>
+                </div>
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="description">*Descrição</label>
+                  <div class="col-md-10">
+                    <input id="description" formControlName="description" type="text" maxlength="255"
+                      class="form-control" />
+                    <app-error-message controlName="description" label="Descrição"></app-error-message>
+                  </div>
+                </div>
+
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-xs-4 col-md-2 text-right" for="industrialType">Tipo Industrial</label>
+                  <div class="col-xs-8 col-md-10">
+                    <select id="industrialType" formControlName="industrialType" class="form-control">
+                      <option *ngFor="let industrialType of industrialTypes" [value]="industrialType.code">
+                        {{ industrialType.name }}
+                      </option>
+                    </select>
+                    <app-error-message controlName="industrialType" label="Tipo Industrial"></app-error-message>
+                  </div>
+                </div>
+
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="basePrice">*Preço base</label>
+                  <div class="col-md-10">
+                    <input id="basePrice" formControlName="basePrice" type="text" [textMask]="decimalMask"
+                      maxlength="19" class="form-control" />
+                    <app-error-message controlName="basePrice" label="Preço base"></app-error-message>
+                  </div>
+                </div>
+
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="groupedCharge">*Unidades agrupadas</label>
+                  <div class="col-md-10">
+                    <input id="groupedCharge" formControlName="groupedCharge" type="text" [textMask]="integerMask"
+                           maxlength="19" class="form-control" />
+                    <app-error-message controlName="groupedCharge" label="Unidades agrupadas"></app-error-message>
+                  </div>
+                </div>
+
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="batchMask">*Sigla Lote</label>
+                  <div class="col-md-10">
+                    <input id="batchMask" formControlName="batchMask" type="text" maxlength="2"
+                      class="form-control uppercase" />
+                    <app-error-message controlName="batchMask" label="Sigla Lote"></app-error-message>
+                  </div>
+                </div>
+
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-xs-4 col-md-2 text-right" for="usage">*Uso</label>
+                  <div class="col-xs-8 col-md-10">
+                    <select id="usage" formControlName="usage" class="form-control">
+                      <option *ngFor="let usage of usages" [value]="usage.code">
+                        {{ usage.name }}
+                      </option>
+                    </select>
+                    <app-error-message controlName="usage" label="Uso"></app-error-message>
+                  </div>
+                </div>
+
+                <fieldset [disabled]="disableActiveField" class="form-group" appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="indIss">Incide ISS</label>
+                  <div class="col-md-1">
+
+                    <input id="indIss" formControlName="indIss" type="checkbox" />
+                    <app-error-message controlName="indIss" label="ISS"></app-error-message>
+                  </div>
+                </fieldset>
+                <fieldset [disabled]="disableActiveField" class="form-group" appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="indDiscount">Desconto</label>
+                  <div class="col-md-1">
+                    <input id="indDiscount" formControlName="indDiscount" type="checkbox" />
+                    <app-error-message controlName="indDiscount" label="Desconto"></app-error-message>
+                  </div>
+                </fieldset>
+                <fieldset [disabled]="disableActiveField" class="form-group" appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="indQuoteVal">Valor Cotação</label>
+                  <div class="col-md-1">
+                    <input id="indQuoteVal" formControlName="indQuoteVal" type="checkbox" />
+                    <app-error-message controlName="indQuoteVal" label="Cotação"></app-error-message>
+                  </div>
+                </fieldset>
+              </fieldset>
+            </div>
+
+            <div class="box-footer">
+              <div class="row">
+                <div class="col-sm-offset-2">
+                  <div class="col-sm-10 mb10">
+                    <app-submit-button [loading]="loading">
+                      SALVAR
+                    </app-submit-button>
+                    <a [class.disabled]="loading" routerLink="/service-item" class="btn btn-default btn-size">
+                      VOLTAR
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,92 @@
+<div class="box">
+
+  <div class="box-header">
+    <h3 class="box-title">Cobrança de Serviço</h3>
+  </div>
+  <div class="box-body">
+    <form [formGroup]="form" *ngIf="form">
+      <div class="row custom_row">
+
+        <div class="col-xs-9 text-left custom_col">
+          <label for="itemId">Serviço</label>
+          <app-autocomplete [service]="itemsAutocomplete" [instant]="true"></app-autocomplete>
+          <input type="hidden" class="form-control" formControlName="itemId" id="itemId"/>
+          <app-error-message controlName="itemId" label="Serviço"></app-error-message>
+        </div>
+
+        <div class="col-xs-2 text-left custom_col">
+          <label for="additionalServiceSacksQuantity">Qtde Sacas</label>
+          <input [formControl]="form.get('additionalServiceSacksQuantity')" type="text" [textMask]="integerMask"
+                 maxlength="10" class="form-control" id="additionalServiceSacksQuantity"/>
+          <app-error-message controlName="additionalServiceSacksQuantity" label="Qtde Sacas"></app-error-message>
+        </div>
+
+        <div class="col-xs-1 text-left custom_col">
+          <button
+            (click)="add()"
+            class="btn btn-success btn-normal"
+            [disabled]="!items.length">
+            Adicionar
+          </button>
+        </div>
+      </div>
+    </form>
+    <div class="row">
+      <div class="col-xs-12">
+        <table class="table table-bordered table-condensed"
+               *ngIf="serviceInstruction.serviceOrders != null && serviceInstruction.serviceOrders.length > 0">
+          <thead>
+          <tr>
+            <th>Código</th>
+            <th>Serviço</th>
+            <th>Qtde Sacas</th>
+            <th class="text-center">Ações</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let order of serviceInstruction.serviceOrders, let i = index">
+            <td>{{ order.service.code }}</td>
+            <td>{{ order.service.description }}</td>
+            <td>{{ order.sacksQuantity }}</td>
+            <td class="bts-list-actions">
+
+              <button
+                (click)="edit(order, i)"
+                type="button"
+                appTooltip="Editar"
+                class="btn btn-primary btn-sm"
+                [disabled]="!order.editable">
+                <span class="fa fa-edit fa-lg"></span>
+              </button>
+
+              <button
+                (click)="remove(order, i)"
+                type="button"
+                appTooltip="Excluir"
+                class="btn btn-danger btn-sm"
+                [disabled]="!order.editable">
+                <span class="fa fa-trash-o fa-lg"></span>
+              </button>
+
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <div class="row save-button"
+             *ngIf="serviceInstruction.serviceOrders != null && serviceInstruction.serviceOrders.length > 0">
+          <button (click)="confirmChargeModal.open(true)" class="btn btn-success btn-normal" [disabled]="!enableSave">
+            Gerar Cobrança
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <app-confirm *ngIf="confirmChargeModal.opened"
+               message="Tem certeza que deseja gerar essas cobranças?"
+               (confirm)="charge()" (close)="confirmChargeModal.close()">
+  </app-confirm>
+
+</div>

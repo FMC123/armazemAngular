@@ -1,0 +1,23 @@
+<h1>
+  <small>Cadastro</small>
+  Pessoa
+</h1>
+<app-person-modal-list-info [person]="person" *ngIf="person"></app-person-modal-list-info>
+
+<app-customer-contact-modal-list-simple-details [customerContacts]="person.customerContacts" *ngIf="person.customerContacts && person.customerContacts.length > 0"></app-customer-contact-modal-list-simple-details>
+
+<app-address-modal-list-simple-details [addresses]="person.addresses" *ngIf="person.addresses && person.addresses.length > 0"></app-address-modal-list-simple-details>
+
+<div *ngIf="returnActive">
+
+  <div class="col-xs-12 mb10">
+    <button
+      (click)="returList()"
+      class="btn btn-default btn-size"
+      type="button"
+    >
+      VOLTAR
+    </button>
+  </div>
+
+</div>

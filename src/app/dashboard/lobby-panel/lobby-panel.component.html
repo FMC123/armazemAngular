@@ -1,0 +1,78 @@
+<div class="box">
+  <div class="box-header with-border" (click)="collapse()">
+    <h3 class="box-title">Portaria</h3>
+    <span class="pull-right-container">
+      <i *ngIf="collapsed" class="fa fa-angle-down fa-2x pull-right"></i>
+      <i *ngIf="!collapsed" class="fa fa-angle-up fa-2x pull-right"></i>
+    </span>
+  </div>
+  <div class="box-body">
+    <div class="row margin-bottom-none" [hidden]="collapsed">
+      <div class="col-xs-12" >
+        <app-loading *ngIf="!error && loading"></app-loading>
+
+        <p class="text-danger" *ngIf="error">Ops, ocorreu um erro</p>
+
+        <div class="table-responsive" *ngIf="!error && !loading">
+          <table class="table-centered table table-bordered" >
+            <thead>
+            <tr>
+              <th class="col-sm-pull-0">
+                DESC. / EMB.
+              </th>
+              <th class="col-sm-pull-0">
+                DATA ENTRADA
+              </th>
+              <th class="col-sm-pull-0">
+                HORA ENTRADA
+              </th>
+              <th class="col-sm-pull-0">
+                PLACA
+              </th>
+              <th class="col-sm-pull-0">
+                QTDE. SACAS
+              </th>
+              <th class="col-sm-pull-0">
+                EMBALAGEM
+              </th>
+              <th class="col-sm-pull-0">
+                MOTORISTA
+              </th>
+              <th class="col-sm-pull-0">
+                DATA ENTRADA ARM.
+              </th>
+              <th class="col-sm-pull-0">
+                HORA ENTRADA ARM.
+              </th>
+              <th class="col-sm-pull-0">
+                FORNECEDOR
+              </th>
+              <th class="col-sm-pull-0">
+                CLIENTE
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let lobbyPanel of page.data" [style.background-color]="lobbyPanel.transportationStatusObject.color">
+              <td >{{lobbyPanel.transportationTypeString }}</td>
+              <td class="col-sm-pull-0 text-center">{{lobbyPanel.entryDateString}}</td>
+              <td class="text-center">{{lobbyPanel.entryHourString}}</td>
+              <td class="col-sm-pull-0">{{lobbyPanel.vehiclePlatesString}}</td>
+              <td class="text-right">{{lobbyPanel.sacksQuantity}}</td>
+              <td class="col-sm-pull-0">{{lobbyPanel.packType}}</td>
+              <td class="col-sm-pull-0">{{lobbyPanel.driverName}}</td>
+              <td class="text-center">{{lobbyPanel.weightedDateString}}</td>
+              <td class="text-center">{{lobbyPanel.weightedHourString}}</td>
+              <td class="col-sm-pull-0" >{{lobbyPanel.collaborator}}</td>
+              <td class="col-sm-pull-0" >{{lobbyPanel.owner}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="text-right">
+          <app-pagination *ngIf="!loading" [instance]="page"></app-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

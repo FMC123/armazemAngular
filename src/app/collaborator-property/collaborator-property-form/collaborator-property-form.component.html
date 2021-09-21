@@ -1,0 +1,96 @@
+<section class="content-header">
+    <h1>
+        <small>Cadastro</small>
+        Propriedades e Cooperados
+    </h1>
+    <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Propriedade e Cooperado', '/collaborator-property'],
+    ['Cadastro de Propriedade e Cooperado', null]
+  ]"></app-breadcrumb>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <form
+              (ngSubmit)="save()"
+              [formGroup]="form"
+              *ngIf="form"
+              class="form-horizontal"
+            >
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Formulário</h3>
+                    </div>
+
+                    <div class="box-body">
+                        <fieldset [disabled]="loading">
+
+                            <fieldset class="form-group" appErrorGroup>
+                                <label class="control-label col-md-2 text-right">Cooperado</label>
+                                <div class="col-md-10" >
+                                  <app-autocomplete [service]="collaboratorAutocomplete"></app-autocomplete>
+                                  <input type="hidden" formControlName="collaboratorId"/>
+                                  <app-error-message controlName="collaboratorId" label="Cooperado"></app-error-message>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="form-group" appErrorGroup>
+                                <label class="control-label col-md-2 text-right">Propriedade</label>
+                                <div class="col-md-10" >
+                                    <app-autocomplete [service]="farmAutocomplete"></app-autocomplete>
+                                    <input type="hidden" formControlName="farmId"/>
+                                    <app-error-message controlName="farmId" label="Propriedade"></app-error-message>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="form-group" appErrorGroup>
+                                <label class="control-label col-md-2 text-right">Cultura</label>
+                                <div class="col-md-10" >
+
+                                    <select formControlName="cultivationId"
+                                            class="form-control">
+                                    <option value="">Selecione uma cultura </option>
+                                    <option *ngFor="let cultivation of cultivations" [value]="cultivation.id">
+                                        {{ cultivation.cultivationName }}
+                                    </option>
+                                    </select>
+                                    <app-error-message controlName="cultivationId" label="Cultura"></app-error-message>
+                                </div>
+                            </fieldset>
+
+                            <div class="form-group" appErrorGroup>
+                                <label class="control-label col-md-2 text-right" for="percentProperty">Percentual</label>
+                                <div class="col-md-10">
+                                    <input id="percentProperty"
+                                            formControlName="percentProperty"
+                                            type="text"
+                                            class="form-control uppercase" />
+                                    <app-error-message controlName="percentProperty" label="Percentual"></app-error-message>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="box-footer">
+                        <div class="row">
+                            <div class="col-sm-offset-2">
+                                <div class="col-sm-10 mb10">
+                                    <app-submit-button [loading]="loading">
+                                    SALVAR
+                                    </app-submit-button>
+                                    <a [class.disabled]="loading"
+                                        routerLink="/collaborator-property"
+                                        class="btn btn-default btn-size">
+                                    VOLTAR
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

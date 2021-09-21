@@ -1,0 +1,235 @@
+<section class="content-header">
+  <h1>
+    <small>Cadastro</small>
+    Autorização de Amostra
+  </h1>
+  <app-breadcrumb [items]="[
+        ['Início', ''],
+        ['Estoque', ''],
+        ['Envio de Amostra', null]
+      ]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <form class="form-horizontal">
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Dados de Envio de Amostra</h3>
+          </div>
+          <div class="box-body">
+            <fieldset [disabled]="loading">
+              <div class="form-group">
+                <label class="control-label col-md-2 text-right">Número</label>
+                <div class="col-md-10">
+                  <input
+                    disabled="disabled"
+                    value="{{samplePack.code}}"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label col-md-2 text-right">Data de Envio</label>
+                <div class="col-md-10">
+                  <input
+                    disabled="disabled"
+                    value="{{samplePack.sendDate | date :'dd/MM/yyyy'}}"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label col-md-2 text-right">Responsável Envio</label>
+                <div class="col-md-10">
+                  <input
+                    disabled="disabled"
+                    value="{{samplePack.sendBy?.name}}"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+
+
+
+              <div class="form-group">
+                <label
+                  class="control-label col-md-2 text-right"
+                  for="boxCode"
+                >Caixa</label>
+                <div class="col-md-10">
+                  <input
+                    disabled="disabled"
+                    value="{{samplePack.boxCode}}"
+                    id="boxCode"
+                    type="text"
+                    maxlength="50"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+
+
+              <div class="form-group">
+                <label
+                  class="control-label col-md-2 text-right"
+                  for="sealCode"
+                >Lacre</label>
+                <div class="col-md-10">
+                  <input
+                    disabled="disabled"
+                    value="{{samplePack.sealCode}}"
+                    id="sealCode"
+                    type="text"
+                    maxlength="50"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+
+
+              <div class="form-group">
+                <label class="control-label col-md-2 text-right">Situação</label>
+                <div class="col-md-10">
+                  <input
+                    disabled="disabled"
+                    value="{{samplePack.statusObject?.name}}"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label
+                  class="control-label col-md-2 text-right"
+                  for="sendNote"
+                >Observação Envio</label>
+                <div class="col-md-10">
+                  <textarea
+                    disabled="disabled"
+                    value="{{samplePack.sendNote}}"
+                    cols="30"
+                    maxlength="255"
+                    class="form-control"
+                    rows="5"
+                    id="sendNote"
+                  >
+                    </textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-2 text-right">Data de Recebimento</label>
+                <div class="col-md-10">
+                  <input
+                    disabled="disabled"
+                    value="{{samplePack.receiveDate | date : 'dd/MM/yyyy'}}"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-2 text-right">Responsável Recebimento</label>
+                <div class="col-md-10">
+                  <input
+                    disabled="disabled"
+                    value="{{samplePack.receivedUserName}}"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label
+                  class="control-label col-md-2 text-right"
+                  for="receiveNote"
+                >Observação Recebimento</label>
+                <div class="col-md-10">
+                  <textarea
+                    disabled="disabled"
+                    value="{{samplePack.receiveNote}}"
+                    cols="30"
+                    maxlength="255"
+                    class="form-control"
+                    rows="5"
+                    id="receiveNote"
+                  >
+                    </textarea>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+
+          <div class="box-header with-border">
+            <h3 class="box-title">Lista de amostras recebidas</h3>
+          </div>
+          <div class="box-body">
+
+            <app-no-results *ngIf="!listSamples || listSamples.length<=0"></app-no-results>
+
+            <div class="table-responsive" *ngIf="listSamples && listSamples.length>0">
+              <table class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                  <th class="col-xs-3 text-center">
+                    Lote
+                  </th>
+                  <th class="col-xs-2 text-center">
+                    Sacas
+                  </th>
+                  <th class="col-xs-3 text-center">
+                    Motivo
+                  </th>
+                  <th class="col-xs-2 text-center">
+                    Código de Barras
+                  </th>
+                  <th class="col-xs-2 text-center">
+                    Ação
+                  </th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr *ngFor="let sample of listSamples">
+                  <td class="text-center">{{sample.batchCodes}}</td>
+                  <td class="text-center">{{sample.totalBatchesQuantityPerSacksString}}</td>
+                  <td class="text-center">{{sample.motiveLabel}}</td>
+                  <td class="text-center">{{sample.barcode ? 'Sim' : 'Não'}}</td>
+                  <td class="text-center">
+                    <button *ngIf="samplePack.statusObject.code === 'SENT'"
+                            (click)="printBarCode(sample.id)" 
+                            type="button" 
+                            appTooltip="Imprimir" 
+                            class="btn btn-danger btn-sm">
+                      <i class="fa fa-print"></i>
+                    </button>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+
+          <div class="box-footer">
+            <div class="row">
+              <div class="col-sm-offset-2">
+                <div class="col-sm-10 mb10">
+
+                  <a
+                    [class.disabled]="loading"
+                    routerLink="/sample-pack-receive"
+                    class="btn btn-default btn-size"
+                  >
+                    VOLTAR
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

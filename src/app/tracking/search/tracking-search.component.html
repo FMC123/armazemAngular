@@ -1,0 +1,138 @@
+<div class="box">
+
+  <div
+    class="box-header with-border clickable"
+    (click)="collapsed=!collapsed"
+    [class.collapsed]="collapsed"
+  >
+    <h4 class="panel-title accordion-toggle">
+      <i class="fa fa-search"></i> Pesquisa
+    </h4>
+  </div>
+
+  <div class="box-body" *ngIf="fullLoading">
+    <app-loading></app-loading>
+  </div>
+
+  <div class="box-body" [hidden]="collapsed" *ngIf="!fullLoading">
+    <form
+      class="form-horizontal"
+      (ngSubmit)="submit()"
+      *ngIf="form"
+      [formGroup]="form"
+    >
+      <fieldset [disabled]="loading">
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-xs-4 text-right" for="batchCode">Lote</label>
+          <div class="col-xs-8">
+            <input
+              id="batchCode"
+              formControlName="batchCode"
+              type="text"
+              class="form-control"
+            />
+            <app-error-message controlName="batchCode" label="Lote"></app-error-message>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-xs-4 text-right" for="classificationBeverage">Bebida</label>
+          <div class="col-xs-8">
+            <input
+              id="classificationBeverage"
+              formControlName="classificationBeverage"
+              type="text"
+              class="form-control"
+            />
+            <app-error-message controlName="classificationBeverage" label="Bebida"></app-error-message>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-xs-4 text-right" for="classificationBeverageComplement">Complemento da Bebida</label>
+          <div class="col-xs-8">
+            <input
+              id="classificationBeverageComplement"
+              formControlName="classificationBeverageComplement"
+              type="text"
+              class="form-control"
+            />
+            <app-error-message controlName="classificationBeverageComplement" label="Complemento da Bebida"></app-error-message>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-xs-4 text-right" for="classificationPattern">Padrão</label>
+          <div class="col-xs-8">
+            <input
+              id="classificationPattern"
+              formControlName="classificationPattern"
+              type="text"
+              class="form-control"
+            />
+            <app-error-message controlName="classificationPattern" label="Padrão"></app-error-message>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-xs-4 text-right" for="classificationBean">Fava</label>
+          <div class="col-xs-8">
+            <input
+              id="classificationBean"
+              formControlName="classificationBean"
+              type="text"
+              class="form-control"
+            />
+            <app-error-message controlName="classificationBean" label="Fava"></app-error-message>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-xs-4 text-right" for="classificationColour">Cor</label>
+          <div class="col-xs-8">
+            <input
+              id="classificationColour"
+              formControlName="classificationColour"
+              type="text"
+              class="form-control"
+            />
+            <app-error-message controlName="classificationColour" label="Cor"></app-error-message>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-md-4 text-right" for="certificateId">Certificado</label>
+          <div class="col-md-8">
+            <select
+              id="certificateId"
+              formControlName="certificateId"
+              class="form-control"
+            >
+              <option value="">Selecione um certificado</option>
+              <option *ngFor="let certificate of certificates" [value]="certificate.id">
+                {{ certificate.name }}
+              </option>
+            </select>
+            <app-error-message controlName="certificateId" label="Certificado"></app-error-message>
+          </div>
+        </div>
+
+      </fieldset>
+
+      <div class="form-group">
+        <div class="col-md-offset-4 col-md-8">
+          <app-submit-button btnClass="btn btn-success" [loading]="loading">
+            PESQUISAR
+          </app-submit-button>
+
+          <button type="button" (click)="reset()" class="btn btn-default">
+            LIMPAR
+          </button>
+
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>

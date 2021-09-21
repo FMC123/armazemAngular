@@ -1,0 +1,104 @@
+<section class="content-header">
+  <h1>
+    <small>Cadastro</small>
+   Balanças
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Administrativos', ''],
+    ['Cadastro de Balanças', null]
+  ]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <form
+        (ngSubmit)="save()"
+        [formGroup]="form"
+        *ngIf="form"
+        class="form-horizontal"
+      >
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Formulário</h3>
+          </div>
+
+          <div class="box-body">
+            <fieldset [disabled]="loading">
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="ip">IP*</label>
+                <div class="col-md-10">
+                  <input id="ip"
+                          formControlName="ip"
+                          type="text"
+                          maxlength="255"
+                          class="form-control uppercase" />
+                  <app-error-message controlName="ip" label="IP"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="description">Descrição*</label>
+                <div class="col-md-10">
+                  <input id="description"
+                          formControlName="description"
+                          type="text"
+                          maxlength="255"
+                          class="form-control" />
+                  <app-error-message controlName="description" label="Descrição"></app-error-message>
+                </div>
+              </div>
+
+              <fieldset [disabled]="!!scale.warehouse" class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right">Armazém*</label>
+                <div class="col-md-10" >
+
+                  <select formControlName="warehouseId"
+                          class="form-control">
+                    <option value="">Selecione um armazém*</option>
+                    <option *ngFor="let warehouse of warehouses" [value]="warehouse.id">
+                      {{ warehouse.code }} - {{ warehouse.name }}
+                    </option>
+                  </select>
+                  <app-error-message controlName="warehouseId" label="Armazém"></app-error-message>
+                </div>
+              </fieldset>
+            </fieldset>
+
+            <fieldset>
+              <fieldset class="form-group">
+                <label class="control-label col-md-2 text-right">Balança</label>
+                <div class="col-md-10" >
+                  <select formControlName="modelBusEquipament" class="form-control">
+                    <option value="">Selecione um modelo de balança</option>
+                    <option *ngFor="let mBE of modBusEquipaments" [value]="mBE.name">
+                      {{ mBE.description }}
+                    </option>
+                  </select>
+                </div>
+              </fieldset>
+            </fieldset>
+          </div>
+
+          <div class="box-footer">
+            <div class="row">
+              <div class="col-sm-offset-2">
+                <div class="col-sm-10 mb10">
+                  <app-submit-button [loading]="loading">
+                    SALVAR
+                  </app-submit-button>
+                  <a [class.disabled]="loading"
+                      routerLink="/scale"
+                      class="btn btn-default btn-size">
+                    VOLTAR
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

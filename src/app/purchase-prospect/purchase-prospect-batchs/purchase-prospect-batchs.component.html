@@ -1,0 +1,112 @@
+<div class="box">
+  <form
+    [formGroup]="form"
+    (ngSubmit)="save()"
+    *ngIf="form"
+  >
+    <div class="box-header">
+      <h4
+        class="panel-title clearfix"
+        style="line-height: 2"
+      >
+        Lotes
+      </h4>
+    </div>
+    <div class="box-body">
+      <div
+        class="row"
+        style="margin-bottom: 12px;"
+        *ngIf="editable"
+      >
+        <div class="col-xs-1 text-right">
+          <label for="batchCode">Lote</label>
+        </div>
+        <div class="col-xs-3">
+          <input
+            [formControl]="form.get('batchCode')"
+            type="text"
+            maxlength="18"
+            class="form-control"
+          />
+          <app-error-message
+            controlName="batchCode"
+            label="Lote"
+          ></app-error-message>
+        </div>
+
+        <div class="col-xs-2 text-right">
+          <label for="netQuantity">Quantidade</label>
+        </div>
+        <div class="col-xs-1">
+          <input
+            [formControl]="form.get('netQuantity')"
+            type="text"
+            [textMask]="integerMask"
+            maxlength="18"
+            class="form-control"
+            id="netQuantity"
+          />
+          <app-error-message
+            controlName="netQuantity"
+            label="Quantidade"
+          ></app-error-message>
+        </div>
+
+        <div class="col-xs-2">
+          <button
+            type="submit"
+            class="btn btn-success"
+            appTooltip="Adicionar"
+          >
+            ADICIONAR
+          </button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <table class="table table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Lote</th>
+                <th>Quantidade</th>
+                <!--th>Peneira</th>
+                <th>Padrão</th>
+                <th>Bebida</th-->
+                <th *ngIf="editable">Ação</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let batch of purchaseProspect.batchOperation.batches">
+                <td>{{ batch.batchCode }}</td>
+                <td>{{ batch.netQuantity }}</td>
+                <td
+                  class="text-center"
+                  *ngIf="editable"
+                >
+                  <button
+                    (click)="edit(batch)"
+                    type="button"
+                    appTooltip="Editar"
+                    class="btn btn-primary btn-sm"
+                  >
+                    <span class="fa fa-edit fa-lg"></span>
+                  </button>
+                  <button
+                    (click)="remove(batch)"
+                    type="button"
+                    appTooltip="Excluir"
+                    class="btn btn-danger btn-sm"
+                  >
+                    <span class="fa fa-trash-o fa-lg"></span>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </form>
+</div>

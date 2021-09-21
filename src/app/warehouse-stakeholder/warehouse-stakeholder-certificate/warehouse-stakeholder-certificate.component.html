@@ -1,0 +1,79 @@
+<div class="box">
+  <div class="box-header">
+    <div class="box-title" style="width: 100%">
+      Certificados
+      <div class="pull-right">
+        <a *ngIf=" (!stakeholder || stakeholder?.id)  && editable" (click)="formModal.open()" class="btn btn-success btn-size">
+          <span class="fa fa-plus fa-fw"></span>
+          <strong>NOVO</strong>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="box-body">
+    <div class="row">
+      <div class="col-xs-12">
+        <app-loading *ngIf="loadingList"></app-loading>
+        <div class="box-body" *ngIf="!loadingList && certificates.length == 0">
+          Nenhum certificado cadastrado para este Cliente.
+        </div>
+        <table class="table table-bordered" *ngIf="!loadingList && certificates.length > 0">
+          <tr>
+            <th class="col-xs-1 text-center">Certificado</th>
+            <th class="col-xs-1 text-center">Número Certificadora Custódia - CDC</th>
+            <th class="col-xs-1 text-center">Validade Certificadora Custódia - CDC</th>
+            <th class="col-xs-1 text-center">Número Certificadora Origem</th>
+            <th class="col-xs-1 text-center">Validade Certificadora Origem</th>
+            <th class="col-xs-1 text-center">Ações</th>
+          </tr>
+          <tr *ngFor="let certificate of certificates">
+            <td class="text-center">{{ certificate.certificateName }}</td>
+            <td class="text-center">{{ certificate.certifiedCustodyCode || ''}}</td>
+            <td class="text-center">{{ certificate.certifiedCustodyExpirationDateString || ''}}</td>
+            <td class="text-center">{{ certificate.certifiedOriginCode || ''}}</td>
+            <td class="text-center">{{ certificate.certifiedOriginExpirationDateString || ''}}</td>
+            <td class="bts-list-actions">
+              <button
+                (click)="formModal.open(certificate)"
+                type="button"
+                appTooltip="Editar"
+                class="btn btn-primary btn-sm">
+                <span class="fa fa-pencil fa-lg"></span>
+              </button>
+              <button
+                (click)="deleteConfirm.open(certificate.id)"
+                type="button"
+                appTooltip="Excluir"
+                class="btn btn-danger btn-sm">
+                <span class="fa fa-trash-o fa-lg"></span>
+              </button>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<app-confirm
+  *ngIf="deleteConfirm.opened"
+  message="Tem certeza que deseja excluir este certificado?"
+  yesLabel="Sim"
+  (confirm)="delete(deleteConfirm.value)"
+  (close)="deleteConfirm.close()">
+</app-confirm>
+
+
+<app-warehouse-stakeholder-certificate-form-modal
+  *ngIf="formModal.opened"
+  [editingCertificate]="formModal.value"
+  [owner]="stakeholder"
+  [listedCertificates]="certificates"
+  (close)="onFormClose()"
+>
+</app-warehouse-stakeholder-certificate-form-modal>
+<!--  *ngIf="false"-->
+<!--  [batchOperation]="batchOperation"-->
+<!--&gt;</app-batch-operation-certificate-form-modal>-->

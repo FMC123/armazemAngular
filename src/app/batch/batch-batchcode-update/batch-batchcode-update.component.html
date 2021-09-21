@@ -1,0 +1,59 @@
+<div class="new-layout">
+  <section class="content-header">
+    <app-breadcrumb [items]="[
+      ['Início', ''],
+      ['Alteração do número do lote', null]
+    ]"></app-breadcrumb>
+    <h1>
+      Alterar número do lote
+    </h1>
+  </section>
+
+  <section class="content">
+
+
+    <div class="row">
+      <div class="col-xs-12">
+        <form (ngSubmit)="save()" [formGroup]="form" *ngIf="form" class="form-horizontal">
+
+          <div class="box">
+            <div class="panel-body">
+              <fieldset [disabled]="loading">
+                <div >
+                  <div class="form-group" appErrorGroup>
+                    <label class="control-label col-md-2 text-right" for="batchOriginCode">Lote:</label>
+                    <div class="col-md-10">
+                      <app-autocomplete [service]="batchAutocomplete"></app-autocomplete>
+                      <input id="batchOriginCode" type="hidden" formControlName="batchOriginCode" />
+                      <app-error-message controlName="batchOriginCode" label="Lote"></app-error-message>
+                    </div>
+                  </div>
+                  <div class="form-group" appErrorGroup>
+                    <label class="control-label col-md-2 text-right" for="batchNewCode">Novo número de Lote:</label>
+                    <div class="col-md-10">
+                      <input id="batchNewCode"
+                             [formControl]="form.get('batchNewCode')"
+                             type="text"
+                             class="form-control"
+                             maxlength="20" />
+                      <app-error-message controlName="batchNewCode" label="Novo número de Lote"></app-error-message>
+                    </div>
+                  </div>
+
+                </div>
+              </fieldset>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xs-12 mb10">
+              <app-submit-button [loading]="loading">
+                Salvar
+              </app-submit-button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>

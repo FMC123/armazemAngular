@@ -1,0 +1,73 @@
+<button
+  *ngIf="transportation.allowCancelRelease"
+  (click)="onCancelReleaseClick($event, transportation.id)"
+  class="btn btn-success btn-sm"
+  appTooltip="Cancelar liberação"
+  [disabled]="loading">
+  <span class="fa fa-close fa-lg"></span>
+</button>
+
+<button
+  [hidden]="!transportation.allowRelease"
+  (click)="allowRelease($event)"
+  [disabled]="loading"
+  class="btn btn-success btn-sm"
+  appTooltip="Liberar saída">
+  <span class="fa fa-unlock fa-lg"></span>
+</button>
+
+<a
+  [hidden]="!transportation.allowWeighing  || transportation.typeObject.code !== 'IN' "
+  [routerLink]="['/balance', 'in', transportation.id]"
+  [class.disabled]="loading"
+  class="btn btn-primary btn-sm"
+  appTooltip="Processar">
+  <span class="fa fa-balance-scale fa-lg"></span>
+</a>
+
+<a
+  [hidden]="!transportation.allowWeighing || transportation.typeObject.code !== 'OUT' "
+  [routerLink]="['/balance', 'out', transportation.id]"
+  [class.disabled]="loading"
+  class="btn btn-primary btn-sm"
+  appTooltip="Processar">
+  <span class="fa fa-balance-scale fa-lg"></span>
+</a>
+
+<button
+  [hidden]="!transportation.allowEnter"
+  (click)="allowEnter($event)"
+  [disabled]="loading"
+  class="btn btn-warning btn-sm"
+  appTooltip="Autorizar entrada">
+  <span class="fa fa-sign-in fa-lg"></span>
+</button>
+
+<button
+  [hidden]="!transportation.allowCancelEnter"
+  (click)="cancelAllowEnter($event)"
+  [disabled]="loading"
+  class="btn btn-default btn-sm"
+  appTooltip="Cancelar autorização de entrada">
+  <span class="fa fa-hand-o-left fa-lg"></span>
+</button>
+
+<button
+  [hidden]="!transportation.allowDocumentEntryReport"
+  (click)="downloadDocumentEntryReport()"
+  [disabled]="loading"
+  class="btn btn-success btn-sm"
+  appTooltip="Gerar Relatório de Romaneio de Entrada">
+  <span class="fa fa-file-pdf-o fa-lg"></span>
+</button>
+
+<button
+  [hidden]="!transportation.allowDocumentExitReport"
+  (click)="downloadDocumentExitReport()"
+  [disabled]="loading"
+  class="btn btn-success btn-sm"
+  appTooltip="Gerar Relatório de Romaneio de Saída">
+  <span class="fa fa-file-pdf-o fa-lg"></span>
+</button>
+
+

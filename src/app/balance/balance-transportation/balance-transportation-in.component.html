@@ -1,0 +1,86 @@
+<section class="content-header">
+  <h1>
+    Balança
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Balança', '/balance'],
+    [transportation.vehiclePlate1, null]
+  ]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <app-balance-weight></app-balance-weight>
+
+  <app-balance-transportation-fiscal-note-list [balanceTransportationService]="this.balanceTransportationInService"></app-balance-transportation-fiscal-note-list>
+
+  <app-balance-transportation-batch-operation-form [weighingMode]="weighingMode" *ngIf="!packing && !loading"></app-balance-transportation-batch-operation-form>
+
+  <app-balance-transportation-in-batch-operation-list *ngIf="!packing"></app-balance-transportation-in-batch-operation-list>
+
+  <app-balance-transportation-batch-operation-weighing-all *ngIf="!loading && batchOperations && batchOperations.length && weighingMode !== 'INDIVIDUAL' && !packing"></app-balance-transportation-batch-operation-weighing-all>
+
+  <app-pack-stock-movement-list-form [fiscalNotes]="balanceTransportationInService.transportation.fiscalNotes" *ngIf="packing"></app-pack-stock-movement-list-form>
+
+  <app-balance-transportation-unit *ngIf="packing" [balanceTransportationService]="this.balanceTransportationInService"></app-balance-transportation-unit>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <button
+        *ngIf="allowInitiate"
+        class="btn btn-success"
+        [disabled]="loading"
+        (click)="save()"
+      >
+        INICIAR DESCARGA
+      </button>
+
+      <button
+        *ngIf="allowFinish"
+        class="btn btn-success"
+        [disabled]="loading"
+        (click)="save()"
+      >
+        FINALIZAR DESCARGA
+      </button>
+
+
+      <button
+        *ngIf="!packing"
+        class="btn btn-primary"
+        [disabled]="loading"
+        (click)="downloadWeightTicket()"
+      >
+      <i class="fa fa-print"></i> TICKET DE PESO
+      </button>
+
+      <button
+        *ngIf="packing"
+        class="btn btn-primary"
+        [disabled]="loading"
+        (click)="downloadWeightTicketPackagingOnly()"
+      >
+        <i class="fa fa-print"></i> TICKET DE PESO
+      </button>
+
+      <button
+        *ngIf="!packing"
+      (click)="downloadInputFormTicket($event)"
+      type="button"
+      class="btn btn-primary"
+      [disabled]="loading"
+      >
+    <i class="fa fa-print"></i>  TICKET DE FICHA DE ENTRADA
+    </button>
+
+      <a
+        [class.disabled]="loading"
+        routerLink="/balance"
+        class="btn btn-default btn-size"
+      >
+        VOLTAR
+      </a>
+    </div>
+  </div>
+
+</section>

@@ -1,0 +1,173 @@
+<div class="box-header with-border">
+	<h3 class="box-title"> Itens </h3>
+</div>
+<div class="row center-content">
+  <div class="center-content" [ngClass]="isShowDoubleColumnItens ? 'col-xs-12' : 'col-xs-10'">
+    <app-loading *ngIf="loading"></app-loading>
+    <form [formGroup]="form" (ngSubmit)="add()" *ngIf="form">
+      <div *ngIf="isShowDoubleColumnItens" class="two-column-layout" >
+    	 <table class="table table-bordered header-table">
+	        <tr>
+	          <th class="col-xs-3">Tipo</th>
+	          <th class="col-xs-4">Valor</th>
+	          <th class="col-xs-2">Obrigatório</th>
+	          <th class="col-xs-3">Data</th>
+	        </tr>
+	        <tr class="hidden-header">
+	          <th class="col-xs-3">Tipo</th>
+	          <th class="col-xs-4">Valor</th>
+	          <th class="col-xs-2">Obrigatório</th>
+	          <th class="col-xs-3">Data</th>
+	        </tr>
+        </table>
+      </div>
+      <div [class.two-column-layout]="isShowDoubleColumnItens">
+	      <table class="table table-bordered">
+	     	<thead *ngIf="!isShowDoubleColumnItens">
+	     		<tr>
+		          <th class="col-xs-3">Tipo</th>
+		          <th class="col-xs-4">Valor</th>
+		          <th class="col-xs-3" *ngIf="isShowItemOwner">Responsável</th>
+		          <th class="col-xs-2">Obrigatório</th>
+		          <th class="col-xs-3">Data</th>
+		          <th class="col-xs-1 text-center" *ngIf="isDynamicItemList">Ação</th>
+		        </tr>
+	     	</thead>
+	     	<tbody>
+		        <tr *ngIf="availableTypes && availableTypes.length">
+		          <td class="col-xs-2" appErrorGroup>
+		            <select formControlName="classificationTypeId" class="form-control">
+		              <option value="">Selecione um tipo</option>
+		              <option *ngFor="let type of availableTypes" [value]="type.id">
+		                {{ type.name }}
+		              </option>
+		            </select>
+		            <app-error-message controlName="classificationTypeId" label="Tipo"></app-error-message>
+		          </td>
+		          <td class="col-xs-3" appErrorGroup>
+		
+		            <!-- campo de texto -->
+		            <input *ngIf="type != null && type.type == 'STRING'" id="classificationValue" class="form-control"
+		              formControlName="classificationValue" maxlength="255" />
+		
+		            <!-- intervalo de dados -->
+		            <input *ngIf="type != null && type.type == 'INTERVAL'" id="classificationValue" class="form-control"
+		              [textMask]="unlimitedDecimalMask" formControlName="classificationValue" maxlength="50" />
+		
+		            <!-- seleção de valores -->
+		            <select *ngIf="type != null && type.type == 'ENUMERATOR'" formControlName="classificationValue" class="form-control">
+		              <option value="">Selecione um valor</option>
+		              <option *ngFor="let value of values" [value]="value.value">
+		                {{ value.value }}
+		              </option>
+		            </select>
+		
+		            <app-error-message controlName="classificationValue" label="Valor"></app-error-message>
+		
+		          </td>
+		          <td class="col-xs-3" *ngIf="isShowItemOwner" appErrorGroup>
+		            <select formControlName="itemOwner" class="form-control">
+		              <option value="">Selecione um responsável</option>
+		              <option *ngFor="let user of users" [value]="user.id">
+		                {{ user.name }}
+		              </option>
+		            </select>
+		          </td>
+		          <td class="col-xs-2" appErrorGroup>
+		            {{typeRequiredText}}
+		          </td>
+		          <td class="col-xs-1" appErrorGroup>
+		          </td>
+		          <td class="col-xs-1" class="text-center">
+		            <button type="submit" class="btn btn-success" appTooltip="Adicionar">
+		              <span class="fa fa-plus"></span>
+		            </button>
+		          </td>
+		        </tr>
+		        <ng-container *ngFor="let serviceItem of classificationItens">
+		          <tr class="active" *ngIf="!(!specialCoffee && (serviceItem.classificationType?.specialCoffeeItem != null && serviceItem.classificationType?.specialCoffeeItem === true))">
+		            <td class="col-xs-3">{{ serviceItem.classificationType.name }}</td>
+		            <td class="col-xs-4 form-group" appErrorGroup>
+		
+		              <div *ngIf="!serviceItem.classificationType.orderNormal">
+		                {{ serviceItem.value }}
+		              </div>
+		
+		              <div *ngIf="serviceItem.classificationType.orderNormal">               
+		                
+		                <!-- campo de texto -->
+		                <input *ngIf="serviceItem.classificationType.type == 'STRING'" class="form-control" 
+		                  [maxlength]="serviceItem.classificationType.max ? serviceItem.classificationType.max : 255" 
+		                  [value]="serviceItem.value" [formControlName]="serviceItem.classificationType.id"
+		                  [id]="serviceItem.classificationType.id"
+		                  (focusout)="fillValue($event.currentTarget.value, serviceItem)"/>
+		    
+		                <!-- intervalo de dados -->
+		                <input *ngIf="serviceItem.classificationType.type == 'INTERVAL'"
+		                class="form-control" [value]="serviceItem.value" [textMask]="unlimitedDecimalMask" 
+		                maxlength="50" [formControlName]="serviceItem.classificationType.id"
+		                [id]="serviceItem.classificationType.id"
+		                 (focusout)="fillValue($event.currentTarget.value, serviceItem)"/>
+		    
+		                <!-- seleção de valores -->
+		                <select *ngIf="serviceItem.classificationType.type == 'ENUMERATOR'" class="form-control" 
+		                 [value]="serviceItem.value" [formControlName]="serviceItem.classificationType.id"
+		                 [id]="serviceItem.classificationType.id"
+		                 (focusout)="fillValue($event.currentTarget.value, serviceItem)">
+		                  <option value="">Selecione um valor</option>
+		                  <option *ngFor="let value of serviceItem.classificationType.values" [value]="value.value">
+		                    {{ value.value }}
+		                  </option>
+		                </select>
+		    
+		                <app-error-message [controlName]="serviceItem.classificationType.id" label="Valor" *ngIf="serviceItem.classificationType.orderNormal"></app-error-message>
+		                 
+		              </div>
+		            </td>
+		
+		            <td class="col-xs-3" *ngIf="isShowItemOwner">
+		
+		              <div *ngIf="!serviceItem.classificationType.orderNormal">
+		                {{ serviceItem.classifiedBy?.name }}
+		              </div>
+		
+		              <div *ngIf="serviceItem.classificationType.orderNormal">
+		                <select class="form-control" (focusout)="fillClassifiedBy($event.currentTarget.value, serviceItem)"
+		                  [value]="serviceItem.classifiedBy.id">
+		                  <option value="">Selecione um responsável</option>
+		                  <option *ngFor="let user of users" [value]="user.id">
+		                    {{ user.name }}
+		                  </option>
+		                </select>
+		              </div>
+		
+		            </td>
+		            <td class="col-xs-2">
+		              {{ serviceItem.classificationType?.requiredString }}
+		            </td>
+		            <td class="col-xs-3">
+		              {{ serviceItem.classificationDateString }}
+		            </td>
+		            <td class="col-xs-1 text-center" *ngIf="isDynamicItemList">
+		              <button *ngIf="!serviceItem.classificationType.orderNormal" (click)="edit(serviceItem)" type="button"
+		                appTooltip="Editar" class="btn btn-primary btn-sm">
+		                <span class="fa fa-edit fa-lg"></span>
+		              </button>
+		              <button *ngIf="!serviceItem.classificationType.orderNormal"
+		                (click)="remove(serviceItem)" type="button" appTooltip="Excluir"
+		                class="btn btn-danger btn-sm">
+		                <span class="fa fa-trash-o fa-lg"></span>
+		              </button>
+		            </td>
+		          </tr>
+		        </ng-container>
+	        </tbody>
+	      </table>
+      </div>
+    </form>
+
+    <div *ngIf="submitted && (!classificationItens || !classificationItens.length)" class='text-danger'>
+      É obrigatório selecionar ao menos um tipo de classificação
+    </div>
+  </div>
+</div>

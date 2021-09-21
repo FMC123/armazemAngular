@@ -1,0 +1,21 @@
+<div class="page-header">
+  <h1 class="text">
+    <small>Detalhes</small>
+    Endereço
+  </h1>
+</div>
+
+<app-address-modal-list-info [address]="address" *ngIf="address"></app-address-modal-list-info>
+
+<div class="col-xs-12 mb10">
+  <button
+    type="button"
+    (click)="returFormPerson()"
+      class="btn btn-default btn-size"
+  >
+    VOLTAR
+  </button>
+</div>
+
+
+

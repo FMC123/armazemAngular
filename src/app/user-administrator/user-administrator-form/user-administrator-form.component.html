@@ -1,0 +1,115 @@
+<section class="content-header">
+  <h1>
+    <small>Cadastro </small>
+    Administradores
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Administradores', '/user-administrator'],
+    ['Cadastro de Administradores', null]
+  ]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <form
+        (ngSubmit)="save()"
+        [formGroup]="form"
+        *ngIf="form"
+        class="form-horizontal"
+      >
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Formulário</h3>
+          </div>
+
+          <div class="box-body">
+            <fieldset [disabled]="loading">
+            <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="companyId">Empresa</label>
+                <div class="col-md-10">
+                  <select formControlName="companyId" class="form-control">
+                    <option value=''>Selecione uma empresa</option>
+                    <option *ngFor="let company of companies" [value]="company.id">
+                      {{ company.name }}
+                    </option>
+                  </select>
+                  <app-error-message controlName="companyId" label="Empresa"></app-error-message>
+                </div>
+              </div>
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="name">Nome</label>
+                <div class="col-md-10">
+                  <input id="name"
+                          [formControl]="form.get('name')"
+                          type="text"
+                          maxlength="255"
+                          class="form-control" />
+                  <app-error-message controlName="name" label="Nome"></app-error-message>
+                </div>
+              </div>
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="login">Login</label>
+                <div class="col-md-10">
+                  <input [formControl]="form.get('login')"
+                          type="text"
+                          maxlength="255"
+                          class="form-control" />
+                  <app-error-message controlName="login" label="Login"></app-error-message>
+                </div>
+              </div>
+              <div *ngIf="editing" class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="password">Senha</label>
+                <div class="col-md-10" *ngIf="!passwordShown">
+                  <button class="btn btn-secondary" type="button" (click)="enablePassword()">Modificar senha</button>
+                </div>
+                <div class="col-md-10" *ngIf="passwordShown">
+                  <div class="input-group">
+                    <input [formControl]="form.get('password')"
+                          type="password"
+                          maxlength="255"
+                          class="form-control" />
+                    <span class="input-group-btn">
+                      <button class="btn btn-secondary"
+                              (click)="disablePassword()"
+                              type="button">Cancelar</button>
+                    </span>
+                  </div>
+                  <app-error-message controlName="password" label="Senha"></app-error-message>
+                </div>
+              </div>
+              <div *ngIf="!editing" class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="password">Senha</label>
+                <div class="col-md-10">
+                  <input [formControl]="form.get('password')"
+                          type="password"
+                          maxlength="255"
+                          class="form-control" />
+                  <app-error-message controlName="password" label="Senha"></app-error-message>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="box-footer">
+            <div class="row">
+              <div class="col-sm-offset-2">
+                <div class="col-sm-10 mb10">
+                  <app-submit-button [loading]="loading">
+                    SALVAR
+                  </app-submit-button>
+                  <a [class.disabled]="loading"
+                      routerLink="/user-administrator"
+                      class="btn btn-default btn-size">
+                    VOLTAR
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,12 @@
+<table class="table table-bordered">
+  <tr>
+<th class="col-xs-1">Nome Bebida</th>
+<th class="col-xs-1">Codigo Bebida</th>
+<th class="col-xs-1">Descrição Bebida</th>
+  </tr>
+    <tr *ngFor="let warehouse of children">
+      <td>{{ drink.code }}</td>
+      <td>{{ drink.name }}</td>
+      <td>{{ drink.description }}</td>
+  </tr>
+</table>

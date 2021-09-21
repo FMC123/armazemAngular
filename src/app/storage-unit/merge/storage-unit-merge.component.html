@@ -1,0 +1,14 @@
+<section class="content-header">
+    <h1>
+      Mesclar unidades de armazenamento
+    </h1>
+    <app-breadcrumb [items]="[
+      ['Início', ''],
+      ['Mesclar unidades de armazenamento', null]
+    ]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <app-storage-unit-merge-search></app-storage-unit-merge-search>
+  <app-storage-unit-merge-form *ngIf="batch"></app-storage-unit-merge-form>
+</section>

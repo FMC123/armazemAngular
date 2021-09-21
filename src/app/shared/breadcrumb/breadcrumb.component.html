@@ -1,0 +1,6 @@
+<ol *ngIf="items && items.length > 0" class="breadcrumb">
+    <li *ngFor="let serviceItem of items; let last = last" [class.active]="last">
+      <span *ngIf="serviceItem[1]===null">{{ serviceItem[0] }}</span>
+      <a *ngIf="serviceItem[1]!==null" [routerLink]="serviceItem[1]" href="javascript:">{{ serviceItem[0] }}</a>
+    </li>
+</ol>

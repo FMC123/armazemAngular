@@ -1,0 +1,132 @@
+<div class="box">
+  <div class="box-header">
+    <h3 class="box-title w100">
+      Filtro
+    </h3>
+  </div>
+
+  <div class="box-body">
+    <form class="form-horizontal" (ngSubmit)="submit()" *ngIf="form" [formGroup]="form"
+          (keydown.enter)="$event.preventDefault();">
+      <fieldset [disabled]="loading">
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-xs-4 col-md-2 text-right" for="status">
+            Status
+          </label>
+          <div class="col-xs-8 col-md-2">
+            <select formControlName="status" class="form-control">
+              <option value=''>Selecione um status</option>
+              <option value='OPEN'>Em aberto</option>
+              <option value='LINKED_IN'>Vinculado</option>
+              <option value='CANCELED'>Cancelado</option>
+            </select>
+            <app-error-message controlName="status" label="Status"></app-error-message>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-md-2 text-right" for="barCode">
+            Código de Barras
+          </label>
+          <div class="col-md-10">
+            <input id="barCode" class="form-control" formControlName="barCode" maxlength="255"/>
+            <app-error-message controlName="barCode" label="Documento"></app-error-message>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-xs-4 col-md-2 text-right" for="forecastDate">Previsão de chegada</label>
+          <div class="col-xs-8 col-md-10">
+            <div class="row">
+              <div class="col-xs-6">
+                <div class="input-group">
+                  <input type="text" [textMask]="dateMask" appDatePicker formControlName="forecastDateStart"
+                         placeholder="Início" class="form-control"
+                  />
+                  <div class="input-group-addon clickable">
+                    <span class="fa fa-calendar fa-fw"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-6">
+                <div class="input-group">
+                  <input type="text" [textMask]="dateMask" appDatePicker formControlName="forecastDateEnd"
+                         placeholder="Fim" class="form-control"
+                  />
+                  <div class="input-group-addon clickable">
+                    <span class="fa fa-calendar fa-fw"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-md-2 text-right" for="numberCollaborator">
+            Número do Cliente
+          </label>
+          <div class="col-md-3">
+            <input id="numberCollaborator" class="form-control" formControlName="numberCollaborator" maxlength="255"/>
+            <app-error-message controlName="numberCollaborator" label="Número do cooperado"></app-error-message>
+          </div>
+
+
+          <label class="control-label col-md-2 text-right" for="nameCollaborator">
+            Nome do Cliente
+          </label>
+          <div class="col-md-3">
+            <input id="nameCollaborator" class="form-control" formControlName="nameCollaborator" maxlength="255"/>
+            <app-error-message controlName="nameCollaborator" label="Nome do cooperado"></app-error-message>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-xs-4 col-md-2 text-right" for="carrierId">
+            Transportadora
+          </label>
+          <div class="col-xs-8 col-md-10">
+            <select formControlName="carrierId" class="form-control">
+              <option value=''>Selecione uma transportadora</option>
+              <option *ngFor="let carrier of carriers" [value]="carrier.id">
+                {{ carrier.person?.name }}
+              </option>
+            </select>
+            <app-error-message controlName="carrierId" label="Transportadora"></app-error-message>
+          </div>
+        </div>
+
+        <div class="form-group" *ngIf="allowAllWarehouses">
+          <label class="control-label col-xs-4 col-md-2 text-right" for="warehouseId">Armazém</label>
+          <div class="col-xs-8 col-md-10">
+            <select formControlName="warehouseId" class="form-control" id="warehouseId">
+              <option value=''>Todos</option>
+              <option *ngFor="let warehouse of warehouses" [value]="warehouse.id">
+                {{ warehouse.name }} - {{ warehouse.shortName }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+      </fieldset>
+      <div class="form-group">
+        <div class="col-xs-offset-4 col-xs-8 col-sm-offset-2 col-sm-10">
+          <button [disabled]="loading" [class.has-spinner]="loading" type="submit" class="btn btn-size btn-success">
+            <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+            PESQUISAR
+          </button>
+
+          <button type="button" (click)="buildForm()" class="btn btn-size btn-default">LIMPAR</button>
+
+          <a
+            [routerLink]="backLink"
+            *ngIf="backLink"
+            class="btn btn-size btn-default"
+          >VOLTAR</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

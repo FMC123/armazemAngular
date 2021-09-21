@@ -1,0 +1,24 @@
+<section class="content-header">
+  <h1>
+    <small>Detalhe</small>
+      Embalagem
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Embalagens', '/pack-type'],
+    [packType.description, null]
+  ]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <app-pack-type-info [packType]="packType" *ngIf="packType"></app-pack-type-info>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <a routerLink="/pack-type"
+          class="btn btn-default btn-size">
+        VOLTAR
+      </a>
+    </div>
+  </div>
+</section>

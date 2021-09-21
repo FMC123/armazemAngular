@@ -1,0 +1,118 @@
+<div *ngIf="!hiddenPackingData">
+<div class="box" *ngIf="loading">
+    <div class="box-header with-border">
+      <h3 class="box-title">Dados da Embalagem</h3>
+    </div>
+    <div class="box-body">
+      <app-loading></app-loading>
+    </div>
+</div>
+
+<form
+  (ngSubmit)="save()"
+  [formGroup]="form"
+  *ngIf="form && !loading"
+  class="form-horizontal"
+>
+  <div class="box">
+    <div class="box-header with-border">
+      <h3 class="box-title">Dados da Embalagem</h3>
+    </div>
+    <div class="box-body">
+      <fieldset *ngIf="!readOnly">
+        <div *ngIf="!isEditing"  class="form-group col-md-5" appErrorGroup>
+          <label class="control-label col-md-3 text-right" for="packType">
+            Embalagem:
+          </label>
+          <div class="col-md-9">
+            <select formControlName="packType" class="form-control" id="packType">
+              <option value=''>Selecione um tipo de embalagem</option>
+              <option *ngFor="let packType of packTypes" [value]="packType.id">
+                {{ packType.description }}
+              </option>
+            </select>
+            <app-error-message controlName="packType" label="Tipo de Embalagem"></app-error-message>
+          </div>
+        </div>
+        <div class="form-group col-md-3" appErrorGroup>
+          <label
+            class="control-label col-md-6 text-right"
+            for="quantityVariation">
+            Quantidade:
+          </label>
+          <div class="col-md-6">
+            <input
+              class="form-control"
+              formControlName="quantityVariation"
+              [textMask]="integerMask"
+              maxlength="9"
+              id="quantityVariation" />
+            <app-error-message controlName="quantityVariation" label="Quantidade"></app-error-message>
+          </div>
+        </div>
+        <div class="form-group col-md-3" appErrorGroup>
+          <label
+            class="control-label col-md-6 text-right"
+            for="unitValueString">
+            Valor unitário:
+          </label>
+          <div class="col-md-6">
+            <input
+              id="unitValueString"
+              class="form-control"
+              formControlName="unitValueString"
+              [textMask]="decimalMask"
+              maxlength="9"
+            />
+            <app-error-message controlName="unitValueString" label="Valor unitário"></app-error-message>
+          </div>
+        </div>
+        <div *ngIf="isEditing" class="form-group col-md-4" appErrorGroup>
+          <label
+            class="control-label col-md-6 text-right"
+            for="unitWeightString">
+            Peso Unit.(KG):
+          </label>
+          <div class="col-md-6">
+            <input
+              id="unitWeightString"
+              class="form-control"
+              formControlName="weightString"
+              [textMask]="decimalMask"
+              maxlength="9"
+            />
+            <app-error-message controlName="unitValueString" label="Peso unitário"></app-error-message>
+          </div>
+        </div>
+
+        <div class=" col-md-1 text-right">
+          <button (click)="submit()" type="button" class="btn btn-primary btn-normal">
+            {{isEditing? "Salvar" : "Adicionar"}}
+          </button>
+        </div>
+        <div class=" col-md-1 text-right">
+          <button (click)="cancelEdit()" *ngIf="isEditing" type="button" class="btn btn-danger btn-normal">
+            Cancelar
+          </button>
+        </div>
+
+      </fieldset>
+
+      <div class="col-md-12" >
+        <app-pack-stock-movement-list
+          [readOnly]="readOnly"
+          [editable]="true"
+          [group]="group"
+          (edit)="edit($event)"
+        ></app-pack-stock-movement-list>
+      </div>
+    </div>
+
+    <div class="box-footer" *ngIf="!readOnly">
+      <app-submit-button [loading]="loading">
+        Salvar
+      </app-submit-button>
+    </div>
+  </div>
+</form>
+</div>

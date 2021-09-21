@@ -1,0 +1,65 @@
+<div class="box">
+
+  <div
+    class="box-header with-border clickable"
+    (click)="collapsed=!collapsed"
+    [class.collapsed]="collapsed"
+  >
+    <h4 class="panel-title accordion-toggle">
+      <i class="fa fa-cubes"></i> Lotes
+    </h4>
+  </div>
+
+  <div class="box-body" *ngIf="fullLoading">
+    <app-loading></app-loading>
+  </div>
+
+  <div
+    class="tracking-results list-group"
+    style="overflow-y: scroll"
+    [hidden]="collapsed"
+    *ngIf="!fullLoading"
+  >
+    <template ngFor let-batch [ngForOf]="resultedBatches">
+      <div class="list-group-item" [style.background-color]="batch.state.fill">
+        <h4 class="list-group-item-heading">
+          {{ batch.batchCode }}
+
+          <button
+            [class]="batch.state.orderClass"
+            (click)="toggleOrder(batch)"
+          >
+            <i [class]="batch.state.orderIcon"></i>
+          </button>
+          <button
+            [class]="batch.state.selectClass"
+            (click)="toggleSelect(batch)"
+            style="margin-right: 5px"
+          >
+            <i class="fa fa-crosshairs"></i>
+          </button>
+        </h4>
+        <p class="list-group-item-text">
+          <span *ngFor="let classification of batch.classifications">
+            {{classification.label}}: {{classification.value}} <br>
+          </span>
+          <span>Peso disponível: <strong>{{ batch.weightString }}KG</strong></span>
+        </p>
+      </div>
+    </template>
+    <a
+      href="javascript:"
+      *ngIf="ableToIncrementShowResultsLimit"
+      (click)="incrementShowResultsLimit()"
+      class="list-group-item text-center"
+    >
+      <strong>Exibir mais...</strong>
+    </a>
+  </div>
+
+  <div class="box-body" [hidden]="collapsed" *ngIf="!fullLoading && (!resultedBatches || !resultedBatches.length)">
+    <p class="text-center">
+      Não há lotes para exibir
+    </p>
+  </div>
+</div>

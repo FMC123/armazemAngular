@@ -1,0 +1,158 @@
+<section class="content-header">
+  <h1>
+    <small>Cadastro</small>
+    Contato
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Pessoa', '/person'],
+    ['Cadastro de Contato', null]
+  ]"></app-breadcrumb>
+</section>
+
+
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <form [formGroup]="form" *ngIf="form" class="form-horizontal">
+
+        <div class="box">
+          <div class="box-header with-border">
+            <div class="box-title">Formulário</div>
+          </div>
+
+          <div class="box-body">
+            <fieldset [disabled]="loading">
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="name">Nome*</label>
+                <div class="col-md-10">
+                  <input id="name" formControlName="name" type="text" maxlength="200" class="form-control" />
+                  <app-error-message controlName="name" label="Nome"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="phone">Telefone*</label>
+                <div class="col-md-10">
+                  <input id="phone" formControlName="phone" [textMask]="phoneMask" type="text" class="form-control" />
+                  <app-error-message controlName="phone" label="Telefone"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="extensionLine">Ramal</label>
+                <div class="col-md-10">
+                  <input
+                    id="extensionLine"
+                    formControlName="extensionLine"
+                    [textMask]="integerMask"
+                    type="text"
+                    class="form-control"
+                    maxlength="4"
+                  />
+                  <app-error-message controlName="extensionLine" label="Ramal"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="cellPhone">Celular</label>
+                <div class="col-md-10">
+                  <input id="cellPhone" formControlName="cellPhone" [textMask]="phoneMask" type="text"  class="form-control" />
+                  <app-error-message controlName="cellPhone" label="Celular"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="fax">Fax</label>
+                <div class="col-md-10">
+                  <input id="fax" formControlName="fax" [textMask]="phoneMask" type="text"  class="form-control" />
+                  <app-error-message controlName="fax" label="Fax"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="email">E-mail*</label>
+                <div class="col-md-10">
+                  <input id="email" formControlName="email" type="text" maxlength="100" class="form-control" />
+                  <app-error-message controlName="email" label="E-mail"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="main">
+                  Contato Principal ?
+                </label>
+                <div class="col-md-1">
+                  <input
+                    [formControl]="form.get('main')"
+                    type="checkbox"
+                  />
+                  <app-error-message controlName="main" label="Contato Principal"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="url">URL</label>
+                <div class="col-md-10">
+                  <input id="url" formControlName="url" type="text" maxlength="30" class="form-control" />
+                  <app-error-message controlName="url" label="url"></app-error-message>
+                </div>
+              </div>
+
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="indSendReport">
+                  Enviar relatórios movimentos ?
+                </label>
+                <div class="col-md-1">
+                  <input
+                    [formControl]="form.get('indSendReport')"
+                    type="checkbox"
+                  />
+                  <app-error-message controlName="indSendReport" label="Enviar relatórios movimentos"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="indSendPackingTicketWeight">
+                  Enviar romaneios e tickets ?
+                </label>
+                <div class="col-md-1">
+                  <input
+                    [formControl]="form.get('indSendPackingTicketWeight')"
+                    type="checkbox"
+                  />
+                  <app-error-message controlName="indSendPackingTicketWeight" label="Enviar romaneios e tickets"></app-error-message>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="box-footer" >
+            <div class="row">
+              <div class="col-sm-offset-2">
+                <div class="col-sm-10 mb10">
+                  <button
+                    type="button"
+                    (click)="save()"
+                    class="btn btn-success btn-size"
+                  >
+                    SALVAR
+                  </button>
+                  <button
+                  type="button"
+                    [class.disabled]="loading"
+                    (click) = "returnFormPerson()"
+                    class="btn btn-size"
+                  >
+                    VOLTAR
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

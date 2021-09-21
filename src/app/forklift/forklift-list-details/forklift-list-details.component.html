@@ -1,0 +1,28 @@
+
+<section class="content-header">
+    <h1>
+      <small>Detalhes</small>
+      Empilhadeira
+    </h1>
+    <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Empilhadeiras','/forklift'],
+    ['Detalhes da Empilhadeira', null]
+  ]"></app-breadcrumb>
+  </section>
+
+
+
+  <section class="content">
+
+ <app-forklift-list-info [forklift]="forklift" *ngIf="forklift"></app-forklift-list-info>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <a routerLink="/forklift"
+          class="btn btn-default btn-size">
+        VOLTAR
+      </a>
+    </div>
+  </div>
+  </section>

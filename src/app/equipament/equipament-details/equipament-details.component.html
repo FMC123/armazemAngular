@@ -1,0 +1,31 @@
+<section class="content-header">
+  <h1>
+    <small>Detalhes</small>
+    Equipamento
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Equipamentos', '/equipament'],
+    [equipament.code, null]
+    ]"
+  >
+  </app-breadcrumb>
+</section>
+<section class="content">
+
+<app-equipament-info [equipament]="equipament" *ngIf="equipament"></app-equipament-info>
+
+<app-equipament-tag-list [equipament]="equipament" *ngIf="equipament"></app-equipament-tag-list>
+
+<app-equipament-destination-list [equipament]="equipament" *ngIf="equipament"></app-equipament-destination-list>
+
+
+    <div class="row">
+      <div class="col-xs-12 mb10">
+        <a [routerLink]="['/equipament']"
+           class="btn btn-default">
+          VOLTAR
+        </a>
+      </div>
+  </div>
+</section>

@@ -1,0 +1,138 @@
+<section class="content-header">
+  <h1>
+    Relatório Esforço de Remoção
+  </h1>
+  <app-breadcrumb [items]="[
+          ['Início', ''],
+          ['Relatório Esforço de Remoção', null]
+        ]"></app-breadcrumb>
+</section>
+<section class="content-header">
+  <div class="box">
+    <div class="box-header">
+      <h3 class="box-title w100">
+        Filtro
+      </h3>
+    </div>
+    <div class="box-body">
+
+      <div >
+        <label class="control-label col-md-2 text-right">
+          Marcadores
+        </label>
+        <div class="col-md-10">
+          <app-loading *ngIf="loading"></app-loading>
+
+          <table class="table table-bordered">
+            <tr>
+              <th class="col-xs-5">Marcador</th>
+              <th class="col-xs-1 text-center">Ação</th>
+            </tr>
+            <tr *ngIf="markupGroups && markupGroups.length">
+              <td appErrorGroup>
+                <select class="form-control" [(ngModel)]="markupSelected">
+                  <option value="">Selecione um lote</option>
+                  <option *ngFor="let markupGroup of markupGroups" [ngValue]="markupGroup">
+                    {{ markupGroup.label }}
+                  </option>
+                </select>
+              </td>
+              <td class="text-center">
+                <button (click)="addToFiltered()" type="button" class="btn btn-success" appTooltip="Adicionar">
+                  <span class="fa fa-check"></span>
+                </button>
+              </td>
+            </tr>
+            <ng-container *ngFor="let serviceItem of filteredArray">
+              <tr class="active">
+                <td>{{ serviceItem.label }}</td>
+                <td class="text-center">
+                  <button
+                    (click)="removeFromFiltered(serviceItem)"
+                    type="button"
+                    appTooltip="Excluir"
+                    class="btn btn-danger btn-sm"
+                  >
+                    <span class="fa fa-trash-o fa-lg"></span>
+                  </button>
+                </td>
+              </tr>
+            </ng-container>
+          </table>
+
+          <button type="button" class="btn btn-success btn-size"
+                  (click)="gerarMarkupGroupCost()"
+                  [disabled] = "generating || !(filteredArray && filteredArray.length)">
+            GERAR
+          </button>
+
+          <button type="button" class="btn btn-default btn-size"
+                  (click)="limpar()">
+            LIMPAR
+          </button>
+
+        </div>
+      </div>
+
+
+
+    </div>
+  </div>
+
+  <div class="box"
+       *ngIf="(removalsCosts && removalsCosts.length) || generating"
+  >
+    <div class="box-header">
+      <h3 class="box-title w100">
+        Esforço
+      </h3>
+    </div>
+
+    <div class="box-body text-center">
+
+      <div class="text-left"
+          *ngIf="!generating">
+        <table class="table table-bordered table-striped">
+          <tr>
+            <th class="col-xs-6">Item</th>
+            <th class="col-xs-1 text-center">Tipo</th>
+            <th class="col-xs-1 text-center">BAGs</th>
+            <th class="col-xs-1 text-center">Fator</th>
+            <th class="col-xs-1 text-center">Remoções</th>
+          </tr>
+          <tbody>
+            <tr *ngFor="let serviceItem of removalsCosts">
+              <td> <span style="padding: 8px" [style.background-color]="serviceItem.color">&#160;</span> &#160; {{ serviceItem.markupGroupLabel }}</td>
+              <td class="text-center">
+                {{serviceItem.type}}
+              </td>
+              <td class="text-center">
+                {{serviceItem.numOfBags}}
+              </td>
+              <td class="text-center">
+                {{serviceItem.removalFactorString}}
+              </td>
+              <td class="text-center">
+                {{serviceItem.numOfMoves}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <button type="button" class="btn btn-success btn-size"
+                [disabled] = "generatingPdf"
+                (click)="downloadMarkupGroupCost()">
+          PDF
+        </button>
+        <button type="button" class="btn btn-success btn-size"
+        (click)="downloadMarkupGroupCostCSV()">
+          EXCEL
+        </button>
+      </div>
+
+      <app-loading *ngIf="generating"></app-loading>
+
+    </div>
+
+  </div>
+</section>

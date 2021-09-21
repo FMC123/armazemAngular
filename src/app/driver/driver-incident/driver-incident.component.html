@@ -1,0 +1,78 @@
+<div class="box">
+  <div class="box-header">
+    <div class="box-title" style="width: 100%">
+      Incidentes
+      <div class="pull-right">
+        <a *ngIf=" (!driver || driver?.id)  && editable" (click)="formModal.open()" class="btn btn-success btn-size">
+          <span class="fa fa-plus fa-fw"></span>
+          <strong>NOVO</strong>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="box-body">
+    <div class="row">
+      <div class="col-xs-12">
+        <app-loading *ngIf="loadingList"></app-loading>
+        <div class="box-body" *ngIf="!loadingList && page.data.length == 0">
+          Nenhum incidente cadastrado para este Motorista.
+        </div>
+        <table class="table table-bordered" *ngIf="!loadingList && page.data.length > 0">
+          <tr>
+            <th class="col-xs-1 text-center">Data</th>
+            <th class="col-xs-1 text-center">Origem</th>
+            <th class="col-xs-1 text-center">Tipo</th>
+            <th class="col-xs-1 text-center">Severidade</th>
+            <th class="col-xs-6 text-center">Descrição</th>
+            <th *ngIf="editable" class="col-xs-2 text-center">Ações</th>
+          </tr>
+          <tr *ngFor="let incident of page.data">
+            <td class="text-center">{{ incidentDate(incident) }}</td>
+            <td class="text-center">{{ incident.originObject?.name }}</td>
+            <td class="text-center">{{ incident.typeObject?.name }}</td>
+            <td class="text-center">{{ incident.severityObject?.name }}</td>
+            <td class="text-center">{{ incident.description }}</td>
+            <td *ngIf="editable" class="bts-list-actions">
+              <button
+                (click)="edit(incident)"
+                type="button"
+                appTooltip="Editar"
+                class="btn btn-primary btn-sm">
+                <span class="fa fa-pencil fa-lg"></span>
+              </button>
+              <button
+                (click)="deleteConfirm.open(incident.id)"
+                type="button"
+                appTooltip="Excluir"
+                class="btn btn-danger btn-sm">
+                <span class="fa fa-trash-o fa-lg"></span>
+              </button>
+            </td>
+          </tr>
+        </table>
+        <div class="text-right">
+          <app-pagination *ngIf="!loadingList" [instance]="page"></app-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<app-confirm
+  *ngIf="deleteConfirm.opened"
+  message="Tem certeza que deseja excluir este certificado?"
+  yesLabel="Sim"
+  (confirm)="delete(deleteConfirm.value)"
+  (close)="deleteConfirm.close()">
+</app-confirm>
+
+
+<app-driver-incident-form-modal
+  *ngIf="formModal.opened"
+  [driver]="driver"
+  [incident]="formModal.value"
+  (close)="closeDriveIncidentFormModal($event)"
+  oncancel="closeDriveIncidentFormModal(null)"
+></app-driver-incident-form-modal>

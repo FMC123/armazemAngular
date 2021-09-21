@@ -1,0 +1,45 @@
+<div class="col-lg-12">
+  <h2>{{warehouse.code}} - {{warehouse.shortName}} - {{warehouse.name}}</h2>
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover">
+      <thead>
+        <th class="col-lg-2 text-center">Lote(s)</th>
+        <th class="col-lg-2 text-center">Data(s)</th>
+        <th class="col-lg-2 text-center">Dias no estoque(s)</th>
+        <th class="col-lg-2 text-center">Colaborador(s)</th>
+        <th class="col-lg-2 text-center">Saldo</th>
+        <th class="col-lg-2 text-center">Reservado </th>
+        <th class="col-lg-1 text-center">Ações</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let sample of samples">
+          <td class="text-center">{{sample.batchCodes}}</td>
+          <td class="text-center">{{sample.batchCreateDates}}</td>
+          <td class="text-center">{{sample.batchDays}}</td>
+          <td class="text-center">{{sample.batchCollaborators}}</td>
+          <td class="text-center"><app-kilos-to-sacks [value]="sumBatchesFromSample(sample)"></app-kilos-to-sacks></td>
+          <td class="text-center">{{departmentString(sample)}}</td>
+          <td class="text-center">
+            <button
+              *ngIf="insert"
+              (click)="addOnList(sample)"
+              class="btn btn-success btn-sm"
+              appTooltip="Adicionar na lista"
+            >
+              <span class="fa fa-plus fa-lg"></span>
+            </button>
+
+            <button
+              *ngIf="!insert"
+              (click)="removeFromList(sample)"
+              class="btn btn-danger btn-sm"
+              appTooltip="Remover na lista"
+            >
+              <span class="fa fa-trash fa-lg"></span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

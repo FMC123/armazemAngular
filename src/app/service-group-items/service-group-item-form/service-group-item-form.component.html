@@ -1,0 +1,48 @@
+<form (ngSubmit)="save()"
+      [formGroup]="form"
+      *ngIf="form"
+      class="form-horizontal">
+
+  <div class="panel panel-default mt20">
+    <div class="panel-heading">
+      <div class="panel-title">Formulário</div>
+    </div>
+
+    <div class="panel-body">
+      <fieldset [disabled]="loading">
+        <fieldset [disabled]="!!serviceGroupItem.serviceItem" class="form-group" appErrorGroup>
+          <label class="control-label col-md-2 text-right">Item</label>
+          <div class="col-md-10" >
+
+            <select formControlName="itemId"
+                    class="form-control">
+              <option value="">Selecione um serviceItem </option>
+              <option *ngFor="let serviceItem of itemList" [value]="serviceItem.id">
+                {{ serviceItem.code }} - {{ serviceItem.description }}
+              </option>
+            </select>
+            <app-error-message controlName="itemId" label="Item"></app-error-message>
+          </div>
+        </fieldset>
+      </fieldset>
+    </div>
+
+    <div class="panel-footer">
+      <div class="row">
+        <div class="col-sm-offset-2">
+          <div class="col-sm-10 mb10">
+            <app-submit-button [loading]="loading">
+              Salvar
+            </app-submit-button>
+            <a
+                [routerLink]="['/service-group/'+serviceGroupItem.serviceGroup.id]"
+                  class="btn btn-success btn-size">
+              Voltar
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</form>

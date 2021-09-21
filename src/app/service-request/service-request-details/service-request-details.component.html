@@ -1,0 +1,29 @@
+<section class="content-header">
+  <h1>
+    <small>Detalhe</small>
+    Solicitação de Atendimento
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Solicitação de Atendimento', '/service-request'],
+    [serviceRequest ? serviceRequest.id : null, null]
+  ]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <app-service-request-info
+    [serviceRequest]="serviceRequest"
+    *ngIf="serviceRequest"
+  ></app-service-request-info>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <a
+        routerLink="/service-request"
+        class="btn btn-default btn-size"
+      >
+        VOLTAR
+      </a>
+    </div>
+  </div>
+</section>

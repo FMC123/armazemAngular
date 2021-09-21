@@ -1,0 +1,138 @@
+<section class="content-header">
+  <h1>
+    <small>Cadastro</small>
+    Pilha
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Mapa',''],
+    ['Gerenciar Mapa','/position-layer'],
+    [stack.position.positionLayer.code, '/position-layer/'+stack.position.positionLayer.id],
+    ['Detalhe de Posição' , null],
+    [stack.position.code, '/position/'+stack.position.id],
+    ['Cadastro de Pilha',null],
+    [stack.code,  null]
+  ]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <form
+        (ngSubmit)="save()"
+        [formGroup]="form"
+        *ngIf="form"
+        class="form-horizontal"
+      >
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Formulário</h3>
+          </div>
+
+          <div class="box-body">
+            <fieldset [disabled]="loading">
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="code">Código</label>
+                <div class="col-md-10">
+                  <input id="code" formControlName="code" type="text" class="form-control uppercase" />
+                  <app-error-message controlName="code" label="Código"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="stackHeight">Altura da Pilha</label>
+                <div class="col-md-10">
+                  <input id="stackHeight" formControlName="stackHeight" type="text" maxlength="255" class="form-control" />
+                  <app-error-message controlName="stackHeight" label="Altura da Pilha"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="yCoord">Coordenada Y</label>
+                <div class="col-md-10">
+                  <input id="yCoord" formControlName="yCoord" type="text" class="form-control uppercase" />
+                  <app-error-message controlName="yCoord" label="Coordenada Y"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="xCoord">Coordenada X</label>
+                <div class="col-md-10">
+                  <input id="xCoord" formControlName="xCoord" type="text" class="form-control uppercase" />
+                  <app-error-message controlName="xCoord" label="Coordenada X"></app-error-message>
+                </div>
+              </div>
+
+
+              <div appErrorGroup class="form-group">
+                <label class="control-label col-md-2 text-right" for="height">Altura
+                 <span *ngIf="isDescriptive()" appTooltip="Altura 0.00 tira o preenchimento da posição deixando apenas o nome visível"
+                       class="fa fa-question-circle fa-lg"></span>
+                </label>
+                <div class="col-md-10">
+                  <input
+                    (keyup)="onHeightUpdate($event)"
+                    class="form-control uppercase"
+                    formControlName="height"
+                    id="height"
+                    type="text"
+                  />
+                  <app-error-message controlName="height" label="Altura"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="width">Largura
+                <span *ngIf="isDescriptive()" appTooltip="O valor sugerido é baseado no tamanho do Nome da Posição e a Altura escolhida"
+                        class="fa fa-question-circle fa-lg"></span>
+                </label>
+                <div class="col-md-10">
+                  <input id="width" formControlName="width" class="form-control uppercase" />
+                  <app-error-message controlName="width" label="Largura"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="distance">Distancia</label>
+                <div class="col-md-10">
+
+                  <input id="distance" formControlName="distance" type="text" class="form-control uppercase" />
+                  <app-error-message controlName="distance" label="Distancia"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="rotation">Rotação
+                  <span *ngIf="isDescriptive()" appTooltip="Este valor em º(graus) rotaciona posições do tipo Descritivo"
+                        class="fa fa-question-circle fa-lg"></span>
+                </label>
+                <div class="col-md-10">
+                  <input id="rotation" formControlName="rotation" type="text" class="form-control uppercase" />
+                  <app-error-message controlName="rotation" label="Rotação"></app-error-message>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="box-footer">
+            <div class="row">
+              <div class="col-sm-offset-2">
+                <div class="col-sm-10 mb10">
+                  <app-submit-button [loading]="loading">
+                    SALVAR
+                  </app-submit-button>
+                  <a [class.disabled]="loading"
+                      [routerLink]="['/position/'+stack.position.id]"
+                      class="btn btn-default btn-size">
+                    VOLTAR
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

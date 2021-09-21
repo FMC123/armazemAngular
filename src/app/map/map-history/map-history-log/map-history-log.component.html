@@ -1,0 +1,66 @@
+<div class="box">
+
+  <div class="box-header with-border clickable"
+       (click)="collapsed=!collapsed"
+       [class.collapsed]="collapsed">
+    <h4 class="box-title accordion-toggle">
+      <i class="fa fa-th-list"></i> Movimentações do dia
+    </h4>
+  </div>
+
+  <div class="box-body" style="height: 100%" [hidden]="!loading">
+    <app-loading></app-loading>
+  </div>
+
+  <div class="box-body" style="height: 100%" [hidden]="collapsed || loading">
+    <div
+      *ngIf="logs.length<=0"
+      class="text-center m20"
+    >
+      Não existem informações para exibir
+    </div>
+
+    <div *ngIf="selectedInfo" style="padding-bottom: 15px">
+      <app-info-table [data]="selectedInfo"></app-info-table>
+    </div>
+
+    <div class="table-responsive"
+          *ngIf="logs.length>0">
+      <table class="table table-condensed table-bordered table-hover">
+        <thead>
+          <tr>
+            <th class="col-xs-2">
+              Hora
+            </th>
+            <th class="col-xs-2">
+              Tag
+            </th>
+            <th class="col-xs-2">
+              Lote
+            </th>
+            <th class="col-xs-3">
+              Pos Ini
+            </th>
+            <th class="col-xs-3">
+              Pos Fim
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let log of logs"
+              class="clickable"
+              (click)="select(log)"
+              [class.active]="log.selected"
+              >
+            <td>{{log.logDateString}}</td>
+            <td>{{log.storageUnit.tagCode}}</td>
+            <td>{{log.storageUnit.batchCode}}</td>
+            <td>{{log.fullPositionFrom}}</td>
+            <td>{{log.fullPositionTo}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

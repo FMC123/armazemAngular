@@ -1,0 +1,91 @@
+<div
+  class="modal fade"
+  appModal
+  [shownCallback]="focusOnInput()"
+  (close)="close.emit(null)"
+  tabindex="-1"
+  role="dialog"
+>
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <form
+        (ngSubmit)="submit()"
+        [formGroup]="form"
+        *ngIf="form"
+        class="form-horizontal"
+      >
+        <div class="modal-header">
+          <h3 class="modal-title">Novo certificado para a nota fiscal</h3>
+        </div>
+        <div class="modal-body">
+          <fieldset [disabled]="loading">
+
+            <div class="form-group" appErrorGroup>
+              <label class="control-label col-md-2 text-right" for="certificateId">
+                Certificado
+              </label>
+              <div class="col-md-10">
+                <select (change)="onChange($event.target.value)" formControlName="certificateId" class="form-control">
+                  <option value=''>Selecione um certificado</option>
+                  <option *ngFor="let certificate of certificates" [value]="certificate.id">
+                    {{ certificate.name }}
+                  </option>
+                </select>
+                <app-error-message controlName="certificateId" label="Certificado"></app-error-message>
+              </div>
+            </div>
+
+            <div class="form-group" appErrorGroup >
+              <label class="control-label col-md-2 text-right" for="certifiedCustodyCode">
+                Número Certificadora Custódia - CDC
+              </label>
+              <div class="col-md-10">
+                <input
+                  id="certifiedCustodyCode"
+                  [formControl]="form.get('certifiedCustodyCode')"
+                  type="text"
+                  maxlength="14"
+                  class="form-control"
+                />
+                <app-error-message controlName="certifiedCustodyCode" label="Número Certificadora Custódia - CDC"></app-error-message>
+              </div>
+            </div>
+
+            <div class="form-group" appErrorGroup>
+              <label class="control-label col-md-2 text-right" for="certifiedOriginCode">
+                Número Certificadora Origem
+              </label>
+              <div class="col-md-10">
+                <input
+                  id="certifiedOriginCode"
+                  [formControl]="form.get('certifiedOriginCode')"
+                  type="text"
+                  maxlength="14"
+                  class="form-control"
+                />
+                <app-error-message controlName="certifiedOriginCode" label="Número Certificadora Origem"></app-error-message>
+              </div>
+            </div>
+
+          </fieldset>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default btn-size" data-dismiss="modal">
+            Cancelar
+          </button>
+          <app-submit-button [loading]="loading">
+            Salvar
+          </app-submit-button>
+        </div>
+      </form>
+    </div>
+
+    <app-alert *ngIf="alertCertificateExpired.opened"
+               title="Certificado Inválido"
+               message="{{certificateAlertMessage}}"
+               (click)="closeAlert()"
+               (close)="closeAlert()"></app-alert>
+  </div>
+
+
+</div>

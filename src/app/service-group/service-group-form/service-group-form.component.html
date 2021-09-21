@@ -1,0 +1,86 @@
+<section class="content-header">
+  <h1>
+    <small>Cadastro</small>
+    Grupo de Serviço
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Grupos de Serviço', '/service-group'],
+    ['Cadastro de Grupo de Serviço', null]
+  ]">
+  </app-breadcrumb>
+</section>
+
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <form
+        (ngSubmit)="save()"
+        [formGroup]="form"
+        *ngIf="form"
+        class="form-horizontal"
+      >
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Formulário</h3>
+          </div>
+
+          <div class="panel-body">
+            <fieldset [disabled]="loading">
+              <fieldset [disabled]="disableCode" appErrorGroup>
+              <div class="form-group" appErrorGroup>
+                <div class="col-md-10">
+                  <input id="code"
+                            [textMask]="integerMask"
+                          [formControl]="form.get('code')"
+                          type="hidden"
+                          maxlength="9"
+                          class="form-control" />
+                  <app-error-message controlName="code" label="Codigo"></app-error-message>
+                </div>
+              </div>
+              </fieldset>
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="description">Descrição*</label>
+                <div class="col-md-10">
+                  <input [formControl]="form.get('description')"
+                          type="text"
+                          maxlength="200"
+                          class="form-control" />
+                  <app-error-message controlName="description" label="Descricao"></app-error-message>
+                </div>
+              </div>
+
+                <label class="control-label col-md-2 text-right" for="indGroupToCalc">Agrupar para cálculo</label>
+                <div class="col-md-1">
+                    <input
+                    [formControl]="form.get('indGroupToCalc')"
+                    type="checkbox"
+                    />
+                  <app-error-message controlName="indGroupToCalc" label="Agrupar"></app-error-message>
+                </div>
+
+            </fieldset>
+          </div>
+
+          <div class="box-footer">
+            <div class="row">
+              <div class="col-sm-offset-2">
+                <div class="col-sm-10 mb10">
+                  <app-submit-button [loading]="loading">
+                    SALVAR
+                  </app-submit-button>
+                  <a [class.disabled]="loading"
+                      routerLink="/service-group"
+                      class="btn btn-default btn-size">
+                    VOLTAR
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

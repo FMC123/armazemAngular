@@ -1,0 +1,27 @@
+
+<section class="content-header">
+  <h1>
+    <small>Detalhes</small>
+     Classificação
+  </h1>
+  <app-breadcrumb [items]="[
+  ['Início', ''],
+  ['Classificação', null],
+  ['Autorização Classificação','/classification-authorization'],
+  ['Detalhes da Classificação', null]
+]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  
+<app-classification-authorization-info [classificationVersion]="classificationVersion" *ngIf="classificationVersion"></app-classification-authorization-info>
+
+<div class="row">
+  <div class="col-xs-12">
+    <a routerLink="/classification-authorization"
+        class="btn btn-default btn-size">
+      VOLTAR
+    </a>
+  </div>
+</div>
+</section>

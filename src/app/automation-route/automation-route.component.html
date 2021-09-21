@@ -1,0 +1,169 @@
+<section class="content-header">
+  <h1>
+    Operações de Transbordo
+  </h1>
+  <app-breadcrumb [items]="[
+      ['Início', ''],
+      ['Operações de Transbordo', null]
+    ]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <span class="pull-right" style="font-size: 16px">
+            <span style="border: 1px solid #333; margin-right: 5px; color: #333" class="label" [style.background-color]="status.color"
+              *ngFor="let status of statuses">
+              {{ status.name }}
+            </span>
+          </span>
+        </div>
+
+        <div class="box-body">
+          <app-loading *ngIf="loading"></app-loading>
+          <p *ngIf="!loading && (!automationRoutesAvailable || !automationRoutesAvailable.length)">
+            Não existem rotas configuradas para este armazém
+          </p>
+          <div *ngIf="!loading && automationRoutesAvailable && automationRoutesAvailable.length" class="table-responsive">
+            <table class="table table-bordered table-condensed">
+              <thead>
+                <tr>
+                  <th class="col-xs-2 text-center">
+                    Rota
+                  </th>
+                  <th class="col-xs-1 text-center">
+                    Romaneio
+                  </th>
+                  <th class="col-xs-1 text-center">
+                    Lote
+                  </th>
+                  <th class="col-xs-4 text-center">
+                    Cooperado
+                  </th>
+                  <th class="col-xs-2 text-center">
+                    Automação
+                  </th>
+                  <th class="col-xs-2 text-center">
+                    Ações
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <template ngFor let-automationRoute [ngForOf]="automationRoutesAvailable">
+                <tr [style.background-color]="automationRoute.automationStatusNotification.color">
+                  <td class="text-center">{{automationRoute.positionOrigin.nameCode}} -> {{automationRoute.positionDestination.nameCode}}</td>
+                  <td class="text-center">{{batchToShow(automationRoute)?.batchOperation?.batchOperationCode}}</td>
+                  <td class="text-center">{{batchToShow(automationRoute)?.batchCode}}</td>
+                  <td class="text-center">{{batchToShow(automationRoute)?.batchOperation?.owner?.person?.name}}</td>
+                  <td class="text-center">{{automationRoute.statusCurrent}}</td>
+                  <td class="text-center">
+                    <button
+                      *ngIf="allowMoegaSiloFinish(automationRoute)"
+                      [disabled]="loading"
+                      type="button"
+                      class="btn btn-sm btn-danger"
+                      style="margin: 5px"
+                      (click)="executeConfirm.open({
+                        type: 'MOEGA_SILO_FINISH',
+                        automationRoute: automationRoute
+                      })"
+                    >
+                      FINALIZAR RECEBIMENTO
+                    </button>
+
+                    <button
+                      *ngIf="allowSiloEmbegadoraInit(automationRoute)"
+                      [disabled]="loading"
+                      type="button"
+                      class="btn btn-sm btn-success"
+                      style="margin: 5px"
+                      (click)="executeConfirm.open({
+                        type: 'SILO_EMBEGADORA_INIT',
+                        automationRoute: automationRoute
+                      })"
+                    >
+                      INICIAR EMBEGAMENTO
+                    </button>
+
+
+
+
+                    <button
+                      *ngIf="allowSiloEmbegadoraFinish(automationRoute)"
+                      [disabled]="loading"
+                      type="button"
+                      class="btn btn-sm btn-warning"
+                      style="margin: 5px"
+                      (click)="executeConfirm.open({
+                        type: 'SILO_EMBEGADORA_FINISH_AUTOMATION',
+                        automationRoute: automationRoute
+                      })"
+                    >
+                      FINALIZAR AUTOMAÇÃO<br>DO EMBEGAMENTO
+                    </button>
+
+                    <button
+                      *ngIf="allowMoegaEmbegadoraFinish(automationRoute)"
+                      [disabled]="loading"
+                      type="button"
+                      class="btn btn-sm btn-warning"
+                      style="margin: 5px"
+                      (click)="executeConfirm.open({
+                        type: 'MOEGA_EMBEGADORA_FINISH_AUTOMATION',
+                        automationRoute: automationRoute
+                      })"
+                    >
+                      FINALIZAR AUTOMAÇÃO<br>DO EMBEGAMENTO
+                    </button>
+
+
+
+                    <button
+                      *ngIf="allowSiloEmbegadoraFinish(automationRoute)"
+                      [disabled]="loading"
+                      type="button"
+                      class="btn btn-sm btn-danger"
+                      style="margin: 5px"
+                      (click)="executeConfirm.open({
+                        type: 'SILO_EMBEGADORA_FINISH_SYSTEM',
+                        automationRoute: automationRoute
+                      })"
+                    >
+                      FINALIZAR EMBEGAMENTO<br>NO SISTEMA
+                    </button>
+
+                    <button
+                      *ngIf="allowMoegaEmbegadoraFinish(automationRoute)"
+                      [disabled]="loading"
+                      type="button"
+                      class="btn btn-sm btn-danger"
+                      style="margin: 5px"
+                      (click)="executeConfirm.open({
+                        type: 'MOEGA_EMBEGADORA_FINISH_SYSTEM',
+                        automationRoute: automationRoute
+                      })"
+                    >
+                      FINALIZAR EMBEGAMENTO<br>NO SISTEMA
+                    </button>
+
+
+                  </td>
+                </tr>
+              </template>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<app-confirm
+  *ngIf="executeConfirm.opened"
+  message="Tem certeza que deseja executar esta operação?"
+  (confirm)="execute(executeConfirm.value)"
+  (close)="executeConfirm.close()">
+</app-confirm>

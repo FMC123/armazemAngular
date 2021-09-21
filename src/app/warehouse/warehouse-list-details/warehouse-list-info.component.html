@@ -1,0 +1,34 @@
+<div class="box">
+  <div class="box-header">
+    <h4 class="box-title clearfix" style="line-height: 2">
+      <i class="fa fa-connectdevelop "></i> Dados do Armazém
+    </h4>
+  </div>
+  <div class="box-body">
+    <div class="row">
+      <div class="col-xs-12">
+        <app-info-table [data]="leftColumn"></app-info-table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="box" *ngIf="warehouse.children && warehouse.children.length > 0">
+  <div class="box-body">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="box-header">
+          <h4 class="box-title clearfix" style="line-height: 2">
+            <i class="fa fa-connectdevelop "></i> Filhos
+          </h4>
+        </div>
+        <div class="box-body">
+          <div class="row">
+            <div class="col-xs-12">
+              <app-warehouse-children-list [children]="warehouse.children"></app-warehouse-children-list>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,176 @@
+<div class="new-layout">
+
+  <section class="content-header">
+    <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Autorizações de embarque', '/shipping-authorization'],
+    ['Cadastro de autorização de embarque', null]
+  ]"></app-breadcrumb>
+    <h1>
+      <small>{{shippingAuthorization.id ? 'Edição' : 'Cadastro' }}</small>
+      Autorização de Embarque
+    </h1>
+  </section>
+
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+        <app-loading *ngIf="!form"></app-loading>
+        <form (ngSubmit)="save()" [formGroup]="form" *ngIf="form" class="form-horizontal">
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Formulário</h3>
+            </div>
+
+            <div class="box-body">
+              <fieldset [disabled]="loading">
+                <div class="form-group" *ngIf="editing">
+                  <label class="control-label col-md-2 text-right">
+                    Código
+                  </label>
+                  <div class="col-md-10">
+                    <input type="text" class="form-control" disabled [value]="shippingAuthorization.code" />
+                  </div>
+                </div>
+
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-md-2 text-right">
+                    Tipo
+                  </label>
+                  <div class="col-md-10">
+                    <select formControlName="type" class="form-control">
+                      <option value=''>Selecione um tipo</option>
+                      <option *ngFor="let tp of types" [value]="tp.code">
+                        {{ tp.name }}
+                      </option>
+                    </select>
+                    <app-error-message controlName="type" label="Tipo"></app-error-message>
+                  </div>
+                </div>
+
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="destinationWarehouseId">
+                    Armazém de destino
+                  </label>
+                  <div class="col-md-10">
+                    <select formControlName="destinationWarehouseId" class="form-control" id="destinationWarehouseId">
+                      <option value=''>Selecione um armazém</option>
+                      <option *ngFor="let warehouse of destinationWarehouses" [value]="warehouse.id">
+                        {{ warehouse.code }} - {{ warehouse.name }}
+                      </option>
+                    </select>
+                    <app-error-message controlName="destinationWarehouseId" label="Armazém de destino">
+                    </app-error-message>
+                  </div>
+                </div>
+
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="expectedDateString">
+                    Data prevista
+                  </label>
+                  <div class="col-md-10">
+                    <div class="input-group">
+                      <input id="expectedDateString" formControlName="expectedDateString" [textMask]="dateMask"
+                        appDatePicker type="text" class="form-control" />
+                      <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+                    </div>
+                    <app-error-message controlName="expectedDateString" label="Data prevista"></app-error-message>
+                  </div>
+                </div>
+
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="markupGroupColor">
+                    Cor do marcador
+                  </label>
+                  <div class="col-md-10">
+                    <input id="markupGroupColor" formControlName="markupGroupColor" type="color" class="form-control" />
+                    <app-error-message controlName="markupGroupColor" label="Cor do marcador"></app-error-message>
+                  </div>
+                </div>
+
+                <div class="form-group" appErrorGroup *ngIf="podeSelecionarLotesDiferentesClientes() == false">
+                  <label class="control-label col-md-2 text-right" for="clientId">Cliente</label>
+                  <div class="col-md-10">
+                    <app-autocomplete [service]="ownerAutocomplete" [hideClearButton]="saleEditing"></app-autocomplete>
+                    <app-error-message controlName="clientId" label="Cliente"></app-error-message>
+                  </div>
+                </div>
+                <input id="clientId" type="hidden" formControlName="clientId" />
+
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="destinataryId">Destinatário</label>
+                  <div class="col-md-10">
+                    <app-autocomplete [service]="destinataryAutocomplete"></app-autocomplete>
+                    <app-error-message controlName="destinataryId" label="Destinatário"></app-error-message>
+                  </div>
+                </div>
+                <input id="destinataryId" type="hidden" formControlName="destinataryId" />
+
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="observation">
+                    Observação
+                  </label>
+                  <div class="col-md-10">
+                    <div class="input-group col-md-12">
+                      <input id="observation" formControlName="observation" type="text" class="form-control" />
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group" appErrorGroup >
+
+                  <div class="col-md-1"></div>
+                  <!-- seleção de lotes -->
+                  <div class="col-md-11">
+                    <app-shipping-authorization-batch-selection
+                      [markupGroupBatches]="this.shippingAuthorization.batches"
+                      [ownerFixed]="this.ownerAutocomplete.value"
+                      [isEditable]="true"
+                    ></app-shipping-authorization-batch-selection>
+                  </div>
+
+
+
+
+                  <!--<div class="col-md-10">
+                    <app-shipping-authorization-batch-form [(data)]="shippingAuthorization.batches"
+                      [stakeholder]="form.get('clientId')"
+                      [lotesDiferentesClientes]="podeSelecionarLotesDiferentesClientes()">
+                    </app-shipping-authorization-batch-form>
+
+                    <div *ngIf="submitted && (!shippingAuthorization.batches || !shippingAuthorization.batches.length)"
+                      class='text-danger'>
+                      É obrigatório selecionar ao menos um lote
+                    </div>
+                  </div>-->
+                </div>
+
+              </fieldset>
+            </div>
+
+            <div class="box-footer">
+              <div class="row">
+                <div class="col-sm-offset-2">
+                  <div class="col-sm-10 mb10">
+                    <app-submit-button [loading]="loading">
+                      Salvar
+                    </app-submit-button>
+                    <a [class.disabled]="loading" routerLink="/shipping-authorization" class="btn btn-default btn-size">
+                      Voltar
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Confirmação para verificação do certificado -->
+  <app-confirm *ngIf="confirmCertificateValidation.opened"
+    message="Neste embarque estão sendo misturados café certificado e não certificado. Deseja continuar?" noLabel="Não"
+    yesLabel="Sim" (confirm)="setConfirmCertificateValidation()" (close)="confirmCertificateValidation.close()">
+  </app-confirm>
+
+</div>

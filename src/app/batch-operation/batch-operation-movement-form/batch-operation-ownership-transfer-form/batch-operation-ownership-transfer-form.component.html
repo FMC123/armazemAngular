@@ -1,0 +1,121 @@
+<script src="batch-operation-ownership-transfer-form.component.ts"></script>
+<div class="new-layout">
+
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+        <form (ngSubmit)="save()" [formGroup]="form" *ngIf="form" class="form-horizontal">
+
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Dados para a tranferência de Titularidade</h3>
+            </div>
+
+            <div class="panel-body">
+              <fieldset [disabled]="loading">
+                <div>
+                  <div class="form-group" appErrorGroup>
+                    <label class="control-label col-md-2 text-right" for="warehouse">Armazém:</label>
+                    <div class="col-md-10">
+                      <input id="warehouse" [formControl]="form.get('warehouse')" type="text" class="form-control"
+                        disabled />
+                    </div>
+                    <app-error-message controlName="warehouse" label="Armazem"></app-error-message>
+                  </div>
+                  <div class="form-group" appErrorGroup>
+                    <label class="control-label col-md-2 text-right" for="ownerStakeholderId">Vendedor:</label>
+                    <div class="col-md-10">
+                      <app-autocomplete [service]="ownerAutocomplete"></app-autocomplete>
+                      <input id="ownerStakeholderId" type="hidden" formControlName="ownerStakeholderId" />
+                      <app-error-message controlName="ownerStakeholderId" label="Vendedor"></app-error-message>
+                    </div>
+                  </div>
+                  <div class="form-group" appErrorGroup>
+                    <label class="control-label col-md-2 text-right" for="recipientStakeholderId">Destinatário:</label>
+                    <div class="col-md-10">
+                      <app-autocomplete [service]="recipientAutocomplete"></app-autocomplete>
+                      <input id="recipientStakeholderId" type="hidden" formControlName="recipientStakeholderId" />
+                      <app-error-message controlName="recipientStakeholderId" label="Destinatário"></app-error-message>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div appErrorGroup *ngIf="showPurchaseOrder">
+                      <label class="control-label col-md-2 text-right" for="purchaseOrderId">Ordem de compra:</label>
+                      <div class="col-md-2">
+                        <select formControlName="purchaseOrderId" class="form-control" id="purchaseOrderId">
+                          <option *ngFor="let purchaseOrder of purchaseOrders" [value]="purchaseOrder.id">
+                            {{ purchaseOrder.purchaseOrderCode }} -
+                            Sacas {{ purchaseOrder.sacksQuantity }} -
+                            Sacas descarregadas {{ purchaseOrder.dischargedQuantity }}
+                          </option>
+                        </select>
+                        <app-error-message controlName="purchaseOrderId" label="Ordem de compra"></app-error-message>
+                      </div>
+                    </div>
+                    <div appErrorGroup>
+                      <label class="control-label col-md-1 text-right" for="sellCode">Nr. Venda:</label>
+                        <div class="row col-md-2">
+                          <input id="sellCode" formControlName="sellCode" type="text" class="form-control" maxlength="15"/>
+                          <app-error-message controlName="sellCode" label="Nr. Venda"></app-error-message>
+                        </div>
+                    </div>
+                    <div>
+                      <label class="control-label col-md-2 text-right" for="observation">Observação:</label>
+                        <div class="row col-md-3">
+                          <input id="observation" formControlName="observation" type="text" class="form-control" maxlength="50"/>
+                        </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group" appErrorGroup>
+                    <label class="control-label col-md-2 text-right" for="officialDate">
+                      Data Movimento
+                    </label>
+                    <div class="col-md-3">
+                      <div class="input-group">
+                        <input id="officialDate" formControlName="officialDate" [textMask]="dateMask"
+                               appDatePicker type="text" class="form-control"/>
+                        <div class="input-group-addon clickable">
+                          <span class="fa fa-calendar fa-fw"></span>
+                        </div>
+                      </div>
+                      <app-error-message controlName="officialDate" label="Data Movimento"></app-error-message>
+                    </div>
+                  </div>
+
+                  <div class="form-group" appErrorGroup>
+                    <label class="control-label col-md-2 text-right" for="surplusTransfer">Transferir Excedente?</label>
+                    <div class="col-md-1">
+                      <input [formControl]="form.get('surplusTransfer')" type="checkbox" id="surplusTransfer" />
+                      <app-error-message controlName="surplusTransfer" label="Transferir Excedente"></app-error-message>
+                    </div>
+                  </div>
+
+                </div>
+              </fieldset>
+            </div>
+          </div>
+
+          <app-batch-list-ownership-transfer-form [batchsTransfer]="batchsTransfer"
+            [ownerStakeholderId]="ownerStakeholderId" (removeBatchTransfer)="removeBatchTransfer($event)">
+          </app-batch-list-ownership-transfer-form>
+
+          <app-fiscal-note-list-ownership-transfer-form [fiscalNotes]="fiscalNotes">
+          </app-fiscal-note-list-ownership-transfer-form>
+
+          <div class="row">
+            <div class="col-xs-12 mb10">
+
+              <app-submit-button [loading]="loading">
+                Salvar
+              </app-submit-button>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </section>
+</div>

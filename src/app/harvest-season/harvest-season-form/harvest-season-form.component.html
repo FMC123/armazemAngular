@@ -1,0 +1,98 @@
+<section class="content-header">
+  <h1>
+    <small>Cadastro</small>
+    Safra
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Safra', '/user'],
+    ['Cadastro da Safra', null]
+  ]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <form
+        (ngSubmit)="save()"
+        [formGroup]="form"
+        *ngIf="form"
+        class="form-horizontal"
+      >
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Formulário</h3>
+          </div>
+
+          <div class="panel-body">
+            <div class="form-group" appErrorGroup>
+              <label class="control-label col-md-2 text-right" for="identifier">Identificador da Safra*</label>
+              <div class="col-md-10">
+                <input id="identifier"
+                       formControlName="identifier"
+                       type="text"
+                       maxlength="30"
+                       class="form-control uppercase"/>
+                <app-error-message controlName="identifier" label="Nome"></app-error-message>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-md-4 text-right" for="initialDate">Data inicial*</label>
+                  <div class="col-md-8">
+                    <div class="input-group">
+                      <input type="text"
+                             id="initialDate"
+                             [textMask]="dateMask"
+                             appDatePicker
+                             formControlName="initialDate"
+                             class="form-control">
+                      <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+                    </div>
+                    <app-error-message controlName="initialDate" label="Data Inicial"></app-error-message>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-md-4 text-right" for="finalDate">Data final*</label>
+                  <div class="col-md-8">
+                    <div class="input-group">
+                      <input type="text"
+                             id="finalDate"
+                             [textMask]="dateMask"
+                             appDatePicker
+                             formControlName="finalDate"
+                             class="form-control">
+                      <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+                    </div>
+                    <app-error-message controlName="finalDate" label="Data Final"></app-error-message>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="box-footer">
+            <div class="row">
+              <div class="col-sm-offset-2">
+                <div class="col-sm-10 mb10">
+                  <app-submit-button [loading]="loading">
+                    SALVAR
+                  </app-submit-button>
+                  <a [class.disabled]="loading"
+                     routerLink="/harvest-season"
+                     class="btn btn-default btn-size">
+                    VOLTAR
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

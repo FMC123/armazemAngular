@@ -1,0 +1,9 @@
+<div class="login-page">
+  <div class="login-box">
+    <div class="login-logo">
+      <a href="#"><img src="assets/img/logo-login.png"/></a>
+    </div>
+    <app-login-form *ngIf="!rememberedCredentials"></app-login-form>
+    <app-password-form *ngIf="rememberedCredentials"></app-password-form>
+  </div>
+</div>

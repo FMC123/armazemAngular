@@ -1,0 +1,13 @@
+<table class="table table-bordered">
+  <tr *ngIf="header">
+    <th class="col-xs-12 text-center" colspan="2">{{ header }}</th>
+  </tr>
+  <tr *ngFor="let map of data">
+    <th class="col-xs-4 text-right" style="white-space: pre-line;">{{ map?map[0]:'' }}</th>
+    <td class="col-xs-8"
+        [style.background-color]="backgroundColor(map)"
+        [style.color]="color(map)"
+        style="white-space: pre-line;"
+    >{{ map?map[1]:'' }}</td>
+  </tr>
+</table>

@@ -1,0 +1,233 @@
+<section class="content-header">
+  <h1>
+    <small>Cadastro</small>
+    Posição
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Mapa',''],
+    ['Gerenciar Mapa','/position-layer'],
+    [position.positionLayer.code, '/position-layer/'+position.positionLayer.id],
+    ['Cadastro de Posição' , null]
+  ]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <form
+        (ngSubmit)="save()"
+        [formGroup]="form"
+        *ngIf="form"
+        class="form-horizontal"
+      >
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Formulário</h3>
+          </div>
+
+          <div class="box-body">
+            <fieldset [disabled]="loading">
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="code">Código</label>
+                <div class="col-md-10">
+                  <input id="code"
+                        formControlName="code"
+                        type="text"
+                        class="form-control uppercase" />
+                  <app-error-message controlName="code" label="Código"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="name">Nome</label>
+                <div class="col-md-10">
+                  <input id="name"
+                        formControlName="name"
+                        type="text"
+                        maxlength="255"
+                        class="form-control" />
+                  <app-error-message controlName="name" label="Nome"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="yCoordinate">Coordenada Y</label>
+                <div class="col-md-10">
+                  <input
+                    id="yCoordinate"
+                    formControlName="yCoordinate"
+                    type="text"
+                    class="form-control uppercase"
+                    [textMask]="intergerMask"
+                   />
+                  <app-error-message controlName="yCoordinate" label="Coordenada Y"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="xCoordinate">Coordenada X</label>
+                <div class="col-md-10">
+                  <input
+                    id="xCoordinate"
+                    formControlName="xCoordinate"
+                    type="text"
+                    class="form-control uppercase"
+                    [textMask]="intergerMask"
+                   />
+                  <app-error-message controlName="xCoordinate" label="Coordenada X"></app-error-message>
+                </div>
+              </div>
+
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="height">Altura</label>
+                  <div class="col-md-10">
+                    <input
+                      id="height"
+                      formControlName="height"
+                      type="text"
+                      class="form-control uppercase"
+                      [textMask]="decimalMask"
+                    />
+                    <app-error-message controlName="height" label="Altura"></app-error-message>
+                  </div>
+                </div>
+
+                  <div class="form-group" appErrorGroup>
+                    <label class="control-label col-md-2 text-right" for="width">Largura</label>
+                    <div class="col-md-10">
+                      <input
+                        id="width"
+                        formControlName="width"
+                        type="text"
+                        class="form-control uppercase"
+                        [textMask]="decimalMask"
+                      />
+                      <app-error-message controlName="width" label="Largura"></app-error-message>
+                    </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="type">Tipo</label>
+                <div class="col-md-10">
+                  <select
+                    id="type"
+                    formControlName="type"
+                    type="text"
+                    class="form-control uppercase"
+                  >
+                    <option value="G">GRANEL</option>
+                    <option value="M">MOEGA</option>
+                    <option value="B">BALANCA</option>
+                    <option value="S">SILO</option>
+                    <option value="E">EMBEGADORA</option>
+                    <option value="P">PORTAO</option>
+                    <option value="A">ALA</option>
+                    <option value="SC">PILHA DE SACARIA</option>
+                    <option value="R">ARMAZENAMENTO SILO</option>
+                    <option value="DC">DESCRITIVO</option>
+                  </select>
+
+                  <app-error-message controlName="type" label="Tipo"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group"  appErrorGroup>
+                <label  class="control-label col-md-2 text-right" for="sortOrder">Ordenação*</label>
+                <div class="col-md-10" >
+                  <input id="sortOrder"
+                        formControlName="sortOrder"
+                        type="text"
+
+                        class="form-control uppercase" />
+                  <app-error-message controlName="sortOrder" label="Ordenação"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="rotation">Rotação</label>
+                <div class="col-md-10">
+                  <input id="rotation"
+                        formControlName="rotation"
+                        type="text"
+                        class="form-control uppercase" />
+                  <app-error-message controlName="rotation" label="Rotação"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="groupId">Grupo</label>
+                <div class="col-md-10">
+                  <input id="groupId"
+                        formControlName="groupId"
+                        type="text"
+                        class="form-control uppercase" />
+                  <app-error-message controlName="groupId" label="Grupo"></app-error-message>
+                </div>
+              </div>
+
+              <fieldset  [disabled]="disableEmbegadoraId" appErrorGroup>
+                  <div class="form-group"  appErrorGroup>
+                    <label class="control-label col-md-2 text-right">Embegadora</label>
+                    <div class="col-md-10">
+                    <select formControlName="embegadoraId" class="form-control">
+                      <option value="">Selecione uma embegadora </option>
+                      <option *ngFor="let embegadora of embegadoras" [value]="embegadora.id">
+                        {{ embegadora.code }} - {{ embegadora.name }}
+                      </option>
+                    </select>
+
+                      <app-error-message controlName="embegadoraId" label="Embegadora"></app-error-message>
+                    </div>
+                  </div>
+              </fieldset>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="groupId">RFID Code 1</label>
+                <div class="col-md-10">
+                  <input id="rfid0id"
+                         formControlName="rfid0id"
+                         type="text"
+                         class="form-control uppercase" />
+                  <app-error-message controlName="rfid0id" label="RFID Code 1"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="groupId">FID Code 2</label>
+                <div class="col-md-10">
+                  <input id="rfid1id"
+                         formControlName="rfid1id"
+                         type="text"
+                         class="form-control uppercase" />
+                  <app-error-message controlName="rfid1id" label="RFID Code 2"></app-error-message>
+                </div>
+              </div>
+
+            </fieldset>
+          </div>
+
+          <div class="box-footer">
+            <div class="row">
+              <div class="col-sm-offset-2">
+                <div class="col-sm-10 mb10">
+                  <app-submit-button [loading]="loading">
+                    SALVAR
+                  </app-submit-button>
+                  <a
+                    [class.disabled]="loading"
+                    [routerLink]="['/position-layer/'+position.positionLayer.id]"
+                    class="btn btn-default btn-size"
+                  >
+                    VOLTAR
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

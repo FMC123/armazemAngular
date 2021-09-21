@@ -1,0 +1,42 @@
+<section class="content-header">
+  <h1>
+    Relatório de Sumário de Vendas
+  </h1>
+  <app-breadcrumb [items]="[
+        ['Início', ''],
+        ['Relatório de Sumário de Vendas', null]
+      ]"></app-breadcrumb>
+</section>
+<section class="content-header">
+  <div class="box">
+    <div class="box-header">
+      <h3 class="box-title w100">
+        Filtro
+      </h3>
+    </div>
+    <div class="box-body">
+      <form class="form-horizontal" [formGroup]="form" (keydown.enter)="$event.preventDefault();">
+        <fieldset [disabled]="loading">
+          <div class="form-group" appErrorGroup>
+              <label class="control-label col-xs-4 col-md-2 text-right" for="sellCode">Código de Venda</label>
+              <div class="col-xs-4 col-md-6">
+                  <input type="text"
+                   formControlName="sellCode"
+                   class="form-control">
+                  <app-error-message controlName="sellCode" label="Código de Venda"></app-error-message>
+              </div>
+            </div>
+        </fieldset>
+        <div class="form-group">
+          <div class="col-xs-offset-4 col-xs-8 col-sm-offset-2 col-sm-10">
+            <button (click)="submit()" type="button" class="btn btn-size btn-success">
+              <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+              ABRIR
+            </button>
+            <button type="button" (click)="buildForm()" class="btn btn-size btn-default">LIMPAR</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

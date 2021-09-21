@@ -1,0 +1,101 @@
+<div class="modal fade"
+     appModal
+     [shownCallback]="focusOnInput()"
+     (close)="close.emit(null)"
+     tabindex="-1"
+     role="dialog">
+
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+
+      <form
+        (ngSubmit)="save()"
+        [formGroup]="form"
+        *ngIf="form"
+        class="form-horizontal">
+        <div class="modal-header">
+          <h3 *ngIf="owner" class="modal-title">Cadastro de certificado para Cliente</h3>
+          <h3 *ngIf="!owner" class="modal-title">Cadastro de certificado para Armazém</h3>
+        </div>
+        <div class="modal-body">
+          <fieldset [disabled]="loading">
+
+            <div class="form-group" appErrorGroup>
+              <label class="col-md-12" for="certificateId">
+                Certificado
+              </label>
+              <div class="col-md-12">
+                <select formControlName="certificateId" class="form-control" id="certificateId">
+                  <option value=''>Selecione um certificado</option>
+                  <option *ngFor="let certificate of certificates" [value]="certificate.id">
+                    {{ certificate.name }}
+                  </option>
+                </select>
+                <app-error-message controlName="certificateId" label="Certificado"></app-error-message>
+              </div>
+            </div>
+            <div class="form-group" appErrorGroup>
+              <label class="col-md-12" for="certifiedCustodyCode">
+                Número Certificadora Custódia - CDC
+              </label>
+              <div class="col-md-12">
+                <input id="certifiedCustodyCode" class="form-control" type="text"
+                       formControlName="certifiedCustodyCode">
+                <app-error-message controlName="certifiedCustodyCode"
+                                   label="Número Certificadora Custódia"></app-error-message>
+              </div>
+            </div>
+            <div class="form-group" appErrorGroup>
+              <label class="col-md-12" for="certifiedCustodyExpirationDate">
+                Validade Certificadora Custódia - CDC
+              </label>
+              <div class="col-md-12">
+                <div class="input-group">
+                  <input id="certifiedCustodyExpirationDate" class="form-control" type="text"
+                         [textMask]="dateMask" appDatePicker formControlName="certifiedCustodyExpirationDate">
+                  <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+                  <app-error-message controlName="certifiedCustodyExpirationDate"
+                                     label="Validade Certificadora Custódia"></app-error-message>
+                </div>
+              </div>
+            </div>
+            <div class="form-group" appErrorGroup>
+              <label class="col-md-12" for="certifiedOriginCode">
+                Número Certificadora Origem
+              </label>
+              <div class="col-md-12">
+                <input id="certifiedOriginCode" class="form-control" type="text"
+                       formControlName="certifiedOriginCode">
+                <app-error-message controlName="certifiedOriginCode"
+                                   label="Número Certificadora Origem"></app-error-message>
+              </div>
+            </div>
+            <div class="form-group" appErrorGroup>
+              <label class="col-md-12" for="certifiedCustodyExpirationDate">
+                Validade Certificadora Origem
+              </label>
+              <div class="col-md-12">
+                <div class="input-group">
+                  <input id="certifiedOriginExpirationDate" class="form-control" type="text"
+                         [textMask]="dateMask" appDatePicker formControlName="certifiedOriginExpirationDate">
+                  <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+                </div>
+                <app-error-message controlName="certifiedOriginExpirationDate"
+                                   label="Validade Certificadora Origem"></app-error-message>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default btn-size" data-dismiss="modal">
+            Cancelar
+          </button>
+          <button type="button" class="btn btn-success btn-size" data-dismiss="modal" (click)="save()">
+            Salvar
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+<div class="box">
+  <div class="box-body">
+    <div class="row">
+      <div class="col-xs-12">
+        <table class="table table-bordered">
+          <tr>
+            <th class="col-xs-4 text-right">Amostra</th>
+            <td class="col-xs-8">
+              {{ sample.barcode }}
+            </td>
+          </tr>
+          <tr>
+            <th class="col-xs-4 text-right">Data da Coleta</th>
+            <td class="col-xs-8">
+              {{ sample.collectedDateString }}
+            </td>
+          </tr>
+          <tr>
+            <th class="col-xs-4 text-right">Responsável pela Coleta</th>
+            <td class="col-xs-8">
+              {{ sample.collectedBy?.name }}
+            </td>
+          </tr>
+          <tr>
+            <th class="col-xs-4 text-right">Reserva</th>
+            <td class="col-xs-8">
+              {{ sample.withdrawalRequestedBy?.name }}
+            </td>
+          </tr>
+          <tr>
+            <th class="col-xs-4 text-right">Lote(s)</th>
+            <td class="col-xs-8">
+              <div *ngFor="let batch of sample.batches">
+                {{batch.batchCode}} - {{batch.typeCoffee}} - {{batch.balanceString}} SC
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,231 @@
+<div class="new-layout">
+
+  <section class="content-header">
+    <app-breadcrumb [items]="[
+      ['Início', ''],
+      ['Entrada/Saída de Estoque', '/batch-operation'],
+      [batchOperation?.typeObject?.name, null]
+    ]"></app-breadcrumb>
+    <h1>
+        <small>Cadastro</small>
+        {{batchOperation?.typeObject?.name}}
+      </h1>
+  </section>
+
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="box">
+          <div class="box-header with-border mb10">
+              <h3 *ngIf="batchOperation.type === 'P_IN'" class="box-title">Dados de Entrada para o Processo</h3>
+              <h3 *ngIf="batchOperation.type !== 'P_IN'" class="box-title">Dados do Romaneio</h3>
+          </div>
+
+          <div class="panel-body">
+
+            <div class="col-xs-6">
+              <app-info-table [data]="infoLeft"></app-info-table>
+            </div>
+
+            <div class="col-xs-6">
+              <form
+                (ngSubmit)="save()"
+                [formGroup]="form"
+                *ngIf="form"
+                class="form-horizontal">
+
+                <fieldset [disabled]="loading || readOnly">
+                  <div>
+                    <div class="form-group" appErrorGroup>
+                      <label class="control-label col-md-4 text-right" for="operationTypeId">Operação</label>
+                      <div class="col-md-8">
+                        <select formControlName="operationTypeId" class="form-control" id="operationTypeId">
+                          <option value=''>Selecione um tipo de operação</option>
+                          <option *ngFor="let operationType of operationTypes" [value]="operationType.id">
+                            {{ operationType.description }}
+                          </option>
+                        </select>
+                        <app-error-message controlName="operationTypeId" label="Operação"></app-error-message>
+                      </div>
+                    </div>
+
+                    <div class="form-group" appErrorGroup>
+                      <label class="control-label col-md-4 text-right" for="auditorId">Conferente</label>
+                      <div class="col-md-8">
+                        <select formControlName="auditorId" class="form-control" id="auditorId">
+                          <option value=''>Selecione um conferente</option>
+                          <option *ngFor="let user of users" [value]="user.id">
+                            {{ user.name }}
+                          </option>
+                        </select>
+                        <app-error-message controlName="auditorId" label="Conferente"></app-error-message>
+                      </div>
+                    </div>
+
+                    <div class="form-group" appErrorGroup>
+                      <label class="control-label col-md-4 text-right" for="note">
+                        Observações
+                      </label>
+                      <div class="col-md-8">
+                          <textarea
+                            id="note"
+                            [formControl]="form.get('note')"
+                            type="text"
+                            class="form-control"
+                            maxlength="255"
+                          ></textarea>
+                        <app-error-message controlName="note" label="Observações"></app-error-message>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group" appErrorGroup>
+                    <label class="control-label col-md-4 text-right" for="officialDate">
+                      Data Movimento
+                    </label>
+                    <div class="col-md-8">
+                      <div class="input-group">
+                        <input id="officialDate" formControlName="officialDate" [textMask]="dateMask"
+                               appDatePicker type="text" class="form-control"/>
+                        <div class="input-group-addon clickable">
+                          <span class="fa fa-calendar fa-fw"></span>
+                        </div>
+                      </div>
+                      <app-error-message controlName="officialDate" label="Data Movimento"></app-error-message>
+                    </div>
+                  </div>
+
+                </fieldset>
+
+                <div *ngIf="!readOnly">
+                  <div class="row">
+                    <div class="col-sm-12 mb10 text-right">
+                      <app-submit-button [loading]="loading" >
+                        Salvar
+                      </app-submit-button>
+                    </div>
+                  </div>
+                </div>
+
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="batchOperation.type === 'P_IN' && !!batchOperation.serviceInstruction" class="row">
+        <div class="col-xs-12">
+          <div class="box">
+              <div class="box-header with-border mb10">
+                  <h3 class="box-title">Instrução de Serviço</h3>
+              </div>
+              <div class="panel-body">
+                  <div class="form-group">
+                    <label class="control-label col-md-2 text-right">Código:</label>
+                    <label class="control-label col-md-10">{{batchOperation.serviceInstruction.code}}</label>
+                  </div>
+                  <div>
+                    <label class="control-label col-md-3 text-right">Resultados Esperados</label>
+                  </div>
+
+                  <div  class="form-group">
+                      <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                          <tr>
+                            <td class="text-center"><b>Descrição</b></td>
+                            <td class="text-center"><b>%</b></td>
+                            <td class="text-center"><b>Quantidade (kg)</b></td>
+                            <th class="text-center">Quantidade de Sacas</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let expect of batchOperation.serviceInstruction.expectedResults">
+                              <td class="text-center">{{expect.observation}}</td>
+                              <td class="text-center">{{expect.percentage}}</td>
+                              <td class="text-center">{{expect.quantity}}</td>
+                              <td class="text-center">{{expect.quantitySacks}}</td>
+                            </tr>
+                        </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <app-batch-creation
+          *ngIf="reloadChildren"
+          [batchOperation]="batchOperation"
+        ></app-batch-creation>
+
+        <app-batch-operation-certificate-list
+          *ngIf="reloadChildren"
+          [batchOperation]="batchOperation"
+          (newCertificate)="updateBatches()"
+        ></app-batch-operation-certificate-list>
+
+        <app-input-packaging-stock-available-form
+          [batchOperation]="batchOperation"
+          (change)="refresh()"
+          [indStockOut]="false"
+        ></app-input-packaging-stock-available-form>
+
+        <app-service-charge-form
+          *ngIf="showServiceChargeForm && reloadChildren"
+          [batchOperation]="batchOperation"
+        ></app-service-charge-form>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12  mb10">
+        <button
+          *ngIf="!readOnly"
+          (click)="closeConfirm.open()"
+          type="button"
+          [disabled]="loading"
+          class="btn btn-success"
+        >
+          Finalizar
+        </button>
+
+        <button
+          *ngIf="enableButtonReabrir"
+          type="button"
+          class="btn btn-warning"
+          [disabled]="loading"
+          (click)="reOpen()"
+        >
+          <span class="fa fa-arrow-left fa-lg"></span>
+          Reabrir
+        </button>
+
+        <a
+          class="btn btn-default"
+          [routerLink]="['/batch-operation']"
+        >
+          Voltar
+        </a>
+      </div>
+    </div>
+
+  </section>
+
+  <app-confirm
+    *ngIf="closeConfirm.opened"
+    message="Tem certeza que deseja finalizar esta entrada?"
+    (confirm)="close()"
+    (close)="closeConfirm.close()"
+  ></app-confirm>
+
+  <app-confirm
+    *ngIf="confirmDifferenceBatchWeightModal.opened"
+    message="A soma do peso líquido dos lotes não confere com o peso líquido do romaneio. Deseja continuar?"
+    noLabel="Não" yesLabel="Sim" (confirm)="confirmDifferenceBatchWeight()"
+    (close)="confirmDifferenceBatchWeightModal.close()"
+  ></app-confirm>
+
+</div>

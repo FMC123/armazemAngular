@@ -1,0 +1,24 @@
+<div class="login-box-body" *ngIf="form">
+    <p class="login-box-msg">Digite seu usuário</p>
+
+    <form (ngSubmit)="submit()" [formGroup]="form">
+      <div class="form-group" appErrorGroup>
+        <input
+          formControlName="login"
+          type="text"
+          class="form-control"
+          [disabled]="loading"
+          placeholder="Insira seu login"
+          focusable
+        />
+      </div>
+      <div class="text-center">
+        <app-error-message controlName="login" label="Login"></app-error-message>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <app-submit-button btnClass="btn btn-primary btn-block btn-flat btn-signin" [loading]="loading">Próximo</app-submit-button>
+        </div>
+      </div>
+    </form>
+</div>

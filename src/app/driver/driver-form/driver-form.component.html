@@ -1,0 +1,162 @@
+<section class="content-header">
+  <h1>
+    <small>Cadastro</small> Motorista
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Motorista', '/driver'],
+    ['Cadastro de Motorista', null]
+  ]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <form
+        (ngSubmit)="save()"
+        [formGroup]="form"
+        *ngIf="form"
+        class="form-horizontal"
+      >
+
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Formulário</h3>
+          </div>
+
+          <div class="box-body">
+            <fieldset [disabled]="loading">
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2" for="name">Nome*</label>
+                <div class="col-md-8">
+                  <input
+                    id="name"
+                    formControlName="name"
+                    type="text"
+                    class="form-control"
+                  />
+                  <app-error-message
+                    controlName="name"
+                    label="Nome"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2" for="name">CPF*</label>
+                <div class="col-md-8">
+                  <input
+                    id="cpf"
+                    formControlName="cpf"
+                    type="text"
+                    class="form-control"
+                    [textMask]="cpfMask"
+                  />
+                  <app-error-message
+                    controlName="cpf"
+                    label="CPF"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2" for="name">CNH*</label>
+                <div class="col-md-8">
+                  <input
+                    id="cnh"
+                    maxlength="11"
+                    formControlName="cnh"
+                    type="text"
+                    class="form-control"
+                  />
+                  <app-error-message
+                    controlName="cnh"
+                    label="CNH"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2" for="name">Expiração CNH</label>
+                <div class="col-md-8">
+                  <div class="input-group">
+                    <input
+                      formControlName="cnhExpirationDate"
+                      id="cnhExpirationDate"
+                      type="text"
+                      [textMask]="dateMask"
+                      appDatePicker
+                      class="form-control">
+                    <div class="input-group-addon clickable">
+                      <span class="fa fa-calendar fa-fw"></span>
+                    </div>
+                  </div>
+                  <app-error-message
+                    controlName="cnhExpirationDate"
+                    label="Data de Expiração CNH"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2" for="name">Telefone</label>
+                <div class="col-md-8">
+                  <input
+                    id="cellPhone"
+                    formControlName="cellPhone"
+                    type="text"
+                    class="form-control"
+                    [textMask]="phoneMask"
+                  />
+                  <app-error-message
+                    controlName="cellPhone"
+                    label="Telefone"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="blocked">Bloqueado</label>
+                <div class="col-md-8">
+                  <input id="blocked" [formControl]="form.get('blocked')" type="checkbox" />
+                  <app-error-message controlName="blocked" label="Bloqueado"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="observation">
+                  Observação
+                </label>
+                <div class="col-md-8">
+                  <textarea
+                    id="observation"
+                    [formControl]="form.get('observation')"
+                    type="text"
+                    class="form-control"
+                    maxlength="255"
+                  ></textarea>
+                  <app-error-message controlName="observation" label="Observação"></app-error-message>
+                </div>
+              </div>
+
+            </fieldset>
+          </div>
+
+          <app-driver-incident [driver]="driver" [editable]="true" *ngIf="driver?.id"></app-driver-incident>
+
+          <div class="box-footer">
+            <div class="row">
+              <div class="col-sm-offset-2">
+                <div class="col-sm-10 mb10">
+                  <app-submit-button [loading]="loading">
+                    SALVAR
+                  </app-submit-button>
+                  <a [class.disabled]="loading" routerLink="/driver" class="btn btn-default btn-size">
+                    VOLTAR
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+

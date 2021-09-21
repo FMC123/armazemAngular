@@ -1,0 +1,20 @@
+<div class="text-center w100" *ngIf="initialLoading">
+  <app-loading></app-loading>
+</div>
+
+<div *ngIf="!initialLoading">
+  <div class="map-sidebar">
+    <app-tracking-cart-button (open)="cartModal.open()"></app-tracking-cart-button>
+    <app-tracking-search></app-tracking-search>
+    <app-tracking-results></app-tracking-results>
+  </div>
+
+  <div class="map-container text-center">
+    <app-map-tracking [positions]="positions"></app-map-tracking>
+  </div>
+</div>
+
+<app-tracking-cart
+  *ngIf="cartModal.opened"
+  (close)="cartModal.close()"
+></app-tracking-cart>

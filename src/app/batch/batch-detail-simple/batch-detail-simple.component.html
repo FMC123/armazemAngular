@@ -1,0 +1,32 @@
+<div class="box">
+  <div class="box-body">
+    <div class="row">
+      <div class="col-xs-12">
+          <div class="box-header">
+            <h4 class="box-title clearfix" style="line-height: 2">
+                <span class="fa fa-balance-scale"
+                appTooltip="Peso detalhado do Sublote"></span> SUBLOTE {{batch.batchCode ? batch.batchCode: ''}}
+            </h4>
+          </div>
+          <div class="box-body">
+            <div class="row">
+              <div class="col-xs-12">
+                <table class="table table-bordered">
+                  <tr>
+                    <th class="col-xs-4 text-center">Peso Bruto</th>
+                    <th class="col-xs-4 text-center">Peso da Tara</th>
+                    <th class="col-xs-4 text-center">Peso Líquido</th>
+                  </tr>
+                  <tr >
+                    <td class="text-center">{{ batch.grossWeight ? batch.grossWeightString : '' }}</td>
+                    <td class="text-center">{{ batch.tareWeight ? batch.tareWeightString : '' }}</td>
+                    <td class="text-center">{{ batch.netWeightCalcString }}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

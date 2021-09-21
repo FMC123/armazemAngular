@@ -1,0 +1,106 @@
+<style>
+  .form-fix {
+    padding-top: 0;
+  }
+</style>
+<form
+  (ngSubmit)="save()"
+  [formGroup]="form"
+  class="form-horizontal"
+>
+  <div class="box">
+    <div class="box-header">
+      <h3 class="box-title w100">
+        Gerar Romaneio de Entrada
+      </h3>
+    </div>
+
+    <div class="box-body">
+      <strong class="text-danger" *ngIf="!selectedFiscalNotesMatch">
+        As notas fiscais selecionadas são incompatíveis.
+      </strong>
+      <div *ngIf="selectedFiscalNotesMatch">
+        <fieldset [disabled]="loading">
+          <div class="col-xs-6">
+            <div class="form-group" appErrorGroup>
+              <label class="control-label col-md-6 text-right form-fix">Placa 1</label>
+              <div class="col-md-6">
+                {{ transportation.vehiclePlate1 }}
+              </div>
+            </div>
+            <div class="form-group" appErrorGroup>
+              <label class="control-label col-md-6 text-right form-fix">Placa 2</label>
+              <div class="col-md-6">
+                {{ transportation.vehiclePlate2 }}
+              </div>
+            </div>
+
+            <div class="form-group" appErrorGroup>
+              <label class="control-label col-md-6 text-right form-fix">Motorista</label>
+              <div class="col-md-6">
+                {{ transportation.driverName }}
+              </div>
+            </div>
+
+            <div class="form-group" appErrorGroup>
+              <label class="control-label col-md-6 text-right" for="auditorId" id="auditorId">Conferente</label>
+              <div class="col-md-6">
+                <select formControlName="auditorId" class="form-control">
+                  <option value=''>Selecione um conferente</option>
+                  <option *ngFor="let user of users" [value]="user.id">
+                    {{ user.name }}
+                  </option>
+                </select>
+                <app-error-message controlName="auditorId" label="Conferente"></app-error-message>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-6">
+            <div class="form-group" appErrorGroup>
+              <label class="control-label col-md-6 text-right form-fix">Placa 3</label>
+              <div class="col-md-6">
+                {{ transportation.vehiclePlate3 }}
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-md-6 text-right"></label>
+              <div class="col-md-6">
+              </div>
+            </div>
+
+            <div class="form-group" appErrorGroup>
+              <label class="control-label col-md-6 text-right form-fix">Peso de Origem</label>
+              <div class="col-md-6">
+                {{ transportation.originWeightString }}
+              </div>
+            </div>
+
+            <div class="form-group" appErrorGroup>
+              <label class="control-label col-md-6 text-right" for="balanceWeightingMode">Tipo de pesagem</label>
+              <div class="col-md-6">
+                <select id="balanceWeightingMode" formControlName="balanceWeightingMode" class="form-control">
+                  <option *ngFor="let i of balanceWeightingModes" [value]="i">
+                    {{ i }}
+                  </option>
+                </select>
+                <app-error-message controlName="balanceWeightingMode" label="Tipo de Pesagem"></app-error-message>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+
+    <div class="box-footer" *ngIf="selectedFiscalNotesMatch">
+      <div class="row">
+        <div class="col-sm-offset-2">
+          <div class="col-sm-10 mb10">
+            <app-submit-button [disabled]="isFiscalNotesSelected() || form.invalid" [loading]="loading">
+              GERAR ROMANEIO
+            </app-submit-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

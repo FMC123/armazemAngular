@@ -1,0 +1,174 @@
+<style>
+  .custom_row {
+    margin: 0 0 12px 0 !important;
+  }
+  .custom_row .custom_col {
+    padding: 2px !important;
+  }
+  .custom_row .custom_col .text-danger {
+    padding: 2px !important;
+  }
+  .custom_row .custom_col label {
+    display: block !important;
+  }
+  .buscar_por label {
+    font-weight: normal;
+    margin-right: 5px;
+  }
+  .listaLotesPesquisa {
+    max-height: 300px;
+    overflow: auto;
+    width: 100%;
+    margin: 0;
+  }
+  .listaLotesPesquisa div {
+    margin: 0;
+    padding: 0;
+  }
+</style>
+<div class="new-layout" *ngIf="serviceInstructionMgBatch">
+
+<!-- Lista de lotes da IS -->
+<div class="modal-header">
+  <h3 class="modal-title">Criação de tarefa</h3>
+</div>
+<div class="modal-body">
+  <div class="row listaLotesPesquisa">
+    <div class="col-xs-12">
+      <p *ngIf="nenhumLoteEncontrado == true" style="text-align:center; margin-top:20px">
+        Nehum lote encontrado para o critério de busca</p>
+      <table class="table table-bordered table-condensed">
+        <thead>
+        <tr>
+          <th>Lote</th>
+          <th>Peneira</th>
+          <th>Cliente</th>
+          <th>Disponíveis na IS</th>
+          <th>Sacas</th>
+          <th>Ação</th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let selectedBacth of serviceInstructionMgBatch">
+            <td>{{ selectedBacth.batch.batchCode }}</td>
+            <td>{{ selectedBacth.batch.strainer?.description }}</td>
+            <td>{{ selectedBacth.batch.owner?.person?.name }}</td>
+            <td>{{selectedBacth.leftQuantityString + "(" + selectedBacth.getCalcSacksByQuantity(selectedBacth.leftQuantity) + ")"}} kg</td>
+            <td>{{ selectedBacth.getCalcSacksByQuantity(selectedBacth.leftQuantity) }}</td>
+            <td class="bts-list-actions" *ngIf="isEditable">
+              <button (click)="adicionar(selectedBacth)"
+                      type="button" appTooltip="Adicionar" class="btn btn-success btn-sm">
+                <span class="fa fa-plus"></span>
+              </button>
+              <span *ngIf="selectedBacth.batch.availableWeight < 1"> Sem Saldo Disp.</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="box" *ngIf="task.taskBatches.length">
+  <div class="box-header">
+    <h3 class="box-title">Lotes Selecionados</h3>
+  </div>
+
+  <div class="box-body">
+    <!-- lotes selecionados para tarefa-->
+    <div class="row"
+          *ngIf="serviceInstruction.markupGroup && serviceInstruction.markupGroup.batches && serviceInstruction.markupGroup.batches.length > 0"
+          style="margin-top:30px">
+      <div class="col-xs-12">
+        <table class="table table-striped table-bordered table-hover">
+          <thead>
+            <tr>
+              <th colspan="9">Selecionados</th>
+            </tr>
+            <tr>
+              <th>Lote</th>
+              <th>Cliente</th>
+              <th>Quantidade</th>
+              <th>Despejo (Kg)</th>
+              <th>Sacas</th>
+              <th class="bts-list-actions" *ngIf="isEditable">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let markupGroupBatch of task.taskBatches"
+              [ngClass]="{'processed-batch':markupGroupBatch.processed && markupGroupBatch.batch?.local}">
+              <td>
+                {{markupGroupBatch.batch?.batchCode}}{{markupGroupBatch.batch?.batchReference?
+                  '/' + markupGroupBatch.batch.batchReference.batchCode : null}}
+              </td>
+              <td>{{markupGroupBatch.batch.owner?.person?.name}}</td>
+              <td>{{markupGroupBatch.markupGroupBatchParent.leftQuantityString + "(" + markupGroupBatch.markupGroupBatchParent.getCalcSacksByQuantity(markupGroupBatch.markupGroupBatchParent.leftQuantity) + ")"}} kg</td>
+              <td *ngIf="isEditable">
+                <input type="number" step=".01" class="form-control" [(ngModel)]="markupGroupBatch.quantity"
+                        [ngModelOptions]="{standalone: true}"
+                        [value]="markupGroupBatch.quantity" (keyup)="quantidadeAlterada($event, markupGroupBatch)"
+                        id="qtdeKgBatchId{markupGroupBatch.batch?.id}"
+                        style="max-width:150px;" [min]="markupGroupBatch.currentQuantity"
+                        [disabled]="loading"/>
+                <div class="text-danger" id="msgQtdeKgBatchId{{markupGroupBatch.batch?.id}}" style="display:none;">
+                  O despejo deve ser um valor entre {{ markupGroupBatch.markupGroupBatchParent.quantity }} e {{ markupGroupBatch.markupGroupBatchParent.leftQuantity }}
+                </div>
+              </td>
+
+              <td *ngIf="isEditable && !serviceInstruction.isAwaitingBatchAvailability">
+                <input type="number" step="1" class="form-control" [(ngModel)]="markupGroupBatch.sackQuantityTemp"
+                        [value]="markupGroupBatch.sackQuantityTemp" (keyup)="sacksChanged($event, markupGroupBatch)"
+                        id="qtdeBatchId{markupGroupBatch.batch?.id}"
+                        style="max-width:80px;"
+                        [disabled]="loading"/>
+                <div class="text-danger" id="msgQtdeBatchId{{markupGroupBatch.batch?.id}}" style="display:none;">
+                  O despejo deve ser um valor entre {{ markupGroupBatch.markupGroupBatchParent.quantity }} e {{ markupGroupBatch.markupGroupBatchParent.leftQuantity }}
+                </div>
+              </td>
+
+              <td class="bts-list-actions" *ngIf="isEditable">
+                <button (click)="confirmarRecebimento(markupGroupBatch)"
+                    *ngIf="((!markupGroupBatch.batch?.localWithAuth(auth)) && (serviceInstruction.isAwaitingBatchAvailability))"
+                    type="button" appTooltip="Confirmar recebimento" class="btn btn-success btn-sm"
+                    [disabled]="loading">
+                  <span class="fa fa-arrow-down fa-lg"></span>
+                </button>
+                <button (click)="remover(markupGroupBatch.batch)"
+                    *ngIf="(!(serviceInstruction.isFinished || serviceInstruction.isConfirmed))" type="button" appTooltip="Remover"
+                    class="btn btn-danger btn-sm"
+                    [disabled]="loading">
+                  <span class="fa fa-trash-o fa-lg"></span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button type="button" (click)="validarIniciarProcesso()"
+                *ngIf="serviceInstruction.isAwaitingBatchAvailability && isEditable" class="btn btn-size btn-success"
+                [class.has-spinner]="loading">
+          <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+          Iniciar Processo
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-container *ngIf="task.taskBatches">
+  <app-service-instruction-expected-result [averageWeightSacksString]="weightBagString"
+    [serviceInstruction]="serviceInstruction" [isEditable]="true"
+    [isModal]="true" [expectedResults]="task.taskExpectedResults" [taskBatches]="task.taskBatches">
+  </app-service-instruction-expected-result>
+</ng-container>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default btn-size" data-dismiss="modal"
+    [class.disabled]="loading" [class.has-spinner]="loading" [disabled]="loading">
+    <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+    CANCELAR
+  </button>
+  <button (click)="saveTask()" type="button" appTooltip="Salvar" class="btn btn-success btn-size"
+    [class.disabled]="loading" [class.has-spinner]="loading" [disabled]="loading">
+    <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+    SALVAR
+  </button>
+</div>
+</div>

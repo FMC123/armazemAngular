@@ -1,0 +1,79 @@
+<section class="content-header">
+  <h1>
+    Alocação de carga no caminhão
+  </h1>
+<app-breadcrumb [items]="[
+  ['Início', ''],
+  ['Allocação de carga no caminhão', null]
+]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <div class="box-title">Lista de Lotes para assocaiçao de carga</div>
+        </div>
+        <div class="panel-body">
+          <app-loading *ngIf="loading"></app-loading>
+          <div *ngIf="!loading">
+            <app-no-results *ngIf="!allocationTrucks.data || allocationTrucks.data.length<=0"></app-no-results>
+            <div class="table-responsive" *ngIf="allocationTrucks.data && allocationTrucks.data.length>0">
+              <table class="table table-striped table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th class="col-xs-2" appSort="batchCode" [instance]="allocationTrucks">
+                      Código do lote
+                    </th>
+                    <th class="col-xs-2" appSort="batchQuantyti" [instance]="allocationTrucks">
+                      Quantidade nos Bags
+                    </th>
+                    <th class="col-xs-1" appSort="sackes" [instance]="allocationTrucks">
+                      Quantidade de Sacas
+                    </th>
+                    <th class="col-xs-2" appSort="position" [instance]="allocationTrucks">
+                      Posição no caminhão
+                    </th>
+                    <th class="col-xs-2" appSort="position" [instance]="allocationTrucks">
+                      Ação
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let lote of allocationTrucks.data">
+                    <td >{{ lote.batchCode }}</td>
+                    <td >{{ lote.batchQuantity }}</td>
+                    <td >{{ lote.sackes }}</td>
+                    <td >{{ lote.position }}</td>
+                    <td >
+                      <button
+                        type="button"
+                        class="btn btn-xs btn-success"
+                        (click)="move(lote, 'up')"
+                      >
+                        <i class="fa fa-plus"></i>
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-xs btn-success"
+                        (click)="move(lote, 'down')"
+                      >
+                      <i class="fa fa-minus"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<a href="javascript:" (click)="downloadShipmentTruckLotAllocationReport()" class="btn btn-default" >
+    <i class="fa fa-truck"></i>
+    ALOCAÇAO DE LOTE NO CAMINHÃO
+  </a>
+<button [disabled]="loading" type="button" class="btn btn-success" (click)="save()">Salvar</button>

@@ -1,0 +1,29 @@
+<section class="content-header">
+  <h1>
+    <small>Cadastro</small>
+    Balança
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Balanças', '/scale'],
+    ['Cadastro de Balança', null]
+  ]"></app-breadcrumb>
+</section>
+<section class="content">
+  <div class="row">
+    <app-scale-list-info [scale]="scale" *ngIf="scale"></app-scale-list-info>
+
+    <div class="box box-default">
+      <div class="box-footer">
+        <div class="row">
+          <div class="col-xs-12 mb10">
+            <a routerLink="/scale"
+                class="btn btn-success btn-size">
+              VOLTAR
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

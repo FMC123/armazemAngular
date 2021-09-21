@@ -1,0 +1,7 @@
+/* You can add global styles to this file, and also import other style files */
+
+.form-group.has-error .form-control + span.input-group-btn > button.btn.btn-default{
+  border-bottom-color: #dd4b39;
+  border-top-color: #dd4b39;
+  border-right-color: #dd4b39;
+}

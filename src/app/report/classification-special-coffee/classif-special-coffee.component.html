@@ -1,0 +1,127 @@
+<section class="content-header">
+  <h1>
+    Relatório Café Especial
+  </h1>
+  <app-breadcrumb [items]="[
+        ['Início', ''],
+        ['Relatório Entrada Diária', null]
+      ]"></app-breadcrumb>
+</section>
+<section class="content-header">
+  <div class="box">
+    <div class="box-header">
+      <h3 class="box-title w100">
+        Filtro
+      </h3>
+    </div>
+    <div class="box-body">
+      <form class="form-horizontal" [formGroup]="form" (keydown.enter)="$event.preventDefault();">
+        <fieldset [disabled]="loading">
+
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-xs-4 col-md-2 text-right" for="dateStartString">Data</label>
+            <div class="col-xs-8 col-md-10">
+              <div class="row">
+                <div class="col-xs-6">
+                  <div class="input-group">
+                    <input type="text"
+                           [textMask]="dateMask"
+                            appDatePicker
+                            formControlName="dateStartString"
+                            placeholder="Início"
+                            class="form-control">
+                    <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+                  </div>
+                  <app-error-message controlName="dateStartString" label="Data Inicial"></app-error-message>
+                </div>
+                <div class="col-xs-6">
+                  <div class="input-group">
+                    <input type="text"
+                           [textMask]="dateMask"
+                            appDatePicker
+                            formControlName="dateEndString"
+                            placeholder="Fim"
+                            class="form-control">
+                    <div class="input-group-addon clickable">
+                      <span class="fa fa-calendar fa-fw"></span>
+                    </div>
+                  </div>
+                  <app-error-message controlName="dateEndString" label="Data Final"></app-error-message>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-xs-4 col-md-2 text-right" for="specialCoffeeSituation">
+              Situação do Café Especial
+            </label>
+
+            <div class="col-xs-8 col-md-10">
+              <select formControlName="specialCoffeeSituation" class="form-control">
+                <option *ngFor="let type of specialCoffeeSituationTypes" [value]="type.value">
+                  {{ type.name }}
+                </option>
+              </select>
+              <app-error-message controlName="specialCoffeeSituation" label="Situação do café especial"></app-error-message>
+            </div>
+          </div>
+
+          <div class="form-group" appErrorGroup *ngIf="specialCoffeeAnalyzed">
+            <label class="control-label col-xs-4 col-md-2 text-right" for="coffeeSituation">
+              Situação de Café
+            </label>
+
+            <div class="col-xs-8 col-md-10">
+              <select formControlName="coffeeSituation" class="form-control">
+                <option *ngFor="let type of coffeeSituationTypes" [value]="type.name">
+                  {{ type.name }}
+                </option>
+              </select>
+              <app-error-message controlName="coffeeSituation" label="Situação de café"></app-error-message>
+            </div>
+          </div>
+
+
+          <div class="form-group" appErrorGroup *ngIf="!isArmazemGeral()">
+            <label class="control-label col-xs-4 col-md-2 text-right" for="collaborator">
+              Cooperado
+            </label>
+            <div class="col-xs-8 col-md-10">
+              <app-autocomplete [service]="collaboratorAutocomplete"></app-autocomplete>
+              <app-error-message controlName="collaborator" label="Cooperado"></app-error-message>
+            </div>
+          </div>
+
+          <div class="form-group" appErrorGroup *ngIf="isArmazemGeral()">
+            <label class="control-label col-xs-4 col-md-2 text-right" for="client">
+              Cliente
+            </label>
+            <div class="col-xs-8 col-md-10">
+              <app-autocomplete [service]="stakeholderAutocomplete"></app-autocomplete>
+              <app-error-message controlName="client" label="Cliente"></app-error-message>
+            </div>
+          </div>
+
+
+
+        </fieldset>
+        <div class="form-group">
+          <div class="col-xs-offset-4 col-xs-8 col-sm-offset-2 col-sm-10">
+            <button (click)="submitPdf()" type="button" class="btn btn-size btn-success">
+              <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+              ABRIR PDF
+            </button>
+
+            <button (click)="submitCsv()" type="button" class="btn btn-size btn-success">
+              <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+              ABRIR CSV
+            </button>
+
+            <button type="button" (click)="buildForm()" class="btn btn-size btn-default">LIMPAR</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

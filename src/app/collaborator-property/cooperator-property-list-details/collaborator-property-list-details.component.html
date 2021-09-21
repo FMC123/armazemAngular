@@ -1,0 +1,24 @@
+<app-breadcrumb [items]="[
+['Início', ''],
+['Propriedade e Cooperado', '/collaborator-property'],
+['Cadastro de Propriedade e Cooperado', null]
+]"></app-breadcrumb>
+
+<div class="page-header">
+    <h1 class="text-success">Detalhes de Propriedade e Cooperado</h1>
+</div>
+
+<app-collaborator-property-list-info [collaboratorProperty]="collaboratorProperty" *ngIf="collaboratorProperty"></app-collaborator-property-list-info>
+
+<div class="panel panel-default">
+    <div class="panel-footer">
+        <div class="row">
+            <div class="col-xs-12 mb10">
+                <a routerLink="/collaborator-property"
+                    class="btn btn-success btn-size">
+                   Voltar
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

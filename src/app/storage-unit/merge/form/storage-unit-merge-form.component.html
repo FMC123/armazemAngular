@@ -1,0 +1,62 @@
+<div class="box">
+  <div class="box-header">
+    <div class="box-title">Formulário</div>
+  </div>
+
+  <div class="box-body" *ngIf="!form">
+    <app-loading></app-loading>
+  </div>
+
+  <form
+    (ngSubmit)="save()"
+    [formGroup]="form"
+    *ngIf="form"
+    class="form-horizontal"
+  >
+    <div class="box-body">
+      <fieldset [disabled]="loading">
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-md-2 text-right" for="storageUnitFromId">
+            Origem*
+          </label>
+          <div class="col-md-4">
+            <select formControlName="storageUnitFromId" class="form-control">
+              <option value=''>Selecione uma unidade de armazenamento</option>
+              <option *ngFor="let storageUnit of storageUnitsFrom" [value]="storageUnit.id">
+                {{ storageUnit.tagLabel }} - {{ storageUnit.quantityString }} <app-kilos-to-sacks [value]="storageUnit.quantity"></app-kilos-to-sacks> - {{ storageUnit.location }}
+              </option>
+            </select>
+            <app-error-message controlName="storageUnitFromId" label="Origem"></app-error-message>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-md-2 text-right" for="storageUnitToId">
+            Destino*
+          </label>
+          <div class="col-md-4">
+            <select formControlName="storageUnitToId" class="form-control">
+              <option value=''>Selecione uma unidade de armazenamento</option>
+              <option *ngFor="let storageUnit of storageUnitsTo" [value]="storageUnit.id">
+                  {{ storageUnit.tagLabel }} - {{ storageUnit.quantityString }} <app-kilos-to-sacks [value]="storageUnit.quantity"></app-kilos-to-sacks> - {{ storageUnit.location }}
+              </option>
+            </select>
+            <app-error-message controlName="storageUnitToId" label="Destino"></app-error-message>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="box-footer">
+      <div class="row">
+        <div class="col-sm-offset-2">
+          <div class="col-sm-10 mb10">
+            <app-submit-button [loading]="loading">
+              SALVAR
+            </app-submit-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

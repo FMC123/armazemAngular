@@ -1,0 +1,31 @@
+<section class="content-header">
+  <h1>
+    <small>Detalhes</small>
+    Posição
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Gerenciar Mapa','/position-layer'],
+    [position.positionLayer.code, '/position-layer/'+position.positionLayer.id],
+    ['Detalhe de Posição',null],
+    [position.code,  null]
+  ]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <app-position-list-info [position]="position" *ngIf="position"></app-position-list-info>
+
+  <app-stack-list [position]="position" *ngIf="position"></app-stack-list>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <a
+        [routerLink]="['/position-layer/'+position.positionLayer.id]"
+        class="btn btn-default btn-size"
+      >
+        Voltar
+      </a>
+    </div>
+  </div>
+</section>
+

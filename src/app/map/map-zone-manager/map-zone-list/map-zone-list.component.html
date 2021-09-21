@@ -1,0 +1,24 @@
+<div class="row">
+ <table style="width:100%">
+      <tr>
+     <td align="">
+       <label>Zona Selecionada</label>
+     </td>
+     <td style="width:70%">
+       <ng-select
+         [allowClear]="true"
+         [items]="items"
+         [disabled]="disabled"
+         (data)="refreshValue($event)"
+         (selected)="selected($event)"
+         (removed)="removed($event)"
+         (typed)="typed($event)"
+         placeholder="Nenhuma zona selecionada">
+       </ng-select>
+     </td>
+
+   </tr>
+
+ </table>
+
+    </div>

@@ -1,0 +1,108 @@
+<div class="modal fade" appModal (close)="close.emit(null)" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <app-loading *ngIf="!form"></app-loading>
+    <form
+      (ngSubmit)="save()"
+      [formGroup]="form"
+      *ngIf="form"
+      class="form-horizontal">
+
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">Embalagem</h3>
+        </div>
+
+        <div class="modal-body">
+          <fieldset [disabled]="loading">
+
+            <div>
+              <h4>Embalagens Utilizadas</h4>
+
+              <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover">
+                  <thead>
+                  <tr>
+                    <th class="col-xs-2">
+                      Tipo
+                    </th>
+                    <th class="col-xs-2">
+                      Qtde
+                    </th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let s of storageUnits">
+                    <td>{{s.packType.description}}</td>
+                    <td>{{s.packTypeQuantity}}</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <h4>Embalagem do Transporte</h4>
+
+            <div class="form-group" appErrorGroup>
+              <label class="control-label col-md-2 text-right" for="type">
+                Tipo*
+              </label>
+              <div class="col-md-8">
+                <select formControlName="type" class="form-control">
+                  <option value=''>Selecione um Tipo</option>
+                  <option *ngFor="let p of packTypes" [value]="p.id" [selected]="p.id == batch.packType.id">
+                    {{ p.description }}
+                  </option>
+                </select>
+                <app-error-message controlName="type" label="Tipo"></app-error-message>
+              </div>
+            </div>
+
+            <div class="form-group" appErrorGroup>
+              <label class="control-label col-md-2 text-right" for="quantity">Quantidade*</label>
+              <div class="col-md-6">
+                <input
+                  id="quantity"
+                  formControlName="quantity"
+                  [textMask]="integerMask"
+                  class="form-control"
+                  maxlength="10"
+                />
+                <app-error-message controlName="quantity" label="Quantidade"></app-error-message>
+              </div>
+              <div class="col-md-2" style="line-height:40px;margin-left: -15px">
+                SC
+              </div>
+            </div>
+
+            <div class="form-group" appErrorGroup>
+              <label class="control-label col-md-2 text-right" for="indDiscountPack">Descontar Embalagens</label>
+              <div class="col-md-8">
+                <input
+                  id="indDiscountPack"
+                  formControlName="indDiscountPack"
+                  type="checkbox"
+                />
+              </div>
+            </div>
+
+          </fieldset>
+        </div>
+
+        <div class="modal-footer">
+          <div class="row">
+            <div class="col-sm-offset-2">
+              <div class="col-sm-12 mb10">
+                <app-submit-button [loading]="loading">
+                  SALVAR
+                </app-submit-button>
+                <button type="button" class="btn btn-default btn-size" data-dismiss="modal">
+                  CANCELAR
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+.custom_row{
+  margin: 0 0 12px 0 !important;
+  display: flex;
+  flex-direction: row;
+}
+
+.custom_col:last-child {
+  text-align: right;
+}
+
+.custom_col button{
+  margin-top: 35px;
+}
+
+.custom_row .custom_col,
+.custom_row .custom_col .text-danger{
+  padding: 2px !important;
+}
+
+.custom_row .custom_col label{
+  display: block !important;
+}
+
+div.row.save-button{
+  padding: 0 15px;
+  text-align: end;
+}

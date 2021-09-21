@@ -1,0 +1,33 @@
+<section class="content-header">
+  <h1>
+    <small>Cadastro</small>
+    Pessoa
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Pessoa', '/person'],
+    ['Cadastro de Pessoa', null]
+  ]"></app-breadcrumb>
+</section>
+<section class="content">
+  <div>
+    <app-person-list-info [person]="person" *ngIf="person"></app-person-list-info>
+
+    <app-customer-contact-list-simple-details [customerContacts]="person.customerContacts" *ngIf="person.customerContacts && person.customerContacts.length > 0"></app-customer-contact-list-simple-details>
+
+    <app-address-list-simple-details [addresses]="person.addresses" *ngIf="person.addresses && person.addresses.length > 0"></app-address-list-simple-details>
+
+
+    <div class="col-xs-12 mb10">
+      <button
+        (click)="returList()"
+        class="btn btn-default btn-size"
+        type="button"
+      >
+        VOLTAR
+      </button>
+    </div>
+
+
+  </div>
+</section>

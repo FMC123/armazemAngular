@@ -1,0 +1,82 @@
+<div class="new-layout">
+  <section class="content-header">
+    <app-breadcrumb [items]="[
+  ['Início', ''],
+  ['Relatório de Estoque para Auditoria', null]
+  ]"></app-breadcrumb>
+    <h1>
+      Relatório de Estoque para Auditoria
+    </h1>
+  </section>
+
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+
+        <div class="box">
+          <div class="box-header">
+            <h3 class="box-title w100"></h3>
+          </div>
+
+          <div class="box-body">
+            <form class="form-horizontal" (ngSubmit)="submit()" *ngIf="form" [formGroup]="form"
+                  (keydown.enter)="$event.preventDefault();">
+              <fieldset [disabled]="loading">
+
+                <div class="row">
+                  <!--<div class="col-md-4 col-xs-12" appErrorGroup>-->
+                    <!--<label for="referenceDateString">Data de referência</label>-->
+                    <!--<div>-->
+                      <!--<div class="input-group">-->
+                        <!--<input type="text" [textMask]="dateMask" appDatePicker id="referenceDateString"-->
+                               <!--formControlName="referenceDateString" placeholder="__/__/____" class="form-control" />-->
+                        <!--<div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>-->
+                      <!--</div>-->
+                      <!--<app-error-message controlName="referenceDateString" label="Data de referência">-->
+                      <!--</app-error-message>-->
+                    <!--</div>-->
+                  <!--</div>-->
+
+                  <!--<div class="col-md-4 col-xs-12" appErrorGroup>-->
+                    <!--<label for="dateEndString">Data final</label>-->
+                    <!--<div>-->
+                      <!--<div class="input-group">-->
+                        <!--<input type="text" [textMask]="dateMask" appDatePicker id="dateEndString"-->
+                               <!--formControlName="dateEndString" placeholder="__/__/____" class="form-control" />-->
+                        <!--<div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>-->
+                      <!--</div>-->
+                      <!--<app-error-message controlName="dateEndString" label="Data final">-->
+                      <!--</app-error-message>-->
+                    <!--</div>-->
+                  <!--</div>-->
+
+                  <div class="col-md-4 col-xs-12" appErrorGroup>
+                    <label for="stakeholderId">Cliente</label>
+                    <app-autocomplete [service]="ownerAutocomplete" [placeHolder]="'Selecione um cliente'">
+                    </app-autocomplete>
+                    <input type="hidden" id="stakeholderId" class="form-control" formControlName="stakeholderId" />
+                    <app-error-message controlName="stakeholderId" label="Cliente"></app-error-message>
+                  </div>
+                </div>
+
+              </fieldset>
+
+              <div class="row text-right bts-actions">
+                <div class="col-xs-12">
+                  <button [disabled]="loading" [class.has-spinner]="loading" type="submit"
+                          class="btn btn-size btn-success">
+                    <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+                    Gerar Relatório
+                  </button>
+                  <button type="button" (click)="buildForm()" class="btn btn-size btn-default">Limpar</button>
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</div>

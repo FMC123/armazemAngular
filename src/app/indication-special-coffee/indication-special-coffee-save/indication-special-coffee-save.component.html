@@ -1,0 +1,141 @@
+<section class="content-header">
+    <h1>
+        Café Especial
+    </h1>
+    <app-breadcrumb [items]="[
+      ['Início', ''],
+      ['Café Especial', null]
+    ]"></app-breadcrumb>
+  </section>
+
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Dados de Classificação Café Especial</h3>
+          </div>
+
+          <div class="box-body">
+            <form class="form-horizontal" (ngSubmit)="save()" [formGroup]="form" *ngIf="form">
+            <div class="row">
+                <div class="col-xs-12">
+
+                    <fieldset [disabled]="loading ">
+                      <div class="form-group row" appErrorGroup>
+                        <label class="control-label col-md-2" for="indicationDate">Data</label>
+                        <div class="col-md-4">
+                         <input readonly="true" value="{{indicationDate}}" type="text" class="form-control"/>
+                        </div>
+                        <label class="control-label col-md-2" for="indicationBarCode">Código de Barras</label>
+                        <div class="col-md-4">
+                            <input id="barcode" readonly="barcodeReadOnly" [formControl]="form.get('barcode')" [typeahead]="barcodeDatasource"
+                            maxlength="255"
+                            class="form-control" autocomplete="off"/>
+                            <app-error-message controlName="barcode" label="Código de barras"></app-error-message>
+                        </div>
+                      </div>
+                      <div class="form-group row" appErrorGroup>
+                        <label class="control-label col-md-2"  for="channel">Canal</label>
+                        <div class="col-md-4">
+                          <input readonly="true" formControlName="channel" type="text" class="form-control" />
+                        </div>
+
+                        <label class="control-label col-md-2" for="batchCode">Lote</label>
+                        <div class="col-md-4">
+                          <input readonly="true" formControlName="batchCode"  id="batchCode" type="text" class="form-control" />
+                        </div>
+                      </div>
+                      <div class="form-group row" appErrorGroup>
+                          <label class="control-label col-md-2" for="version">Versão</label>
+                          <div class="col-md-4">
+                            <input readonly="true" formControlName="version"  id="version" type="text" class="form-control" value="1"/>
+                          </div>
+                          <label class="control-label col-md-2" for="quantity">Sacas</label>
+                          <div class="col-md-4">
+                            <input readonly="true" formControlName="quantity" id="quantity" type="text" class="form-control"/>
+                          </div>
+                      </div>
+                      <div class="form-group row" appErrorGroup>
+                          <label class="control-label col-md-2" for="tastedAgain1By">Classificador 1</label>
+                          <div class="col-md-4">
+                            <select  class="form-control" formControlName="tastedAgain1By">
+                                <option value="">Selecione um responsável</option>
+                                <option *ngFor="let user of users" [value]="user.id">
+                                  {{ user.name }}
+                                </option>
+                              </select>
+                              <app-error-message controlName="tastedAgain1By" label="Classificador 1"></app-error-message>
+                          </div>
+                          <label class="control-label col-md-2" for="collaborator">Cliente</label>
+                          <div class="col-md-4">
+                            <input readonly="true" formControlName="collaborator" id="collaborator" type="text" class="form-control" />
+                          </div>
+                      </div>
+
+                      <div class="form-group row" appErrorGroup>
+                          <label class="control-label col-md-2" for="tastedAgain2By">Classificador 2</label>
+                          <div class="col-md-4">
+                              <select  class="form-control" formControlName="tastedAgain2By" >
+                                  <option value="">Selecione um responsável</option>
+                                  <option *ngFor="let user of users" [value]="user.id">
+                                    {{ user.name }}
+                                  </option>
+                                </select>
+                                <app-error-message controlName="tastedAgain2By" label="Classificador 2"></app-error-message>
+                            </div>
+                          <label class="control-label col-md-2" for="farm">Fazenda</label>
+                          <div class="col-md-4">
+                            <input readonly="true" id="farm" type="text" class="form-control" />
+                          </div>
+                      </div>
+
+                      <div class="form-group row" appErrorGroup>
+                          <label class="control-label col-md-2" for="tastedAgain3By">Classificador 3</label>
+                          <div class="col-md-4">
+                              <select  class="form-control" formControlName="tastedAgain3By">
+                                  <option value="">Selecione um responsável</option>
+                                  <option *ngFor="let user of users" [value]="user.id">
+                                    {{ user.name }}
+                                  </option>
+                                </select>
+                                <app-error-message controlName="tastedAgain3By" label="Classificador 3"></app-error-message>
+                            </div>
+                          <label class="control-label col-md-2" for="address">Município</label>
+                          <div class="col-md-4">
+                            <input readonly="true" id="address" type="text" class="form-control" />
+                          </div>
+                      </div>
+                      <div class="form-group row" appErrorGroup>
+                          <label class="control-label col-md-2" for="observation">Observação</label>
+                          <div class="col-md-4">
+                              <textarea  class="form-control" formControlName="observation" maxlength="255"></textarea>
+                          </div>
+                      </div>
+                    </fieldset>
+                </div>
+          </div>
+
+        <app-classification-item-form [classificationVersion]="classificationVersion" [users]="users"
+            [submitted]="submitted"></app-classification-item-form>
+        <div class="box-footer">
+          <div class="row">
+            <div class="col-sm-offset-2">
+              <div class="col-sm-10 mb10">
+                <app-submit-button [loading]="loading">
+                  SALVAR
+                </app-submit-button>
+                <a [class.disabled]="loading" routerLink="/indication-special-coffee/find" class="btn btn-default btn-size">
+                  VOLTAR
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        </form>
+      </div>
+    </div>
+    </div>
+  </div>
+</section>
+

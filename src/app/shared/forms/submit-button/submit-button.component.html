@@ -1,0 +1,7 @@
+<button [disabled]="loading || disabled"
+        [class.has-spinner]="loading"
+        type="submit"
+        class="{{ btnClass }}">
+  <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+  <ng-content></ng-content>
+</button>

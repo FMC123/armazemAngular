@@ -1,0 +1,207 @@
+<style>
+  img.certificate {height:40px; margin-right:10px;}
+</style>
+
+<section class="content-header">
+  <h1>
+    <small>Autorizar</small>
+    Classificação
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Classificações', '/pack-type'],
+    ['Cadastro das Classificações', null]
+  ]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <form (ngSubmit)="save()" [formGroup]="form" *ngIf="form" class="form-horizontal">
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Dados de Classificação</h3>
+          </div>
+
+          <div class="panel-body">
+            <fieldset [disabled]="(updateType.value  !== 'modifiedAuthorized') || loading">
+
+              <div class="row">
+                <label class="control-label col-md-2 text-right" for="barcode">
+                  Código de barras
+                </label>
+                <div class="form-group col-md-8" appErrorGroup>
+                  <input disabled="true" [formControl]="form.get('barcode')" id="barcode" type="text"
+                    [textMask]="integerMask" class="form-control" maxlength="60" />
+                  <app-error-message controlName="barcode" label="Código de barras"></app-error-message>
+                </div>
+                <div class="form-group col-md-1">
+                  &#160;
+                </div>
+              </div>
+
+              <div class="row">
+                <label class="control-label col-md-2 text-right">
+                  Certificação
+                </label>
+                <div class="form-group col-md-8">
+                    <img [src]="getUrlCertificate(certificate)" class="img-thumbnail certificate" alt="{{certificate.name}}" title="{{certificate.name}}" 
+                      *ngFor="let certificate of classificationVersion.sample.batches[0].batchOperation.certificates" />
+                </div>
+              </div>
+
+              <div class="row">
+                <label class="control-label col-md-2 text-right" for="version">
+                  Versão
+                </label>
+                <div class="form-group col-md-3" appErrorGroup>
+                  <input [formControl]="form.get('version')" id="version" type="text" [textMask]="integerMask"
+                    class="form-control" maxlength="18" />
+                  <app-error-message controlName="version" label="Versão"></app-error-message>
+                </div>
+              </div>
+
+              <div class="row">
+                <label class="control-label col-md-2 text-right" for="classificationDate">Data
+                  de classificação
+                </label>
+                <div class="form-group col-md-3" appErrorGroup>
+                  <input disabled="true" [formControl]="form.get('classificationDate')" id="classificationDate"
+                    type="text" [textMask]="dateMask" class="form-control" />
+                </div>
+
+                <!-- <label class="control-label col-md-2 text-right" for="tastedAgain1By" id="tastedAgain1By">Reprovador
+                  1</label>
+                <div class="form-group col-md-3" appErrorGroup>
+                  <select formControlName="tastedAgain1By" class="form-control">
+                    <option value=''>Selecione um reprovador 1</option>
+                    <option *ngFor="let user of users" [value]="user.id">
+                      {{ user.name }}
+                    </option>
+                  </select>
+                  <app-error-message controlName="tastedAgain1By" label="Reprovador 1"></app-error-message>
+                </div> -->
+              </div>
+
+              <div class="row">
+                <label class="control-label col-md-2 text-right" for="classifiedBy">Classificador</label>
+                <div class="form-group col-md-3" appErrorGroup>
+                  <select formControlName="classifiedBy" class="form-control" id="classifiedBy">
+                    <option value=''>Selecione um classificador</option>
+                    <option *ngFor="let user of users" [value]="user.id">
+                      {{ user.label }}
+                    </option>
+                  </select>
+                  <app-error-message controlName="classifiedBy" label="Classificador"></app-error-message>
+                </div>
+
+
+                <!-- <label class="control-label col-md-2 text-right" for="tastedAgain2By" id="tastedAgain2By">Reprovador
+                  2</label>
+                <div class="form-group col-md-3" appErrorGroup>
+                  <select formControlName="tastedAgain2By" class="form-control">
+                    <option value=''>Selecione um reprovador 2</option>
+                    <option *ngFor="let user of users" [value]="user.id">
+                      {{ user.name }}
+                    </option>
+                  </select>
+                  <app-error-message controlName="tastedAgain2By" label="Reprovador 2"></app-error-message>
+                </div> -->
+              </div>
+              <div class="row">
+                <label class="control-label col-md-2 text-right" for="tastedBy" id="tastedBy">Provador</label>
+                <div class="form-group col-md-3" appErrorGroup>
+                  <select formControlName="tastedBy" class="form-control">
+                    <option value=''>Selecione um provador bebida</option>
+                    <option *ngFor="let user of users" [value]="user.id">
+                      {{ user.label }}
+                    </option>
+                  </select>
+                  <app-error-message controlName="tastedBy" label="Provador bebida"></app-error-message>
+                </div>
+
+                <!-- <label class="control-label col-md-2 text-right" for="tastedAgain3By" id="tastedAgain3By">Reprovador
+                  3</label>
+                <div class="form-group col-md-3" appErrorGroup>
+                  <select formControlName="tastedAgain3By" class="form-control">
+                    <option value=''>Selecione um reprovador 3</option>
+                    <option *ngFor="let user of users" [value]="user.id">
+                      {{ user.name }}
+                    </option>
+                  </select>
+                  <app-error-message controlName="tastedAgain3By" label="Reprovador 3"></app-error-message>
+                </div> -->
+              </div>
+
+              <div class="row">
+                <label class="control-label col-md-2 text-right" for="observation">
+                  Observação
+                </label>
+                <div class="form-group col-md-8" appErrorGroup>
+                  <textarea [formControl]="form.get('observation')" id="observation" class="form-control"
+                    maxlength="255"></textarea>
+                  <app-error-message controlName="observation" label="Observação"></app-error-message>
+                </div>
+              </div>
+
+              <!-- Types -->
+
+              <app-classification-authorization-item-form [classificationVersion]="classificationVersion"
+                [users]="users" [submitted]="submitted" (dirty)="itemsDirty = true">
+              </app-classification-authorization-item-form>
+
+              <!-- Types -->
+
+              <div class="row">
+                <label class="control-label col-md-2 text-right" for="responsible">Usuário
+                  Responsável</label>
+                <div class="form-group col-md-3">
+                  <input disabled="true" type="text" class="form-control" value=" {{ auth.accessToken.user?.name }} "
+                    id="responsible" />
+                </div>
+
+                <label class="control-label col-md-2 text-right" for="tastedAgain1By" id="tastedAgain1By">Data </label>
+                <div class="form-group col-md-3">
+                  <input disabled="true" type="text" class="form-control" value="{{todayString}}" />
+                </div>
+              </div>
+            </fieldset>
+            <fieldset>
+              <div class="row">
+                <label class="control-label col-md-2 text-right">
+                  Autorização
+                </label>
+                <div class="form-group col-md-6">
+                  <label class="control-label text-right radio-inline"><input type="radio" value="authorized"
+                      formControlName="updateType">Autorizar</label>
+                  <label class="control-label text-right radio-inline"><input type="radio" value="unauthorized"
+                      formControlName="updateType">Não autorizar</label>
+                  <label class="control-label text-right radio-inline"><input type="radio" value="modifiedAuthorized"
+                      formControlName="updateType">Autorizar com
+                    modificações</label>
+                  <app-error-message controlName="updateType" label="Autorização"></app-error-message>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="box-footer">
+            <div class="row">
+              <div class="col-sm-offset-2" appErrorGroup>
+                <div class="col-sm-10 mb10">
+                  <button [disabled]="loading" type="submit" class="{{ submitButtonClass }}">
+                    {{ submitButtonLabel }}
+                  </button>
+                  <a [class.disabled]="loading" routerLink="/classification-authorization"
+                    class="btn btn-default btn-size">
+                    VOLTAR
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

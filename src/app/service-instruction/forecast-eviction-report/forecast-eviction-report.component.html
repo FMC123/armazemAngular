@@ -1,0 +1,84 @@
+<section class="content-header">
+  <h1>
+    Relatório de Previsão de Despejo
+  </h1>
+  <app-breadcrumb [items]="[
+ ['Início', ''],
+ ['Relatório de Previsão de Despejo', null]
+]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+
+      <div class="box">
+        <div class="box-header">
+          <h3 class="box-title w100"></h3>
+        </div>
+
+        <div class="box-body">
+          <form class="form-horizontal" (ngSubmit)="submit()" *ngIf="form" [formGroup]="form"
+            (keydown.enter)="$event.preventDefault();">
+            <fieldset [disabled]="loading">
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-xs-2 col-md-2 text-right" for="stakeholderId">Cliente</label>
+                <div class="col-xs-10 col-md-6">
+                  <app-autocomplete [service]="ownerAutocomplete"></app-autocomplete>
+                  <input id="stakeholderId" type="hidden" class="form-control" formControlName="stakeholderId" />
+                  <app-error-message controlName="stakeholderId" label="Cliente"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-xs-2 col-md-2 text-right" for="createdDateStartString">Data
+                  Ref.</label>
+                <div class="col-xs-10 col-md-6">
+                  <div class="row">
+                    <div class="col-xs-12">
+                      <div class="input-group">
+                        <input id="createdDateStartString" type="text" [textMask]="dateMask" appDatePicker formControlName="createdDateStartString"
+                          class="form-control" />
+                        <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+                      </div>
+                      <app-error-message controlName="createdDateStartString" label="Data Ref."></app-error-message>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-xs-2 col-md-2 text-right" for="type">Tipo</label>
+                <div class="col-xs-10 col-md-10">
+                  <label class="control-label text-right radio-inline">
+                    <input type="radio" value="1" formControlName="type">Resumo
+                  </label>
+                  <label class="control-label text-right radio-inline">
+                    <input type="radio" value="2" formControlName="type">Analítico
+                  </label>
+                  <app-error-message controlName="type" label="Tipo"></app-error-message>
+                </div>
+              </div>
+
+            </fieldset>
+
+            <div class="form-group">
+              <div class="col-xs-offset-2 col-xs-8 col-md-10 col-md-offset-2">
+                <button [disabled]="loading" [class.has-spinner]="loading" type="submit"
+                  class="btn btn-size btn-success">
+                  <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+                  GERAR RELATÓRIO
+                </button>
+
+                <button type="button" (click)="buildForm()" class="btn btn-size btn-default">LIMPAR</button>
+
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

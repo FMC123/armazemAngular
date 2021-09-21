@@ -1,0 +1,133 @@
+<section class="content-header">
+  <h1>
+    Histórico das Integrações
+  </h1>
+  <app-breadcrumb [items]="[
+ ['Início', ''],
+ ['Histórico das Integrações', null]
+]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">Filtrar</h3>
+        </div>
+
+        <div class="box-body">
+          <div class="row">
+            <div class="col-xs-12">
+              <app-integration-log-filter [loading]="loading" (filterChange)="filterList($event)"></app-integration-log-filter>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <div class="box-title">Lista de Histórico das Integrações</div>
+        </div>
+
+        <div class="box-body">
+          <app-loading *ngIf="loading"></app-loading>
+          <div class="col-xs-12" *ngIf="!loading">
+            <app-no-results *ngIf="!page.data || page.data.length<=0"></app-no-results>
+            <div class="table-responsive" *ngIf="page.data && page.data.length>0">
+              <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                  <th class="col-xs-1" appSort="createdDate" [instance]="page">
+                    Data
+                  </th>
+                  <th class="col-xs-1" appSort="createdDate" [instance]="page">
+                    Tipo
+                  </th>
+                  <th class="col-xs-1" appSort="createdDate" [instance]="page">
+                    Integrado
+                  </th>
+                  <th class="col-xs-1" appSort="status" [instance]="page">
+                    Status
+                  </th>
+                  <th class="col-xs-1">
+                    Método
+                  </th>
+                  <th class="col-xs-2">
+                    Direção
+                  </th>
+                  <th class="col-xs-1" appSort="url" [instance]="page">
+                    URL
+                  </th>
+                  <th class="col-xs-2">
+                    Request
+                  </th>
+                  <th class="col-xs-2">
+                    Response
+                  </th>
+                  <th class="col-xs-1">
+                    Armazém
+                  </th>
+                  <th class="text-center col-xs-2">
+                    Ação
+                  </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr
+                  *ngFor="let integrationLog of page.data"
+                  [class.bg-success]="integrationLog.status === 'SUCCESS'"
+                  [class.bg-danger]="integrationLog.status === 'ERROR'"
+                  [class.bg-warning]="!integrationLog.status || integrationLog.status === ''"
+                >
+                  <td class="text-center">{{integrationLog.createdDateString}}</td>
+                  <td class="text-center">{{integrationLog.integrationType}}</td>
+                  <td class="text-center">{{integrationLog.integrationDateString}}</td>
+                  <td class="text-center">{{integrationLog.status}}</td>
+                  <td class="text-center">{{integrationLog.requestType}}</td>
+                  <td class="text-center">{{integrationLog.direction}}</td>
+                  <td class="text-center">{{integrationLog.url}}</td>
+                  <td class="text-left">
+                    <pre class="clickable" *ngIf="!integrationLog.expandedJsonSended" (click)="integrationLog.expandedJsonSended = true">{{ integrationLog.integrationContent | truncate: '40' }}</pre>
+                    <pre class="clickable" *ngIf="integrationLog.expandedJsonSended" (click)="integrationLog.expandedJsonSended = false">{{ integrationLog.integrationContentFormatted }}</pre>
+                  </td>
+                  <td class="text-left">
+                    <pre class="clickable" *ngIf="!integrationLog.expandedJsonReturn" (click)="integrationLog.expandedJsonReturn = true">{{ integrationLog.integrationResponse ? (integrationLog.integrationResponse | truncate: '40' ): '' }}</pre>
+                    <pre class="clickable" *ngIf="integrationLog.expandedJsonReturn" (click)="integrationLog.expandedJsonReturn = false">{{ integrationLog.integrationResponseFormatted }}</pre>
+                  </td>
+                  <td class="text-center">{{integrationLog.warehouseToFrom.shortName}}</td>
+                  <td class="text-center">
+                    <button
+                      *ngIf="integrationLog.status !== 'SUCCESS' && integrationLog.direction === 'OUT'"
+                      (click)="resendConfirm.open(integrationLog.id)"
+                      class="btn btn-danger btn-sm"
+                      appTooltip="Reenviar"
+                    >
+                      <span class="fa fa-repeat fa-lg"></span>
+                    </button>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-xs-12 text-right">
+            <app-pagination *ngIf="!loading" [instance]="page"></app-pagination>
+          </div>
+        </div>
+      </div>
+
+      <app-confirm
+        *ngIf="resendConfirm.opened"
+        message="Tem certeza que deseja reenviar esta requisição?"
+        (confirm)="resend(resendConfirm.value)"
+        (close)="resendConfirm.close()">
+      </app-confirm>
+    </div>
+  </div>
+
+</section>

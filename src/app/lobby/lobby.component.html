@@ -1,0 +1,23 @@
+<div class="new-layout">
+
+  <section class="content-header">
+    
+    <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Portaria', null]
+  ]"></app-breadcrumb>
+
+    <h1>
+      Portaria
+    </h1>
+  </section>
+
+  <section class="content">
+    <app-lobby-actions></app-lobby-actions>
+
+    <app-transportation-list-totals></app-transportation-list-totals>
+
+    <app-transportation-list [mode]="'lobby'"></app-transportation-list>
+  </section>
+
+</div>

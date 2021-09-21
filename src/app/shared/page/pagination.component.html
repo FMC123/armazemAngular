@@ -1,0 +1,22 @@
+<nav *ngIf="instance.totalItems > 0">
+  <ul class="pagination" [class.m0]="removeMargin">
+      <li [class.disabled]="isFirstPage()" *ngIf="directionLinks">
+          <a href="javascript:" *ngIf="!isFirstPage()" (click)="previous()"> &laquo; </a>
+          <span *ngIf="isFirstPage()"> &laquo; </span>
+      </li>
+
+      <li *ngFor="let page of pages" [class.active]="getCurrent() === page.value">
+          <a href="javascript:"
+              (click)="setCurrent(page.value)"
+              *ngIf="getCurrent() !== page.value">
+              <span>{{ page.label }}</span>
+          </a>
+          <span *ngIf="getCurrent() === page.value">{{ page.label }}</span>
+      </li>
+
+      <li [class.disabled]="isLastPage()" *ngIf="directionLinks">
+          <a href="javascript:" *ngIf="!isLastPage()" (click)="next()"> &raquo; </a>
+          <span *ngIf="isLastPage()"> &raquo; </span>
+      </li>
+  </ul>
+</nav>

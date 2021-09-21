@@ -1,0 +1,20 @@
+<div class="box">
+  <div class="box-body" style="padding: 0; padding-bottom: 15px;">
+    <form [formGroup]="form">
+      <div class="form-group" appErrorGroup>
+        <div class="col-md-12">
+          <div class="input-group">
+            <input type="text"
+                    [textMask]="dateMask"
+                    appDatePicker
+                    formControlName="dateString"
+                    placeholder="Data"
+                    class="form-control">
+            <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+          </div>
+          <app-error-message controlName="dateString" label="Data"></app-error-message>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

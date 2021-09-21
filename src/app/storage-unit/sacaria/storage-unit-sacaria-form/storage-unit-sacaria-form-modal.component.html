@@ -1,0 +1,69 @@
+<div class="modal fade" appModal (close)="close.emit(null)" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <app-loading *ngIf="!form"></app-loading>
+    <form
+      (ngSubmit)="save()"
+      [formGroup]="form"
+      *ngIf="form"
+      class="form-horizontal"
+    >
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">Recebimento do Lote <strong>{{ batch.batchCode }}</strong></h3>
+        </div>
+
+        <div class="modal-body">
+          <fieldset [disabled]="loading">
+            <div class="form-group" appErrorGroup>
+              <label class="control-label col-md-2 text-right" for="positionId">
+                Posição*
+              </label>
+              <div class="col-md-10">
+                <select formControlName="positionId" class="form-control">
+                  <option value=''>Selecione uma posição</option>
+                  <option *ngFor="let position of positions" [value]="position.id">
+                    {{ position.label }}
+                  </option>
+                </select>
+                <app-error-message controlName="positionId" label="Posição"></app-error-message>
+              </div>
+            </div>
+
+            <div class="form-group" appErrorGroup>
+              <label class="control-label col-md-2 text-right" for="quantity">Quantidade*</label>
+              <div class="col-md-8">
+                <input
+                  id="quantity"
+                  formControlName="quantity"
+                  [textMask]="integerMask"
+                  class="form-control"
+                  maxlength="10"
+                />
+                <app-error-message controlName="quantity" label="Quantidade"></app-error-message>
+              </div>
+              <div class="col-md-2">
+                SC
+              </div>
+            </div>
+
+          </fieldset>
+        </div>
+
+        <div class="modal-footer">
+          <div class="row">
+            <div class="col-sm-offset-2">
+              <div class="col-sm-10 mb10">
+                <app-submit-button [loading]="loading">
+                  SALVAR
+                </app-submit-button>
+                <button type="button" class="btn btn-default btn-size" data-dismiss="modal">
+                  CANCELAR
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

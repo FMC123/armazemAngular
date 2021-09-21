@@ -1,0 +1,135 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div class="box">
+      <div class="box-header">
+        <span class="box-title">{{title}}</span>
+      </div>
+      <div class="box-body">
+        <app-loading *ngIf="loading"></app-loading>
+        <div class="row" *ngIf="!loading">
+          <div class="col-xs-6">
+
+            <table class="table table-bordered">
+              <tr>
+                <th class="col-xs-4 text-right">Data</th>
+                <td class="col-xs-8">{{batchOperation.createdDateString}}</td>
+              </tr>
+              <tr>
+                <th class="col-xs-4 text-right">Romaneio</th>
+                <td class="col-xs-8">{{batchOperation.batchOperationCode}}</td>
+              </tr>
+              <tr>
+                <th class="col-xs-4 text-right">Cliente</th>
+                <td class="col-xs-8">{{cooperado}}</td>
+              </tr>
+              <tr>
+                <th class="col-xs-4 text-right">Remetente</th>
+                <td class="col-xs-8">{{fazenda}}</td>
+              </tr>
+              <tr>
+                <th class="col-xs-4 text-right">Nota Fiscal</th>
+                <td class="col-xs-8">{{notaFiscal}}</td>
+              </tr>
+              <tr>
+                <th class="col-xs-4 text-right">N.Compra</th>
+                <td class="col-xs-8">{{purchaseNumber}}</td>
+              </tr>
+              <tr>
+                <th class="col-xs-4 text-right">Peneira</th>
+                <td class="col-xs-8">{{strainer}}</td>
+              </tr>
+            </table>
+
+          </div>
+          <div class="col-xs-6">
+
+            <table class="table table-bordered">
+              <tr>
+                <th class="col-xs-4 text-right">Motorista</th>
+                <td class="col-xs-8">{{motorista}}</td>
+              </tr>
+              <tr>
+                <th class="col-xs-4 text-right">Placa 1</th>
+                <td class="col-xs-8">{{placa1}}</td>
+              </tr>
+              <tr>
+                <th class="col-xs-4 text-right">Placa 2</th>
+                <td class="col-xs-8">{{placa2}}</td>
+              </tr>
+              <tr>
+                <th class="col-xs-4 text-right">Placa 3</th>
+                <td class="col-xs-8">{{placa3}}</td>
+              </tr>
+              <tr>
+                <th class="col-xs-4 text-right">Lote de origem</th>
+                <td class="col-xs-8">
+                  <a href="javascript:" *ngIf="batch.batchReference" (click)="pesquisar(batch.batchReference?.batchCode)">{{batch.batchReference?.batchCode}}</a>
+                  <span *ngIf="!batch.batchReference">-</span>
+                </td>
+              </tr>
+              <tr>
+                <th class="col-xs-4 text-right">Contaminantes</th>
+                <td class="col-xs-8">
+                  {{contaminants}}
+                </td>
+              </tr>
+              <tr>
+                <th class="col-xs-4 text-right">Certificados</th>
+                <td class="col-xs-4">
+                  <span *ngIf="(batchOperationCertificates == null || batchOperationCertificates.length == 0) && (batchCertificates == null || batchCertificates.length == 0)">-</span>
+                  <table class="col-xs-6 text-center" *ngFor="let boc of batchOperationCertificates">
+                      <span><img height="80" src="data:image/png;base64,{{boc.certificate.fileBytes}}" alt="{{boc.certificate.name}}"
+                                 title="{{boc.certificate.name}}"/></span><br>
+                    <span *ngIf="boc.certifiedOriginCode"><strong>Nº Cert. Origem: <br></strong>{{boc.certifiedOriginCode}}<br></span>
+                    <span *ngIf="boc.certifiedCustodyCode"><strong>Nº Cert. Custódia: <br></strong>{{boc.certifiedCustodyCode}}</span>
+
+                    <span *ngIf="!boc.certifiedOriginCode"><strong>Nº Cert. Origem: <br></strong> - <br></span>
+                    <span *ngIf="!boc.certifiedCustodyCode"><strong>Nº Cert. Custódia: <br></strong> - </span>
+
+                    <span *ngFor="let bc of batchCertificates">
+                      <img height="80" src="data:image/png;base64,{{bc.certificate.fileBytes}}" alt="{{bc.certificate.name}}"
+                           title="{{bc.certificate.name}}"/>
+                    </span>
+                  </table>
+                </td>
+
+            </table>
+
+          </div>
+        </div>
+
+        <div class="table-responsive" *ngIf="listagemEntradas && listagemEntradas.length > 0">
+          <table class="table table-striped table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="col-xs-3">Tag</th>
+                <th class="col-xs-3">Localização</th>
+                <th class="col-xs-3">Quantidade</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let entrada of listagemEntradas">
+                <td>{{entrada.storageUnitLocation.tag ? entrada.storageUnitLocation.tag.tagCode : ''}}</td>
+                <td>{{entrada.storageUnitLocation?.location}}</td>
+                <td>{{entrada.quantityString}} {{entrada.storageUnitLocation?.unitType}}</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <th class="col-xs-3"></th>
+                <th class="col-xs-3 text-right">Total:</th>
+                <th class="col-xs-3">{{calcularTotalQuantidadeString(listagemEntradas)}}</th>
+              </tr>
+              <tr>
+                <th class="col-xs-3"></th>
+                <th class="col-xs-3 text-right">Sacas:</th>
+                <th class="col-xs-3">{{calcularTotalSacks(listagemEntradas)}}</th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

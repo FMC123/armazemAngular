@@ -1,0 +1,26 @@
+<div class="new-layout">
+
+  <section class="content-header">
+    <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Balança', null]
+    ]"></app-breadcrumb>
+    
+    <h1>Balança</h1>
+  </section>
+
+  <section class="content" *ngIf="scale && scale.id">
+    <app-balance-weight></app-balance-weight>
+
+    <app-unified-actions *ngIf="unified"></app-unified-actions>
+    <app-balance-actions *ngIf="!unified"></app-balance-actions>
+
+    <app-transportation-list [scale]="scale" [mode]="unified ? 'unified' : 'balance'">
+    </app-transportation-list>
+  </section>
+
+  <section class="content" *ngIf="!scale || !scale.id">
+    <app-select-scale></app-select-scale>
+  </section>
+
+</div>

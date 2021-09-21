@@ -1,0 +1,90 @@
+<div class="box col-lg-12">
+  <div class="box-header">
+    <h3 class="box-title w100">
+      Resultado da Pesquisa
+    </h3>
+  </div>
+  <div class="box-body" style="max-height: 500px; overflow: auto; margin: 20px 0 !important;">
+    <app-sample-tracking-warehouse *ngFor="let warehouse of resultWarehouses" [warehouse]="warehouse"
+                                   [samples]="resultSamples(warehouse)" [insert]="true"></app-sample-tracking-warehouse>
+
+    <br>
+    <button (click)="downloadPDF(resultSamplesAll())" type="button" class="btn btn-primary"
+            [disabled]="resultSamplesAll()?.length <= 0" [class.disabled]="loading" [class.has-spinner]="loading">
+      <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+      <span class="fa fa-print"></span>
+      Imprimir resultado
+    </button>
+  </div>
+
+
+</div>
+
+<div class="box col-lg-12">
+
+  <div class="box-header">
+    <h3 class="box-title w100">
+      Reserva de Amostras Selecionadas
+    </h3>
+  </div>
+
+  <div class="box-body">
+
+    <app-sample-tracking-warehouse *ngFor="let warehouse of selectedWarehouses" [warehouse]="warehouse"
+                                   [samples]="selectedSamples(warehouse)" [insert]="false"></app-sample-tracking-warehouse>
+
+    <div>
+      <form (ngSubmit)="save()" [formGroup]="form" *ngIf="form" class="form-horizontal">
+
+        <div class="form-group">
+          <label class="control-label col-md-3 text-right" for="code">Código</label>
+          <div class="col-md-9">
+            <input id="code" formControlName="code" type="text" maxlength="100" class="form-control" disabled />
+            <app-error-message controlName="code" label="Código"></app-error-message>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-md-3 text-right" for="label">Rótulo*</label>
+          <div class="col-md-9">
+            <input id="label" formControlName="label" type="text" maxlength="255" class="form-control" />
+            <app-error-message controlName="label" label="Rótulo"></app-error-message>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-md-3 text-right">Motivo da Reserva*</label>
+          <div class="col-md-9">
+            <select formControlName="reason" class="form-control">
+              <option value="">Selecione o Motivo da Reserva</option>
+              <option *ngFor="let sampleTrackingMotive of sampleTrackingMotives" [value]="sampleTrackingMotive.code">
+                {{ sampleTrackingMotive.description }}
+              </option>
+            </select>
+            <app-error-message controlName="reason" label="Motivo da Reserva"></app-error-message>
+          </div>
+        </div>
+
+        <app-submit-button [disabled]="selectedSamplesAll().length === 0 " [loading]="loading">
+          Salvar reserva de amostras
+        </app-submit-button>
+
+        <!--Deprecated--><!--Deprecated--><!--Deprecated-->
+        <!--<button (click)="executeConfirm.open(sampleTracking)" type="button" class="btn btn-primary"
+                [disabled]="sampleTracking.status !== statusOpened"[class.disabled]="loading" [class.has-spinner]="loading">
+          <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+          Confirmar reserva de amostras
+        </button>-->
+
+      </form>
+    </div>
+  </div>
+
+  <div class="box-footer">
+  </div>
+
+</div>
+
+<app-confirm *ngIf="executeConfirm.opened" message="Tem certeza que deseja confirmar o rastreamento?"
+             (confirm)="confirm(executeConfirm.value)" (close)="executeConfirm.close()">
+</app-confirm>

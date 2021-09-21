@@ -1,0 +1,10 @@
+https://github.com/sciactive/pnotify
+
+Desktop Module: NO
+Buttons Module: YES
+Non-Block Module: NO
+Mobile Module: NO
+Animate Module: NO
+Confirme Module: NO
+Callback Module: NO
+History Module: NO

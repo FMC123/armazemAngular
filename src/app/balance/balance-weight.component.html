@@ -1,0 +1,36 @@
+<div class="box">
+  <div class="box-body">
+    <div class="col-lg-8">
+      <h1
+        style="font-size: 72px"
+        class="text-center"
+        [class.text-success]="weight.stabilized"
+        [class.text-danger]="!weight.stabilized"
+      >
+        {{ weight.weight }} KG
+      </h1>
+      <p class="text-danger text-center" *ngIf="!weight.stabilized">Aguarde a balança estabilizar</p>
+      <p class="text-success text-center" *ngIf="weight.stabilized">Balança estabilizada</p>
+
+    </div>
+
+    <div class="col-lg-4">
+      <h1
+        style="font-size: 40px"
+        class="text-center"
+        [class.text-success]="weight.stabilized"
+        [class.text-danger]="!weight.stabilized"
+      >
+        {{ scale.description }}
+      </h1>
+
+      <button
+        (click)="selectNewScale()"
+        class="btn btn-default text-center col-lg-12"
+      >
+        <i class="fa fa-balance-scale"></i> Trocar de Balança
+      </button>
+    </div>
+
+  </div>
+</div>

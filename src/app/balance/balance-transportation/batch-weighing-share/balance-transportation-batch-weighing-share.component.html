@@ -1,0 +1,65 @@
+<div class="new-layout">
+
+  <section class="content-header">
+    <app-breadcrumb [items]="[
+        ['Início', ''],
+        ['Balança', '/balance'],
+        ['', null]
+      ]"></app-breadcrumb>
+    <h1>
+      Divisão de Lote
+    </h1>
+  </section>
+
+  <section class="content">
+    <app-balance-weight></app-balance-weight>
+
+    <div class="box">
+      <div class="box-header">
+        <h3 class="box-title w100">
+          Romaneio
+        </h3>
+      </div>
+
+      <div class="box-body">
+        <table class="table table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th class="col-xs-1">Data</th>
+              <th class="col-xs-2">Romaneio</th>
+              <th class="col-xs-1">Qt. Sacas</th>
+              <th class="col-xs-1">P. Bruto</th>
+              <th class="col-xs-1">Tara</th>
+              <th class="col-xs-1">P. Liquido</th>
+              <th class="col-xs-1">Auditor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ batchOperation.createdDateString }}</td>
+              <td>{{ batchOperation.batchOperationCode }}</td>
+              <td>{{ batchOperation.sacksQuantity }}</td>
+              <td>{{ batchOperation.grossWeightString }}</td>
+              <td>{{ batchOperation.taraString }}</td>
+              <td>{{ batchOperation.netWeightString }}</td>
+              <td>{{ batchOperation.auditor?.name }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <app-balance-transportation-batch-child-weighing (refreshBatchOperation)="refreshBatchOperation()"
+      [batchOperation]="batchOperation"
+      [transportation]="transportation"
+    >
+    </app-balance-transportation-batch-child-weighing>
+
+    <div>
+      <button [routerLink]="['/balance', 'in', transportation.id]" class="btn btn-default">
+        Voltar
+      </button>
+    </div>
+  </section>
+
+</div>

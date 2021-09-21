@@ -1,0 +1,54 @@
+div.form-group{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+div.form-group > label{
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.labels-on-top{
+  display: flex;
+  align-items: baseline;
+  padding: 0 15px;
+  margin-bottom: 10px;
+}
+
+.control-label.row{
+  margin: 0 0 5px;
+  text-align: left;
+}
+
+.control-label.row + .row{
+  padding: 0 15px;
+}
+
+.form-check-input{
+  height: 34px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.list-checkbox{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.row-label{
+  font-weight: bold;
+  align-self: center;
+}
+
+.row.inside-fieldset > .form-group{
+  margin: 0 0 15px 0;
+  padding: 0;
+}
+
+.box.filter{
+  padding-bottom: 10px;
+}

@@ -1,0 +1,71 @@
+<div class="box">
+  <div class="box-header clickable with-border"
+       (click)="collapsed=!collapsed"
+       [class.collapsed]="collapsed">
+    <h4 class="panel-title accordion-toggle">
+      <i class="fa fa-th-list"></i> Visualização
+    </h4>
+  </div>
+  <div class="box-body" style="height: 100%" [hidden]="collapsed">
+    <div *ngIf="!selectedInfo && (!storageUnits || storageUnits.length === 0)"
+          class="text-center m20">
+      Não existem informações para exibir
+    </div>
+
+    <div *ngIf="selectedInfo" style="padding-bottom: 15px">
+      <app-info-table [data]="selectedInfo"></app-info-table>
+    </div>
+
+    <div class="table-responsive"
+          *ngIf="storageUnits.length>0">
+      <table class="table table-striped table-condensed table-bordered table-hover">
+        <thead>
+          <tr>
+            <th class="col-xs-1">
+              <input type="checkbox" [(ngModel)]="allSelectedForMarkupGroup"/>
+            </th>
+            <th class="col-xs-1">
+              Tag
+            </th>
+            <th class="col-xs-2">
+              Lote
+            </th>
+            <th class="col-xs-3">
+              Posição
+            </th>
+            <th class="col-xs-4">
+              Depositante
+            </th>
+            <th class="col-xs-1" *ngIf="hasPermissionToMove"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+              *ngFor="let storageUnit of storageUnits"
+              [style.background-color]="storageUnit.selected? storageUnit.fillDarkest : storageUnit.fill"
+              [style.color]="storageUnit.selected? 'white': storageUnit.textFill"
+              class="clickable"
+            >
+            <td><input type="checkbox" [(ngModel)]="storageUnit.selectedForMarkupGroup"/></td>
+            <td (click)="select(storageUnit)">{{storageUnit.tagCode}}</td>
+            <td (click)="select(storageUnit)">{{storageUnit.batchesAndWeightsMinified}}</td>
+            <td (click)="select(storageUnit)">{{storageUnit.fullPosition}}</td>
+            <td *ngIf="!nameWithCodeParameter" (click)="select(storageUnit)">{{storageUnit.clientName}}</td>
+            <td *ngIf="nameWithCodeParameter" (click)="select(storageUnit)">{{storageUnit.clientNameWithCode}}</td>
+            <td *ngIf="hasPermissionToMove">
+              <button appTooltip="Mover" *ngIf="!storageUnit.batchOnly" (click)="move.emit(storageUnit.id)" class="btn-sm btn-default">
+                <i class="fa fa-map-marker"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="totalMarkedKilos || totalMarkedSacks" style="margin-top: 12px">
+      <p *ngIf="totalMarkedKilos">Peso selecionado: <strong>{{ totalMarkedKilosString }}</strong></p>
+      <p *ngIf="totalMarkedSacks">Peso selecionado: <strong>{{ totalMarkedSacksString }}</strong></p>
+    </div>
+
+  </div>
+</div>

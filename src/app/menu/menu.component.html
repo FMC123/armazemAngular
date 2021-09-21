@@ -1,0 +1,685 @@
+<section class="sidebar" *ngIf="auth.authenticated">
+  <!-- Sidebar user panel -->
+  <!-- sidebar menu: : style can be found in sidebar.less -->
+  <ul class="sidebar-menu">
+
+    <li class="treeview" [class.active]="menuAdminOpened" appMenuParentPermission>
+      <a href="javascript:" (click)="menuAdminOpened = !menuAdminOpened">
+        <span>Administração do Sistema</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-down pull-right"></i>
+          <i class="fa fa-angle-up pull-right"></i>
+        </span>
+      </a>
+      <ul class="treeview-menu" style="display: block" [hidden]="!menuAdminOpened">
+
+        <li>
+          <a [routerLink]="['/parameter']" routerLinkActive="active" appMenuPermission="USER">
+            Parâmetros do Sistema
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/user-administrator']" routerLinkActive="active" appMenuPermission="USER">
+            Administradores
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/company']" routerLinkActive="active" appMenuPermission="COMPANY">
+            Companhias
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/mobile-app']" routerLinkActive="active" appMenuPermission="MOBILE_WATCH_DOGS">
+            <!-- Cadasstar no banco e atribuir permissões MOBILE_APPS-->
+            Aplicativos Mobile
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <li class="treeview" [class.active]="menuUserOpened" appMenuParentPermission>
+      <a href="javascript:" (click)="menuUserOpened = !menuUserOpened">
+        <span>Administração de Usuário</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-down pull-right"></i>
+          <i class="fa fa-angle-up pull-right"></i>
+        </span>
+      </a>
+      <ul class="treeview-menu" style="display: block" [hidden]="!menuUserOpened">
+        <li>
+          <a [routerLink]="['/user']" routerLinkActive="active" appMenuPermission="USER">
+            Usuários
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/permission']" routerLinkActive="active" appMenuPermission="GROUP_PERMISSION">
+            Permissões
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/department']" routerLinkActive="active" appMenuPermission="USER">
+            Setores
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/access-token']" routerLinkActive="active" appMenuPermission="ACCESS_TOKEN">
+            Histórico de Usuários
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <li class="treeview" [class.active]="menuRegisterOpen" appMenuParentPermission>
+      <a href="javascript:" (click)="menuRegisterOpen = !menuRegisterOpen">
+        <span>Cadastros</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-down pull-right"></i>
+          <i class="fa fa-angle-up pull-right"></i>
+        </span>
+      </a>
+      <ul class="treeview-menu" style="display: block" [hidden]="!menuRegisterOpen">
+        <li class="menu-divisor">
+          Pessoa
+        </li>
+        <li class="menu-2th-nivel">
+          <a [routerLink]="['/warehouse-stakeholder']" routerLinkActive="active"
+            appMenuPermission="WAREHOUSE_STAKEHOLDER">
+            Clientes e Fornecedores
+          </a>
+        </li>
+        <li class="menu-2th-nivel">
+          <a [routerLink]="['/carrier']" routerLinkActive="active" appMenuPermission="CARRIER">
+            Transportadoras
+          </a>
+        </li>
+        <li class="menu-2th-nivel">
+          <a [routerLink]="['/driver']" routerLinkActive="active" appMenuPermission="PERSON">
+            Motoristas
+          </a>
+        </li>
+        <li class="menu-2th-nivel">
+          <a [routerLink]="['/person']" routerLinkActive="active" appMenuPermission="PERSON">
+            Pessoas
+          </a>
+        </li>
+        <li class="menu-divisor">
+          Cooperado
+        </li>
+        <li class="menu-2th-nivel">
+          <a [routerLink]="['/collaborator']" routerLinkActive="active" appMenuPermission="CARRIER">
+            Cooperados
+          </a>
+        </li>
+        <li class="menu-2th-nivel">
+          <a [routerLink]="['/farm']" routerLinkActive="active" appMenuPermission="USER">
+            Propriedades
+          </a>
+        </li>
+        <li class="menu-2th-nivel">
+          <a [routerLink]="['/collaborator-property']" routerLinkActive="active" appMenuPermission="USER">
+            Propriedades x Cooperados
+          </a>
+        </li>
+        <li class="menu-2th-nivel">
+          <a [routerLink]="['/economic-group']" routerLinkActive="active" appMenuPermission="ECONOMIC_GROUP">
+            Grupos Econômicos
+          </a>
+        </li>
+        <li class="menu-divisor">
+          Armazenamento
+        </li>
+        <li class="menu-2th-nivel">
+          <a [routerLink]="['/warehouse']" routerLinkActive="active" appMenuPermission="WAREHOUSE">
+            Armazéns
+          </a>
+        </li>
+        <li class="menu-2th-nivel">
+          <a [routerLink]="['/position-layer']" routerLinkActive="active" appMenuPermission="POSITION_LAYER">
+            Mapas
+          </a>
+        </li>
+        <li class="menu-2th-nivel">
+          <a [routerLink]="['/scale']" routerLinkActive="active" appMenuPermission="USER">
+            Balanças
+          </a>
+        </li>
+        <li class="menu-2th-nivel">
+          <a [routerLink]="['/forklift']" routerLinkActive="active" appMenuPermission="FORKLIFT">
+            Empilhadeiras
+          </a>
+        </li>
+        <li class="menu-2th-nivel">
+          <a [routerLink]="['/pack-type']" routerLinkActive="active" appMenuPermission="PACK_TYPE">
+            Tipos de Embalagens
+          </a>
+        </li>
+        <li class="menu-2th-nivel">
+          <a [routerLink]="['/certificate']" routerLinkActive="active" appMenuPermission="CERTIFICATE">
+            Certificados
+          </a>
+        </li>
+        <li class="menu-2th-nivel">
+          <a [routerLink]="['/sku']" routerLinkActive="active" appMenuPermission="FORKLIFT">
+            SKU
+          </a>
+        </li>
+        <li class="menu-2th-nivel">
+          <a [routerLink]="['/contaminants']" routerLinkActive="active" appMenuPermission="USER">
+            Contaminantes
+          </a>
+        </li>
+        <li class="menu-divisor">
+          Telemetria
+        </li>
+        <li class="menu-2th-nivel">
+          <a [routerLink]="['/motive-control']" routerLinkActive="active" appMenuPermission="USER">
+            Controle de Motivos
+          </a>
+        </li>
+
+        <li class="menu-divisor">
+          Serviço
+        </li>
+        <li class="menu-2th-nivel">
+          <a [routerLink]="['/operation-type']" routerLinkActive="active" appMenuPermission="OPERATION_TYPE">
+            Tipos de Operação
+          </a>
+        </li>
+        <li class="menu-2th-nivel">
+          <a [routerLink]="['/service-group']" routerLinkActive="active" appMenuPermission="SERVICE_GROUP">
+            Grupos de Serviço
+          </a>
+        </li>
+        <li class="menu-2th-nivel">
+          <a [routerLink]="['/service-item']" routerLinkActive="active" appMenuPermission="ITEM">
+            Itens de Serviços
+          </a>
+        </li>
+        <li class="menu-2th-nivel">
+          <a [routerLink]="['/service-instruction-type']" routerLinkActive="active"
+            appMenuPermission="SERVICE_INSTRUCTION_TYPE">
+            Tipos de Instrução de Serviço
+          </a>
+        </li>
+        <li class="menu-divisor">
+          Classificação
+        </li>
+        <li class="menu-2th-nivel">
+          <a [routerLink]="['/drink']" routerLinkActive="active" appMenuPermission="DRINK">
+            Tipos de Bebidas
+          </a>
+        </li>
+        <li class="menu-2th-nivel">
+          <a [routerLink]="['/cultivation']" routerLinkActive="active" appMenuPermission="USER">
+            Culturas
+          </a>
+        </li>
+        <li class="menu-2th-nivel">
+          <a [routerLink]="['/harvest-season']" routerLinkActive="active" appMenuPermission="USER">
+            Safras
+          </a>
+        </li>
+        <li class="menu-2th-nivel">
+          <a [routerLink]="['/strainer']" routerLinkActive="active" appMenuPermission="STRAINER">
+            Peneiras
+          </a>
+        </li>
+        <li class="menu-2th-nivel">
+          <a [routerLink]="['/classification-step']" routerLinkActive="active" appMenuPermission="USER">
+            Processos de Classificação
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <li class="treeview" [class.active]="menuAutomationOpened" appMenuParentPermission>
+      <a href="javascript:" (click)="menuAutomationOpened = !menuAutomationOpened">
+        <span>Automação</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-down pull-right"></i>
+          <i class="fa fa-angle-up pull-right"></i>
+        </span>
+      </a>
+      <ul class="treeview-menu" [class.menu-open]="menuAutomationOpened" style="display: block"
+        [hidden]="!menuAutomationOpened">
+        <li>
+          <a [routerLink]="['/equipament']" routerLinkActive="active" appMenuPermission="MANAGE_EQUIPAMENT">
+            Equipamentos
+          </a>
+        </li>
+
+        <li>
+          <a [routerLink]="['/automation-log']" routerLinkActive="active" appMenuPermission="AUTOMATION_LOG">
+            Logs
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/automation-notification']" routerLinkActive="active"
+            appMenuPermission="MANAGE_NOTIFICATION">
+            Operações de Transbordo
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <li class="treeview" [class.active]="menuShippingAuthorizationOpen" appMenuParentPermission>
+      <a href="javascript:" (click)="menuShippingAuthorizationOpen = !menuShippingAuthorizationOpen">
+        <span>Autorização de Embarque</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-down pull-right"></i>
+          <i class="fa fa-angle-up pull-right"></i>
+        </span>
+      </a>
+      <ul class="treeview-menu" style="display: block" [hidden]="!menuShippingAuthorizationOpen">
+        <li>
+          <a [routerLink]="['/shipping-authorization']" routerLinkActive="active"
+            appMenuPermission="SHIPPING_AUTHORIZATION">
+            Autorização de Embarque
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <li class="treeview" [class.active]="menuBalanceOpen" appMenuParentPermission>
+      <a href="javascript:" (click)="menuBalanceOpen = !menuBalanceOpen">
+        <span>Portaria</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-down pull-right"></i>
+          <i class="fa fa-angle-up pull-right"></i>
+        </span>
+      </a>
+      <ul class="treeview-menu" style="display: block" [hidden]="!menuBalanceOpen">
+        <li>
+          <a [routerLink]="['/purchase-forecast']" routerLinkActive="active" appMenuPermission="PURCHASE_FORECAST">
+            Previsão de compra
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/lobby']" routerLinkActive="active" appMenuPermission="LOBBY">
+            Entrada/Saídas de Veículos
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <li class="treeview" [class.active]="menuLobbyOpened" appMenuParentPermission>
+      <a href="javascript:" (click)="menuLobbyOpened = !menuLobbyOpened">
+        <span>Balança</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-down pull-right"></i>
+          <i class="fa fa-angle-up pull-right"></i>
+        </span>
+      </a>
+      <ul class="treeview-menu" style="display: block" [hidden]="!menuLobbyOpened">
+        <li>
+          <a [routerLink]="['/balance']" routerLinkActive="active" appMenuPermission="BALANCE">
+            Balança
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <li class="treeview" [class.active]="menuStockOpened" appMenuParentPermission>
+      <a href="javascript:" (click)="menuStockOpened = !menuStockOpened">
+        <span>Estoques</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-down pull-right"></i>
+          <i class="fa fa-angle-up pull-right"></i>
+        </span>
+      </a>
+      <ul class="treeview-menu" [class.menu-open]="menuStockOpened" style="display: block" [hidden]="!menuStockOpened">
+        <li>
+          <a [routerLink]="['/batch-operation']" routerLinkActive="active"
+            appMenuPermission="BATCH_OPERATION">Entrada/Saída</a>
+        </li>
+
+        <li>
+          <a [routerLink]="['/silos-stock']" routerLinkActive="active"
+             appMenuPermission="BATCH_OPERATION">Estoque nos Silos</a>
+        </li>
+
+        <li>
+          <a [routerLink]="['/batch-report']" routerLinkActive="active" appMenuPermission="BATCH_REPORT">Ficha do
+            Lote</a>
+        </li>
+
+        <li>
+          <a [routerLink]="['/storage-unit-merge']" routerLinkActive="active"
+            appMenuPermission="STORAGE_UNIT_MERGE">Mesclar
+            Unidades
+            <br /> de Armazenamento</a>
+        </li>
+
+        <li>
+          <a [routerLink]="['/pack-stock']" routerLinkActive="active" appMenuPermission="PACK_STOCK">Embalagem</a>
+        </li>
+
+        <li>
+          <a [routerLink]="['/sample']" routerLinkActive="active" appMenuPermission="SAMPLE">Amostras</a>
+        </li>
+
+        <li>
+          <a [routerLink]="['/sample-pack']" routerLinkActive="active" appMenuPermission="SAMPLE_PACK">Envio de
+            amostra</a>
+        </li>
+        <li>
+          <a [routerLink]="['/sample/discharge']" routerLinkActive="active" appMenuPermission="SAMPLE_DISCHARGE">Baixa
+            de amostra</a>
+        </li>
+        <li>
+          <a [routerLink]="['/sample/picoterequest']" routerLinkActive="active" appMenuPermission="PICOTE_REQUEST">Solicitação de Picote</a>
+        </li>
+
+        <li>
+          <a [routerLink]="['/sample/withdrawal']" routerLinkActive="active"
+            appMenuPermission="SAMPLE_WITHDRAWAL">Retirada
+            de amostra</a>
+        </li>
+
+        <li>
+          <a [routerLink]="['/sample/devolution']" routerLinkActive="active"
+            appMenuPermission="SAMPLE_DEVOLUTION">Devolução
+            de amostra</a>
+        </li>
+
+        <li>
+          <a [routerLink]="['/batch-operation-log']" routerLinkActive="active" appMenuPermission="BATCH_OPERATION_LOG">
+            Histórico dos Romaneios
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/batch-log']" routerLinkActive="active" appMenuPermission="BATCH_LOG">
+            Histórico dos Lotes
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/storage-unit-batch-log']" routerLinkActive="active" appMenuPermission="STORAGE_UNIT_LOG">
+            Histórico de Movimentação
+          </a>
+        </li>
+
+        <li>
+          <a [routerLink]="['/warrant-control']" routerLinkActive="active" appMenuPermission="WARRANT_CONTROL">
+            Controle de Warrants
+          </a>
+        </li>
+
+        <li>
+          <a [routerLink]="['/batchcode-update']" routerLinkActive="active"
+                                                   appMenuPermission="BATCH_BATCHCODE_UPDATE">Alteração de número do lote</a>
+        </li>
+
+        <li>
+          <a
+            *ngIf="batchSwapParameter"
+            [routerLink]="['/batch-swap-log']"
+            routerLinkActive="active"
+            appMenuPermission="BATCH_SWAP">Histórico Troca Lotes</a>
+        </li>
+      </ul>
+    </li>
+
+    <li class="treeview" [class.active]="menuClassificationOpened" appMenuParentPermission>
+      <a href="javascript:" (click)="menuClassificationOpened = !menuClassificationOpened">
+        <span>Classificação</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-down pull-right"></i>
+          <i class="fa fa-angle-up pull-right"></i>
+        </span>
+      </a>
+
+      <ul class="treeview-menu" style="display: block" [hidden]="!menuClassificationOpened">
+        <li>
+          <a [routerLink]="['/sample-pack-receive']" routerLinkActive="active">Recebimento de amostras</a>
+        </li>
+
+        <li>
+          <a [routerLink]="['/sample-archive']" routerLinkActive="active">Gestão de amostras</a>
+        </li>
+
+        <li>
+          <a [routerLink]="['/classification-authorization']" routerLinkActive="active"
+            appMenuPermission="CLASSIFICATION_AUTHORIZATION">
+            Autorizar Classificação
+          </a>
+        </li>
+
+        <li>
+          <a [routerLink]="['/indicated-special-coffee']" routerLinkActive="active"
+                                                          appMenuPermission="INDICATED_SPECIAL_COFFEE">
+            Indicados a Café Especial
+          </a>
+        </li>
+
+        <li>
+          <a [routerLink]="['/analyze-special-coffee']" routerLinkActive="active"
+                                                          appMenuPermission="ANALYZE_SPECIAL_COFFEE">
+            Análise Café Especial
+          </a>
+        </li>
+      </ul>
+
+      <ul class="treeview-menu" style="display: block" [hidden]="!menuClassificationOpened">
+        <li>
+          <a [routerLink]="['/classification']" routerLinkActive="active" appMenuPermission="CLASSIFICATION">
+            Classificações
+          </a>
+        </li>
+      </ul>
+      <!-- Café especial passa a funcionar em Arquivo de amostras ou em Amostras
+      <ul class="treeview-menu" style="display: block" [hidden]="!menuClassificationOpened">
+        <li>
+          <a [routerLink]="['/indication-special-coffee/find']" routerLinkActive="active"
+            appMenuPermission="SPECIAL_COFFEE_FIND">
+            Café Especial
+          </a>
+        </li>
+      </ul>
+      -->
+    </li>
+
+    <li class="treeview" [class.active]="menuMapOpened" appMenuParentPermission>
+      <a href="javascript:" (click)="menuMapOpened = !menuMapOpened">
+        <span>Mapa</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-down pull-right"></i>
+          <i class="fa fa-angle-up pull-right"></i>
+        </span>
+      </a>
+      <ul class="treeview-menu" [class.menu-open]="menuMapOpened" style="display: block" [hidden]="!menuMapOpened">
+        <li>
+          <a [routerLink]="['/map-realtime']" routerLinkActive="active" appMenuPermission="MAP_REALTIME">Tempo real</a>
+        </li>
+        <li>
+          <a [routerLink]="['/map-history']" routerLinkActive="active" appMenuPermission="MAP_HISTORY">Histórico</a>
+        </li>
+      </ul>
+    </li>
+
+    <li class="treeview" [class.active]="menuServiceOpened" appMenuPermission="SERVICE_INSTRUCTION">
+      <a href="javascript:" (click)="menuServiceOpened = !menuServiceOpened">
+        <span>Serviços</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-down pull-right"></i>
+          <i class="fa fa-angle-up pull-right"></i>
+        </span>
+      </a>
+      <ul class="treeview-menu" [class.menu-open]="menuServiceOpened" style="display: block"
+        [hidden]="!menuServiceOpened" appMenuParentPermission>
+        <li>
+          <a [routerLink]="['/sample-tracking']" routerLinkActive="active">Rastreamento para Liga</a>
+        </li>
+        <li>
+          <a [routerLink]="['/service-request']" routerLinkActive="active">Solicitação de Atendimento</a>
+        </li>
+        <li>
+          <a [routerLink]="['/service-instruction']" routerLinkActive="active">Instrução de Serviço</a>
+        </li>
+        <li class="menu-divisor">
+          Relatórios
+        </li>
+        <li>
+          <a [routerLink]="['/service-instruction-report']" routerLinkActive="active">Resumo Instruções de Serviço</a>
+        </li>
+        <li>
+          <a [routerLink]="['/forecast-eviction-report']" routerLinkActive="active">Previsão de Despejo</a>
+        </li>
+      </ul>
+    </li>
+
+    <li class="treeview" [class.active]="menuChargingOpened" appMenuPermission="CHARGING">
+      <a href="javascript:" (click)="menuChargingOpened = !menuChargingOpened">
+        <span>Cobrança</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-down pull-right"></i>
+          <i class="fa fa-angle-up pull-right"></i>
+        </span>
+      </a>
+      <ul class="treeview-menu" [class.menu-open]="menuChargingOpened" style="display: block"
+        [hidden]="!menuChargingOpened" appMenuParentPermission>
+        <li>
+          <a [routerLink]="['/charging-generation']" routerLinkActive="active">Geração de cobrança</a>
+        </li>
+      </ul>
+    </li>
+
+    <li class="treeview" [class.active]="menuPurchaseOpened" appMenuPermission="PURCHASE_PROSPECT">
+      <a href="javascript:" (click)="menuPurchaseOpened = !menuPurchaseOpened">
+        <span>Compras</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-down pull-right"></i>
+          <i class="fa fa-angle-up pull-right"></i>
+        </span>
+      </a>
+      <ul class="treeview-menu" [class.menu-open]="menuPurchaseOpened" style="display: block"
+        [hidden]="!menuPurchaseOpened" appMenuParentPermission>
+        <li>
+          <a [routerLink]="['/purchase-prospect']" routerLinkActive="active">Prospecto de Compra</a>
+        </li>
+      </ul>
+    </li>
+
+    <li class="treeview" [class.active]="menuReportOpened" appMenuParentPermission>
+      <a href="javascript:" (click)="menuReportOpened = !menuReportOpened">
+        <span>Relatórios</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-down pull-right"></i>
+          <i class="fa fa-angle-up pull-right"></i>
+        </span>
+      </a>
+      <ul class="treeview-menu" [class.menu-open]="menuReportOpened" style="display: block"
+        [hidden]="!menuReportOpened">
+        <li>
+          <a [routerLink]="['/daily-movement-report']" routerLinkActive="active" appMenuPermission="REPORTS">
+            Boletim de Movimentação Diária
+          </a>
+        </li>
+        <li>
+          <a href="javascript:" (click)="physicalStock()" appMenuPermission="REPORTS">
+            Relatório de Estoque Vivo
+          </a>
+        </li>
+        <li>
+          <a  [routerLink]="['/customer-inventory']" routerLinkActive="active" appMenuPermission="REPORTS">
+            Relatório de Estoque de Cliente
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/audit-inventory-report']" routerLinkActive="active" appMenuPermission="REPORTS">
+            Relatório de Estoque de Auditoria
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/removal-cost']" routerLinkActive="active" appMenuPermission="REPORTS">
+            Relatório Esforço de Remoção
+          </a>
+        </li>
+        <li>
+          <a href="javascript:" (click)="globalBagsReport()" appMenuPermission="REPORTS">
+            Relatório Global de Bags
+          </a>
+        </li>
+        <li>
+          <a href="javascript:" (click)="globalBatchesReport()" appMenuPermission="REPORTS">
+            Relatório Global de Lotes
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/daily-entry']" routerLinkActive="active" appMenuPermission="REPORTS">
+            Relatório Entrada Diária
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/duct-clean']" routerLinkActive="active" appMenuPermission="REPORTS">
+            Relatório Limpeza de Granduto
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/sale-summary']" routerLinkActive="active" appMenuPermission="REPORTS">
+            Relatório Sumário de Vendas
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/inconsistency-stock']" routerLinkActive="active" appMenuPermission="REPORTS">
+            Inconsistência de Estoque
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/print-tag']" routerLinkActive="active" appMenuPermission="REPORTS">
+            Impressão de Tags
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/classif-special-coffee']" routerLinkActive="active" appMenuPermission="REPORTS">
+            Relatório Café Especial
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <li class="treeview" [class.active]="menuIntegrationOpened" appMenuPermission="INTEGRATION">
+      <a href="javascript:" (click)="menuIntegrationOpened = !menuIntegrationOpened">
+        <span>Logs de Integração</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-down pull-right"></i>
+          <i class="fa fa-angle-up pull-right"></i>
+        </span>
+      </a>
+
+      <ul class="treeview-menu" [class.menu-open]="menuIntegrationOpened" style="display: block"
+        [hidden]="!menuIntegrationOpened">
+
+
+        <li class="menu-divisor">
+          Integração Padrão
+        </li>
+        <li class="menu-2th-nivel">
+          <a [routerLink]="['/integration/integration-log']" routerLinkActive="active"
+            appMenuPermission="FUNCTION_LOG_AX">
+            Log Geral
+          </a>
+        </li>
+
+        <li class="menu-divisor">
+          ZIM
+        </li>
+        <li class="menu-2th-nivel">
+          <a [routerLink]="['/integration/zim']" routerLinkActive="active">
+            Movimentações
+          </a>
+        </li>
+
+        <li class="menu-divisor">
+          PROCAFE
+        </li>
+        <li class="menu-2th-nivel">
+          <a [routerLink]="['/integration/procafe']" routerLinkActive="active">
+            Integrações
+          </a>
+        </li>
+
+      </ul>
+    </li>
+
+  </ul>
+</section>

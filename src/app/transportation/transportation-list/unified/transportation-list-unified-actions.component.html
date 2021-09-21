@@ -1,0 +1,79 @@
+<button
+  *ngIf="transportation.allowCancelRelease"
+  (click)="onCancelReleaseClick($event)"
+  class="btn btn-success btn-sm"
+  appTooltip="Cancelar liberação"
+  [disabled]="loading">
+  <span class="fa fa-close fa-lg"></span>
+</button>
+
+<button
+  *ngIf="transportation.allowClose"
+  (click)="onCloseClick($event)"
+  class="btn btn-default btn-sm"
+  appTooltip="Finalizar"
+  [disabled]="loading">
+  <span class="fa fa-check fa-lg"></span>
+</button>
+
+<button
+  [hidden]="!transportation.allowRelease"
+  (click)="allowRelease($event)"
+  [disabled]="loading"
+  class="btn btn-success btn-sm"
+  appTooltip="Liberar saída">
+  <span class="fa fa-unlock fa-lg"></span>
+</button>
+
+<a
+  [hidden]="!transportation.allowWeighing  || transportation.typeObject.code !== 'IN' "
+  [routerLink]="['/balance', 'in', transportation.id]"
+  [class.disabled]="loading"
+  class="btn btn-primary btn-sm"
+  appTooltip="Processar">
+  <span class="fa fa-balance-scale fa-lg"></span>
+</a>
+
+<a
+  [hidden]="!transportation.allowWeighing || transportation.typeObject.code !== 'OUT' "
+  [routerLink]="['/balance', 'out', transportation.id]"
+  [class.disabled]="loading"
+  class="btn btn-primary btn-sm"
+  appTooltip="Processar">
+  <span class="fa fa-balance-scale fa-lg"></span>
+</a>
+
+<button
+  [hidden]="!transportation.allowEnter"
+  (click)="allowEnter($event)"
+  [disabled]="loading"
+  class="btn btn-warning btn-sm"
+  appTooltip="Autorizar entrada">
+  <span class="fa fa-sign-in fa-lg"></span>
+</button>
+
+<button
+  [hidden]="!transportation.allowCancelEnter"
+  (click)="cancelAllowEnter($event)"
+  [disabled]="loading"
+  class="btn btn-default btn-sm"
+  appTooltip="Cancelar autorização de entrada">
+  <span class="fa fa-hand-o-left fa-lg"></span>
+</button>
+
+<button
+  *ngIf="transportation.allowEdit"
+  (click)="onEditClick($event)"
+  class="btn btn-primary btn-sm"
+  appTooltip="Editar">
+  <span class="fa fa-pencil fa-lg"></span>
+</button>
+
+<button
+  *ngIf="transportation.allowDelete"
+  (click)="onDeleteClick($event)"
+  type="button"
+  appTooltip="Excluir"
+  class="btn btn-danger btn-sm">
+  <span class="fa fa-trash-o fa-lg"></span>
+</button>

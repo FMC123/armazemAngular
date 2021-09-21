@@ -1,0 +1,43 @@
+<div class="modal fade" appModal (close)="close.emit(null)" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="fa fa-shopping-cart"></i> Carrinho</h3>
+      </div>
+
+      <div
+        class="list-group"
+        style="overflow-y: scroll; margin-bottom: 0px"
+        *ngIf="orderedBatches && orderedBatches.length"
+      >
+        <template ngFor let-batch [ngForOf]="orderedBatches">
+          <div class="list-group-item">
+            <h4 class="list-group-item-heading">
+              {{ batch.batchCode }}
+            </h4>
+            <p class="list-group-item-text">
+              <span *ngFor="let classification of batch.classifications">
+                {{classification.label}}: {{classification.value}} <br>
+              </span>
+              <span>Peso: <strong>{{ batch.weightString }}KG</strong></span>
+            </p>
+          </div>
+        </template>
+
+        <div class="list-group-item text-right">
+          <strong>Total: 10,000KG</strong>
+        </div>
+      </div>
+
+      <div class="modal-body" *ngIf="!orderedBatches || !orderedBatches.length">
+        <p class="text-center">
+          Não há lotes no carrinho
+        </p>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-size" data-dismiss="modal">FECHAR</button>
+      </div>
+    </div>
+  </div>
+</div>

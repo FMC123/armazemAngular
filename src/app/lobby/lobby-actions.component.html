@@ -1,0 +1,29 @@
+<div class="box">
+  <div class="box-body">
+    <a routerLink="/transportation/in/new" class="btn btn-success">
+      <i class="fa fa-plus"></i> NOVA ENTRADA
+    </a>
+
+    <a routerLink="/transportation/out/new" class="btn btn-danger">
+      <i class="fa fa-minus"></i> NOVA SAÍDA
+    </a>
+
+    <a [routerLink]="['/purchase-forecast']" *ngIf="entryForecastScreenDefault"
+      [queryParams]="{ mode: 'lobby' }" class="btn btn-primary">
+      <i class="fa fa-hourglass-start"></i> PREVISÕES DE ENTRADA
+    </a>
+
+    <a [routerLink]="['/purchase-order']" *ngIf="purchaseOrderScreenDefault"
+      class="btn btn-primary">
+      <i class="fa fa-hourglass-start"></i> ORDENS DE COMPRA
+    </a>
+
+    <a [routerLink]="['/transportation', 'closed']" [queryParams]="{ mode: 'lobby' }" class="btn btn-default">
+      <i class="fa fa-history"></i> MOVIMENTAÇÕES JÁ FINALIZADAS
+    </a>
+
+    <a href="javascript:" (click)="downloadWaitList()" class="btn btn-default">
+      <i class="fa fa-print"></i> IMPRIMIR LISTA DE ESPERA
+    </a>
+  </div>
+</div>

@@ -1,0 +1,263 @@
+<div class="new-layout">
+
+  <section class="content-header">
+
+    <app-breadcrumb *ngIf="unifiedBalanceLobby == true" [items]="[
+    ['Início', ''],
+    ['Balança', '/balance'],
+    ['Ordem de Compra', null]
+    ]"></app-breadcrumb>
+
+    <app-breadcrumb *ngIf="unifiedBalanceLobby == false" [items]="[
+    ['Início', ''],
+    ['Portaria', '/lobby'],
+    ['Ordem de Compra', null]
+    ]"></app-breadcrumb>
+
+    <h1>
+      Ordem de Compra
+    </h1>
+
+    <div class="buttons">
+
+      <!--
+      <a routerLink="new" class="btn btn-success btn-size">
+        Gerar Relatório
+      </a>
+      -->
+
+      <a routerLink="new" class="btn btn-success btn-size">
+        Incluir Ordem de Compra
+      </a>
+    </div>
+
+  </section>
+
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+
+        <!-- begin box filter -->
+        <div class="box">
+          <div class="box-header">
+            <h3 class="box-title w100">
+              Filtro
+            </h3>
+          </div>
+
+          <div class="box-body">
+            <form class="form-horizontal" (ngSubmit)="doFilter()" *ngIf="form" [formGroup]="form"
+              (keydown.enter)="$event.preventDefault();">
+              <fieldset [disabled]="loading">
+
+
+                <div class="row">
+                  <div class="col-md-4 col-xs-12">
+                    <label for="downloadForecastDateStartString">Previsão de descarga</label>
+                    <div>
+                      <div>
+                        <div class="col-xs-6" style="padding-left:0">
+                          <div class="input-group">
+                            <input type="text" [textMask]="dateMask" appDatePicker id="downloadForecastDateStartString"
+                              formControlName="downloadForecastDateStartString" placeholder="Início"
+                              class="form-control" />
+                            <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+                          </div>
+                        </div>
+                        <div class="col-xs-6" style="padding:0">
+                          <div class="input-group">
+                            <input type="text" [textMask]="dateMask" appDatePicker
+                              formControlName="downloadForecastDateEndString" placeholder="Fim" class="form-control" />
+                            <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-xs-12">
+                    <label for="clientId">Cliente</label>
+                    <app-autocomplete [service]="ownerAutocomplete" [placeHolder]="'Selecione um cliente'">
+                    </app-autocomplete>
+                    <input type="hidden" id="clientId" class="form-control" formControlName="clientId" />
+                  </div>
+                  <div class="col-md-4 col-xs-12">
+                    <label for="loadingWarehouseId">Carregamento</label>
+                    <select formControlName="loadingWarehouseId" class="form-control" id="loadingWarehouseId">
+                      <option value=''>Selecione um carregamento</option>
+                      <option *ngFor="let warehouse of warehouses" [value]="warehouse.id">
+                        {{ warehouse.name }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-4 col-xs-12">
+                    <label for="packTypeId">Embalagem</label>
+                    <select formControlName="packTypeId" class="form-control" id="packTypeId">
+                      <option value=''>Selecione uma embalagem</option>
+                      <option *ngFor="let packType of packTypes" [value]="packType.id">
+                        {{ packType.description }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="col-md-4 col-xs-12">
+                    <label for="purchaseOrderCode">Ordem de Compra</label>
+                    <input id="purchaseOrderCode" class="form-control" formControlName="purchaseOrderCode"
+                      maxlength="25" placeholder="Informe o número de compra" />
+                  </div>
+                  <div class="col-md-4 col-xs-12">
+                    <label for="status">Status</label>
+                    <select formControlName="status" class="form-control" id="status">
+                      <option value=''>Selecione um status</option>
+                      <option *ngFor="let st of status" [value]="st.code">
+                        {{ st.name }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row text-right bts-actions">
+                  <div class="col-xs-12">
+
+                    <button type="button" (click)="buildForm()" class="btn btn-size btn-default">Limpar</button>
+
+                    <button [disabled]="loading" [class.has-spinner]="loading" type="submit"
+                      class="btn btn-size btn-success">
+                      <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+                      Filtrar
+                    </button>
+
+                  </div>
+                </div>
+
+              </fieldset>
+            </form>
+          </div>
+        </div>
+        <!-- end box filter -->
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="box">
+          <div class="box-header">
+            <div class="box-title">
+              Programação de Descargas ({{totalSacksForDischarging}} sacas)
+            </div>
+          </div>
+
+          <div class="box-body">
+            <app-loading *ngIf="loading"></app-loading>
+            <div *ngIf="!loading">
+              <app-no-results *ngIf="!page.data || page.data.length<=0"></app-no-results>
+              <div class="table-responsive" *ngIf="page.data && page.data.length>0">
+                <table class="table table-striped table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th class="col-xs-1">
+                        Data carregamento
+                      </th>
+                      <th class="col-xs-1">
+                        Previsão descarga
+                      </th>
+                      <th class="col-xs-1">
+                        Cliente
+                      </th>
+                      <th class="col-xs-1">
+                        Sacas
+                      </th>
+                      <th class="col-xs-1">
+                        Embalagem
+                      </th>
+                      <th class="col-xs-1">
+                        Ordem de compra
+                      </th>
+                      <th class="col-xs-1">
+                        Qtde descarregada
+                      </th>
+                      <th class="col-xs-1">
+                        Status
+                      </th>
+                      <th class="col-xs-1 text-center">
+                        Ações
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngFor="let purchaseOrder of page.data">
+                      <tr>
+                        <td class="text-center" (click)="showDetails(purchaseOrder);">
+                          {{purchaseOrder.loadingDateString}}
+                        </td>
+                        <td class="text-center" (click)="showDetails(purchaseOrder);">
+                          {{purchaseOrder.downloadForecastDateString}}</td>
+                        <td (click)="showDetails(purchaseOrder);">{{purchaseOrder.client?.person?.name}}</td>
+                        <td class="text-right" (click)="showDetails(purchaseOrder);">{{purchaseOrder.sacksQuantity}}
+                        </td>
+                        <td (click)="showDetails(purchaseOrder);">{{purchaseOrder.packType?.description}}</td>
+                        <td (click)="showDetails(purchaseOrder);">{{purchaseOrder.purchaseOrderCode}}</td>
+                        <td (click)="showDetails(purchaseOrder);">{{purchaseOrder.dischargedQuantity ? purchaseOrder.dischargedQuantity : 0}}</td>
+                        <td [ngStyle]="{background:purchaseOrder.statusCollor}" (click)="showDetails(purchaseOrder);">
+                          {{purchaseOrder.statusLabel}}</td>
+                        <td class="bts-list-actions">
+
+                          <a href="javascript:" (click)="showDetails(purchaseOrder)" class="btn btn-success btn-sm"
+                            appTooltip="Detalhes">
+                            <span class="fa fa-search fa-lg"></span>
+                          </a>
+
+                          <a [routerLink]="['/purchase-order/edit', purchaseOrder.id]" class="btn btn-primary btn-sm"
+                            appTooltip="Editar">
+                            <span class="fa fa-edit fa-lg"></span>
+                          </a>
+
+                          <button (click)="confirmDeletion(purchaseOrder)" type="button" appTooltip="Excluir"
+                            class="btn btn-danger btn-sm">
+                            <span class="fa fa-trash-o fa-lg"></span>
+                          </button>
+
+                        </td>
+                      </tr>
+                      <tr *ngIf="purchaseOrder.showDetailsInformation">
+                        <td colspan="3"><strong>Carregamento:</strong> {{purchaseOrder.loadingWarehouse?.name}}</td>
+                        <td colspan="3"><strong>Cidade do Carregamento:</strong> {{purchaseOrder.loadingCity?.label}}
+                        </td>
+                        <td colspan="3"><strong>Vendedor:</strong> {{purchaseOrder.salesman?.person?.name}}</td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="text-right">
+              <app-pagination *ngIf="!loading" [instance]="page"></app-pagination>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col-xs-12 last-buttons">
+
+          <a routerLink="/balance" class="btn btn-default btn-size" *ngIf="unifiedBalanceLobby == true">
+            Voltar
+          </a>
+
+          <a routerLink="/lobby" class="btn btn-default btn-size" *ngIf="unifiedBalanceLobby == false">
+            Voltar
+          </a>
+
+        </div>
+
+      </div>
+    </div>
+
+    <app-confirm *ngIf="confirmDeleteModal.opened" (confirm)="delete()" (close)="confirmDeleteModal.close()"
+      message="Tem certeza que deseja remover a ordem de compra número {{purchaseOrderToRemove.purchaseOrderCode}} ?">
+    </app-confirm>
+  </section>
+
+</div>

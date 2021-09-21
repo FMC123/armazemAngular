@@ -1,0 +1,180 @@
+
+<section class="content-header">
+  <h1>
+    Processos de Classificação
+  </h1>
+  <app-breadcrumb [items]="[
+      ['Início', ''],
+      ['Cadastros', null],
+      ['Processos de Classificação', null]
+    ]"></app-breadcrumb>
+</section>
+
+<section class="content">
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">Filtrar</h3>
+        </div>
+
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-4 col-xs-6">
+              <label>Pesquisar</label>
+              <input type="text" class="form-control" #searchBox (keyup)="search.next(searchBox.value)">
+            </div>
+            <div class="col-md-2 col-xs-6">
+              <label>&#160;</label>
+              <button (click)="true" type="button" class="btn btn-block btn-default">
+                <i class="fa fa-fw fa-filter"></i> Filtrar
+              </button>
+            </div>
+            <div class="col-md-4">
+              &#160;
+            </div>
+            <div class="col-md-2 col-xs-12 text-right">
+              <label>&#160;</label>
+              <a *ngIf="classGroupButtons" routerLink="/" class="btn btn-block btn-success">
+                <span class="fa fa-fw fa-plus"></span> <strong>NOVO</strong>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row">
+
+
+    <div class="col-xs-12" >
+
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">Processos de Classificação</h3>
+        </div>
+
+        <app-loading *ngIf="loading"></app-loading>
+        <app-no-results *ngIf="!loading && (!classGroupFilledArray || classGroupFilledArray.length<=0)"></app-no-results>
+        <div class="box-body" *ngIf="!loading && classGroupFilledArray && classGroupFilledArray.length>0">
+
+
+          <div class="box" *ngFor="let classGroup of classGroupFilledArray">
+            <div class="box-header with-border">
+              <h3 class="box-title col-xs-9">{{classGroup.name}}</h3>
+              <span class="col-xs-3">
+                <a
+                  *ngIf="classGroupStepButtons"
+                  class="btn btn-success"
+                  appTooltip="Criar fase de processo">
+                  <span class="fa fa-plus "></span>
+                </a>
+                <a
+                  *ngIf="classGroupButtons"
+                  class="btn btn-danger"
+                  appTooltip="Remover grupo de análise">
+                      <span class="fa fa-trash "></span>
+                    </a>
+              </span>
+            </div>
+
+            <div class="box-body">
+              <table class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                  <th class="col-xs-3">Fase</th>
+                  <th class="col-xs-3">Análises</th>
+                  <th class="col-xs-3">Usuários</th>
+                  <th class="col-xs-3">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let classStep of classGroup.classificationSteps">
+                  <td >{{classStep.sequence}}. {{classStep.description}}</td>
+                  <td>
+                    <ul>
+                      <li *ngFor="let stepType of classStep.stepTypes">{{stepType?.sequence}}. {{stepType?.classificationType?.name}}
+                        <a
+                          *ngIf="classGroupStepTypeButtons"
+                          class="btn btn-xs no-margin"
+                          appTooltip="Editar item de análise">
+                          <span class="fa fa-pencil-square-o "></span>
+                        </a>
+                        <a
+                          *ngIf="classGroupStepTypeButtons"
+                          class="btn btn-xs  no-margin"
+                          appTooltip="Remover item de análise">
+                          <span class="fa fa-trash "></span>
+                        </a>
+                      </li>
+                    </ul>
+                  </td>
+                  <td>
+                    <ul>
+                      <li *ngFor="let stepUser of classStep.stepUsers">{{stepUser?.stepUser?.name}}
+                        <a
+                          *ngIf="classGroupStepUserButtons"
+                          class="btn btn-xs  no-margin"
+                          (click)="deleteStepUserModal.open(stepUser)"
+                          appTooltip="Remover acesso">
+                          <span class="fa fa-trash "></span>
+                        </a>
+                      </li>
+                    </ul>
+                  </td>
+                  <td>
+                    <a
+                      *ngIf="classGroupStepTypeButtons"
+                      class="btn btn-success btn-sm"
+                      appTooltip="Adicionar análise à fase">
+                      <span class="fa fa-flask "></span>
+                    </a>
+                    <a
+                      *ngIf="classGroupStepUserButtons"
+                      class="btn btn-primary btn-sm"
+                      (click)="addEditStepUserModal.open(classStep)"
+                      appTooltip="Adicionar acesso a um usuário">
+                      <span class="fa fa-user "></span>
+                    </a>
+                    <a
+                      *ngIf="classGroupStepButtons"
+                      class="btn btn-danger btn-sm"
+                      appTooltip="Remover passo de análise">
+                      <span class="fa fa-trash "></span>
+                    </a>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+</section>
+
+
+<classification-step-user-select-modal
+  *ngIf="addEditStepUserModal.opened"
+  (close)="addEditStepUserModal.close()"
+  (onSelectUser)="addClassStepUser($event)">
+</classification-step-user-select-modal>
+
+<app-confirm
+  *ngIf="deleteStepUserModal.opened"
+  [message]="'Tem certeza que deseja remover o acesso do usuário ' + deleteStepUserModal.value.stepUser.name + '?'"
+  (confirm)="deleteClasStepUser(deleteStepUserModal.value)"
+  (close)="deleteStepUserModal.close()">
+</app-confirm>
+
+

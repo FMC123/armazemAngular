@@ -1,0 +1,7 @@
+<div [hidden]="state.loading">
+  <router-outlet></router-outlet>
+</div>
+<div *ngIf="state.loading" style="margin-top: 24px">
+  <app-loading></app-loading>
+</div>
+

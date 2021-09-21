@@ -1,0 +1,340 @@
+<section class="content-header">
+  <h1>
+    <small>Cadastro</small>
+    Pessoa
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Pessoa', '/person'],
+    ['Cadastro de Pessoa', null]
+  ]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <form (ngSubmit)="save()" [formGroup]="form" *ngIf="form" class="form-horizontal">
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Formulário</h3>
+          </div>
+
+          <div class="box-body">
+            <fieldset [disabled]="loading">
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2" for="name">Nome*</label>
+                <div class="col-md-4">
+                  <input  id="name" [(ngModel)]="person.name" formControlName="name" type="text" class="form-control" />
+                  <app-error-message controlName="name" label="Nome"></app-error-message>
+                </div>
+                <label class="control-label col-md-2" for="personType">Tipo de Pessoa*</label>
+                <div class="col-md-4">
+                  <select [(ngModel)]="person.personType" id="personType" formControlName="personType" class="form-control">
+                    <option value="">Selecione um Tipo Pessoa</option>
+                    <option *ngFor="let type of personsType" [value]="type.code">
+                      {{ type.name }}
+                    </option>
+                   </select>
+                  <app-error-message controlName="personType" label="Tipo de Pessoa"></app-error-message>
+                </div>
+              </div>
+
+              <div *ngIf="pessoaFisica">
+                <div class="form-group row" appErrorGroup>
+                  <label class="control-label col-md-2"  for="document">CPF*</label>
+                  <div class="col-md-4">
+                    <input
+                      id="document"
+                      [(ngModel)]="person.document"
+                      formControlName="document"
+                      type="text"
+                      class="form-control"
+                      [textMask]="cpfMask"
+                    />
+                    <app-error-message controlName="document" label="CPF"></app-error-message>
+                  </div>
+                  <label class="control-label col-md-2" for="active">Situação*</label>
+                  <div class="col-md-4">
+                    <select [(ngModel)]="person.active" id="active" formControlName="active" class="form-control">
+                          <option value="">Selecione uma situação</option>
+                          <option value="true">Ativo</option>
+                          <option value="false">Inativo</option>
+                    </select>
+                    <app-error-message controlName="active" label="Situação"></app-error-message>
+                  </div>
+                </div>
+
+                <div class="form-group row" appErrorGroup>
+                  <label class="control-label col-md-2" for="rg">RG</label>
+                  <div class="col-md-4">
+                    <input
+                      id="rg"
+                      [(ngModel)]="person.rg"
+                      formControlName="rg"
+                      type="text"
+                      class="form-control"
+                      [textMask]="rgMask"
+                    />
+                    <app-error-message controlName="rg" label="RG"></app-error-message>
+                  </div>
+                  <label class="control-label col-md-2" for="tradingName">Nome Usual</label>
+                  <div class="col-md-4">
+                    <input
+                      id="tradingName"
+                      [(ngModel)]="person.tradingName"
+                      formControlName="tradingName"
+                      type="text"
+                      class="form-control"
+                      maxlength="200"
+                    />
+                    <app-error-message controlName="tradingName" label="Nome Usual"></app-error-message>
+                  </div>
+                </div>
+                <div class="form-group row" appErrorGroup>
+                  <label class="control-label col-md-2" for="economicGroupId">Grupo Econômico</label>
+                  <div class="col-md-4">
+                    <select [(ngModel)]="person.economicGroupId" id="economicGroupId" formControlName="economicGroupId" class="form-control">
+                      <option value="">Selecione Grupo Econômico</option>
+                      <option *ngFor="let group of economicGroups" [value]="group.id">
+                        {{group.code}} - {{ group.description }}
+                      </option>
+                     </select>
+                    <app-error-message controlName="economicGroupId" label="Grupo Econômico"></app-error-message>
+                  </div>
+                </div>
+              </div>
+
+
+              <div *ngIf="pessoaJuridica">
+                <div class="form-group row" appErrorGroup>
+                  <label class="control-label col-md-2" for="document">CNPJ*</label>
+                  <div class="col-md-4">
+                    <input
+                      id="document"
+                      [(ngModel)]= "person.document"
+                      formControlName="document"
+                      type="text"
+                      [textMask]="cnpjMask"
+                      class="form-control"
+                    />
+                    <app-error-message controlName="document" label="CNPJ"></app-error-message>
+                  </div>
+                  <label class="control-label col-md-2" for="active">Situação*</label>
+                  <div class="col-md-4">
+                    <select id="active" [(ngModel)]="person.active" formControlName="active" class="form-control">
+                      <option value="">Selecione uma situação</option>
+                      <option value="true">Ativo</option>
+                      <option value="false">Inativo</option>
+                    </select>
+                    <app-error-message controlName="active" label="Situação"></app-error-message>
+                  </div>
+                </div>
+
+                <div class="form-group row" appErrorGroup>
+                  <label class="control-label col-md-2" for="stateRegistration">Inscrição Estadual*</label>
+                  <div class="col-md-4">
+                    <input
+                      id="stateRegistration"
+                      [(ngModel)]="person.stateRegistration"
+                      formControlName="stateRegistration"
+                      type="text" class="form-control"
+                      [textMask]="integerMask"
+                      maxlength="20"
+                    />
+                    <app-error-message controlName="stateRegistration" label="Inscrição Estadual"></app-error-message>
+                  </div>
+                  <label class="control-label col-md-2" for="tradingName">Nome Fantasia</label>
+                  <div class="col-md-4">
+                    <input
+                      id="tradingName"
+                      [(ngModel)]="person.tradingName"
+                      formControlName="tradingName"
+                      type="text"
+                      class="form-control"
+                      maxlength="200"
+                    />
+                    <app-error-message controlName="tradingName" label="Sobrenome"></app-error-message>
+                  </div>
+                </div>
+
+                <div class="form-group row" appErrorGroup>
+                  <label class="control-label col-md-2" for="economicGroupId">Grupo Econômico</label>
+                  <div class="col-md-4">
+                    <select [(ngModel)]="person.economicGroupId" id="economicGroupId" formControlName="economicGroupId" class="form-control">
+                      <option value="">Selecione Grupo Econômico</option>
+                      <option *ngFor="let group of economicGroups" [value]="group.id">
+                        {{group.code}} - {{ group.description }}
+                      </option>
+                     </select>
+                    <app-error-message controlName="economicGroupId" label="Grupo Econômico"></app-error-message>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="internacional">
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-md-2" for="document">Documento*</label>
+                  <div class="col-md-4">
+                    <input
+                      id="document"
+                      [(ngModel)]="person.document"
+                      formControlName="document"
+                      type="text" class="form-control"
+                      maxlength="20"
+                    />
+                    <app-error-message controlName="document" label="Documento"></app-error-message>
+                  </div>
+
+                  <label class="control-label col-md-2" for="active">Situação*</label>
+                  <div class="col-md-4">
+                    <select id="active" [(ngModel)]="person.active" formControlName="active" class="form-control">
+                      <option value="">Selecione uma situação</option>
+                      <option value="true">Ativo</option>
+                      <option value="false">Inativo</option>
+                    </select>
+                    <app-error-message controlName="active" label="Situação"></app-error-message>
+                  </div>
+                </div>
+
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-md-2" for="tradingName">Nome Usual</label>
+                  <div class="col-md-4">
+                    <input
+                      id="tradingName"
+                      [(ngModel)]="person.tradingName"
+                      formControlName="tradingName"
+                      type="text"
+                      class="form-control"
+                      maxlength="200"
+                    />
+                    <app-error-message controlName="tradingName" label="Nome Usual"></app-error-message>
+                    <label class="control-label col-md-2" for="economicGroupId">Grupo Econômico</label>
+                    <div class="col-md-4">
+                      <select [(ngModel)]="person.economicGroupId" id="economicGroupId" formControlName="economicGroupId" class="form-control">
+                        <option value="">Selecione Grupo Econômico</option>
+                        <option *ngFor="let group of economicGroups" [value]="group.id">
+                          {{group.code}} - {{ group.description }}
+                        </option>
+                       </select>
+                      <app-error-message controlName="economicGroupId" label="Grupo Econômico"></app-error-message>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="produtor">
+                <div class="form-group row" appErrorGroup>
+                  <label class="control-label col-md-2" for="document">CPF*</label>
+                  <div class="col-md-4">
+                    <input
+                      id="document"
+                      [(ngModel)]="person.document"
+                      formControlName="document"
+                      type="text"
+                      class="form-control"
+                      [textMask]="cpfMask"
+                    />
+                    <app-error-message controlName="document" label="CPF"></app-error-message>
+                  </div>
+
+                  <label class="control-label col-md-2" for="active">Situação*</label>
+                  <div class="col-md-4">
+                    <select id="active" [(ngModel)]="person.active" formControlName="active" class="form-control">
+                      <option value="">Selecione uma situação</option>
+                      <option value="true">Ativo</option>
+                      <option value="false">Inativo</option>
+                  </select>
+                    <app-error-message controlName="active" label="Situação"></app-error-message>
+                  </div>
+                </div>
+
+                <div class="form-group row" appErrorGroup>
+                  <label class="control-label col-md-2" for="producerRegistration">Registro Produtor Rural*</label>
+                  <div class="col-md-4">
+                    <input
+                      id="producerRegistration"
+                      [(ngModel)]="person.producerRegistration"
+                      formControlName="producerRegistration"
+                      type="text"
+                      class="form-control"
+                      [textMask] = "integerMask"
+                      maxlength="20"
+                    />
+                    <app-error-message controlName="producerRegistration" label="Registro Produtor Rural"></app-error-message>
+                  </div>
+                  <label class="control-label col-md-2" for="rg">RG</label>
+                  <div class="col-md-4">
+                    <input
+                      id="rg"
+                      [(ngModel)]="person.rg"
+                      formControlName="rg"
+                      type="text"
+                      class="form-control"
+                      [textMask] = "rgMask"
+                    />
+                    <app-error-message controlName="rg" label="RG"></app-error-message>
+                  </div>
+                </div>
+
+                <div class="form-group row" appErrorGroup>
+                  <label class="control-label col-md-2" for="tradingName">Nome Usual</label>
+                  <div class="col-md-4">
+                    <input
+                      id="tradingName"
+                      [(ngModel)]="person.tradingName"
+                      formControlName="tradingName"
+                      type="text"
+                      class="form-control"
+                      maxlength="200"
+                    />
+                    <app-error-message controlName="tradingName" label="Sobrenome"></app-error-message>
+                  </div>
+                  <label class="control-label col-md-2" for="economicGroupId">Grupo Econômico</label>
+                  <div class="col-md-4">
+                    <select id="economicGroupId" formControlName="economicGroupId" class="form-control">
+                      <option value="">Selecione Grupo Econômico</option>
+                      <option *ngFor="let group of economicGroups" [value]="group.id">
+                        {{group.code}} - {{ group.description }}
+                      </option>
+                     </select>
+                    <app-error-message controlName="economicGroupId" label="Grupo Econômico"></app-error-message>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+          <app-customer-contact-list [person]="person" *ngIf="person"></app-customer-contact-list>
+
+          <app-address-list [person]="person" *ngIf="person"></app-address-list>
+
+          <div class="box-footer">
+            <div class="row">
+              <div class="col-sm-offset-2">
+                <div class="col-sm-10 mb10">
+                  <app-submit-button [loading]="loading">
+                    SALVAR
+                  </app-submit-button>
+                  <button *ngIf="bootMode != 'editable'"
+                   [class.disabled]="loading"
+                   class="btn btn-default btn-size"
+                   type="button"
+                   (click)="returnListPerson()"
+                   >
+                    VOLTAR
+                </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+
+
+<app-loading *ngIf="loading"></app-loading>
+

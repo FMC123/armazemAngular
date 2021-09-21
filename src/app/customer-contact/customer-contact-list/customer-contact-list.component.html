@@ -1,0 +1,72 @@
+<div class="box">
+  <div class="box-header with-border">
+    <div class="row">
+      <div class="col-lg-8 col-md-6 col-sm-4 col-xs-12">
+        <h3 class="box-title"><span class="fa fa-address-book-o"></span> Lista de Contatos</h3>
+      </div>
+      <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6"></div>
+      <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6 text-right">
+        <button (click)="newCustomerContact()" type="button" class="btn btn-success btn-size">
+        <span class="fa fa-plus fa-fw"></span> <strong>NOVO</strong>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="box-body">
+    <app-loading *ngIf="loading"></app-loading>
+    <div *ngIf="!loading">
+      <app-no-results *ngIf="!person.customerContacts || person.customerContacts.length<=0"></app-no-results>
+      <div class="table-responsive" *ngIf="person.customerContacts && person.customerContacts.length>0">
+        <table class="table table-striped table-bordered table-hover">
+          <thead>
+            <tr>
+              <th class="col-xs-2 text-center" appSort="name" [instance]="page">
+                Nome
+              </th>
+              <th class="col-xs-2 text-center" appSort="phone" [instance]="page">
+                Telefone
+              </th>
+              <th class="col-xs-2 text-center" appSort="cellPhone" [instance]="page">
+                Celular
+              </th>
+              <th class="col-xs-2 text-center" appSort="email" [instance]="page">
+                E-mail
+              </th>
+              <th class="col-xs-1 text-center" appSort="main" [instance]="page">
+                Contato Principal
+              </th>
+              <th class="text-center col-xs-3">Ação</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let customerContact of person.customerContacts">
+              <td class="text-center">{{customerContact.name}}</td>
+              <td class="text-center">{{customerContact.phone}}</td>
+              <td class="text-center">{{customerContact.cellPhone}}</td>
+              <td class="text-center">{{customerContact.email}}</td>
+              <td class="text-center">{{customerContact.main?"SIM":"NÃO"}}</td>
+              <td class="text-center">
+                <div *ngIf="!(customerContactIdExclude === customerContact.id || customerContactIdExclude === customerContact.tempId)">
+                  <button type="button" (click)="detailsCustomerContact(customerContact)"   class="btn btn-primary btn-sm" appTooltip="Detalhes"><span class="fa fa-search fa-lg"></span></button>
+                  <button  type="button" (click)="editCustomerContact(customerContact)"  class="btn btn-primary btn-sm" appTooltip="Editar"><span class="fa fa-pencil fa-lg"></span></button>
+                  <button
+                    (click)="excludeOption($event, customerContact)"
+                    type="button"
+                    appTooltip="Excluir"
+                    class="btn btn-danger btn-sm"
+                  >
+                    <span class="fa fa-trash-o fa-lg"></span>
+                  </button>
+                </div>
+                <div *ngIf="(customerContactIdExclude === customerContact.id || customerContactIdExclude === customerContact.tempId)">
+                  <app-exclude (onExclude)="isExclude($event, customerContact)"> </app-exclude>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+

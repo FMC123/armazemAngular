@@ -1,0 +1,118 @@
+<div class="box">
+  <div class="box-header">
+    <h3 class="box-title w100">
+      Filtro
+    </h3>
+  </div>
+
+  <div class="box-body">
+    <form
+      class="form-horizontal"
+      (ngSubmit)="submit()"
+      *ngIf="form"
+      [formGroup]="form"
+      (keydown.enter)="$event.preventDefault();"
+    >
+      <fieldset [disabled]="loading">
+
+        <div class="form-group" appErrorGroup>
+          <label
+            class="control-label col-xs-4 col-md-2 text-right"
+            for="batchOperationCode"
+          >
+            Código
+          </label>
+          <div class="col-xs-8 col-md-10">
+            <input
+              id="batchOperationCode"
+              class="form-control"
+              formControlName="batchOperationCode"
+              maxlength="255"
+            />
+            <app-error-message controlName="batchOperationCode" label="Código"></app-error-message>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-xs-4 col-md-2 text-right" for="createdDateStartString">Data</label>
+          <div class="col-xs-8 col-md-10">
+            <div class="row">
+              <div class="col-xs-6">
+                <div class="input-group">
+                  <input
+                    type="text"
+                    [textMask]="dateMask"
+                    appDatePicker
+                    formControlName="createdDateStartString"
+                    placeholder="Início"
+                    class="form-control"
+                  />
+                  <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+                </div>
+              </div>
+              <div class="col-xs-6">
+                <div class="input-group">
+                  <input
+                    type="text"
+                    [textMask]="dateMask"
+                    appDatePicker
+                    formControlName="createdDateEndString"
+                    placeholder="Fim"
+                    class="form-control"
+                  />
+                  <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-xs-4 col-md-2 text-right" for="ownerStakeholderId">
+            Cliente
+          </label>
+          <div class="col-xs-8 col-md-10">
+            <app-autocomplete [service]="ownerAutocomplete"></app-autocomplete>
+            <input type="hidden" formControlName="ownerStakeholderId"/>
+            <app-error-message controlName="ownerStakeholderId" label="Cliente"></app-error-message>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-xs-4 col-md-2 text-right" for="status">
+            Status
+          </label>
+          <div class="col-xs-8 col-md-10">
+            <select formControlName="status" class="form-control">
+              <option value=''>Selecione um status</option>
+              <option *ngFor="let status of statuses" [value]="status.code">
+                {{ status.name }}
+              </option>
+            </select>
+            <app-error-message controlName="status" label="Status"></app-error-message>
+          </div>
+        </div>
+
+      </fieldset>
+      <div class="form-group">
+        <div class="col-xs-offset-4 col-xs-8 col-sm-offset-2 col-sm-10">
+          <button
+            [disabled]="loading"
+            [class.has-spinner]="loading"
+            type="submit"
+            class="btn btn-size btn-success"
+          >
+            <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+            PESQUISAR
+          </button>
+
+          <button
+            type="button"
+            (click)="buildForm()"
+            class="btn btn-size btn-default"
+          >LIMPAR</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

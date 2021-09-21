@@ -1,0 +1,28 @@
+
+<section class="content-header">
+    <h1>
+      <small>Detalhes</small>
+      Cooperado
+    </h1>
+    <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Cooperado','/collaborator'],
+    ['Detalhes da Cooperado', null]
+  ]"></app-breadcrumb>
+  </section>
+
+
+
+  <section class="content">
+
+ <app-collaborator-list-info [collaborator]="collaborator" *ngIf="collaborator"></app-collaborator-list-info>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <a routerLink="/collaborator"
+          class="btn btn-default btn-size">
+        VOLTAR
+      </a>
+    </div>
+  </div>
+  </section>

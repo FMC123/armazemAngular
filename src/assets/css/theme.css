@@ -1,0 +1,259 @@
+html {
+  height: 100% !important;
+}
+
+body {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  margin: 0 !important;
+  overflow-x: hidden !important;
+  /* Fix for webkit rendering */
+  -webkit-font-smoothing: antialiased !important;
+  -webkit-text-size-adjust: 100% !important;
+  font-size-adjust: 100% !important;
+  padding-top: 70px !important;
+  padding-bottom: 30px !important;
+  background: #FFF !important;
+}
+
+a .glyphicon {
+  color: #5cb85c;
+}
+
+a,
+a:focus,
+a:hover {
+  color: #5cb85c;
+}
+
+.theme-dropdown .dropdown-menu {
+  position: static !important;
+  display: block !important;
+  margin-bottom: 20px !important;
+}
+
+.theme-showcase > p > .btn {
+  margin: 5px 0 !important;
+}
+
+.theme-showcase .navbar .container {
+  width: auto !important;
+}
+
+/***************************************************************
+*** NAVBAR *****************************************************
+***************************************************************/
+.navbar-avatar {
+  float: left !important;
+  margin-top: -5px !important;
+  max-height: 30px !important;
+  border-radius: 50% !important;
+  margin-left: 10px !important;
+}
+
+.navbar-user {
+  float: left !important;
+  margin-top: -6px !important;
+  font-size: 12px !important;
+  line-height: 140% !important;
+}
+
+.navbar-avatar-caret {
+  margin-left: 10px !important;
+}
+
+/***************************************************************
+*** BOTÕES *****************************************************
+***************************************************************/
+.btn-size {
+  width: 100%;
+  max-width: 204px !important;
+  min-width: 140px !important;
+}
+
+.btn-success-secundario {
+  color: #4cae4c !important;
+  background-color: #fff !important;
+  border-color: #4cae4c !important;
+}
+
+.btn-primary-secundario {
+  color: #337ab7 !important;
+  background-color: #fff !important;
+  border-color: #337ab7 !important;
+}
+
+.btn-info-secundario {
+  color: #5bc0de !important;
+  background-color: #fff !important;
+  border-color: #5bc0de !important;
+}
+
+.btn-warning-secundario {
+  color: #f0ad4e !important;
+  background-color: #fff !important;
+  border-color: #f0ad4e !important;
+}
+
+.btn-danger-secundario {
+  color: #d9534f !important;
+  background-color: #fff !important;
+  border-color: #d9534f !important;
+}
+
+/***************************************************************
+*** BADGE ******************************************************
+***************************************************************/
+.badge-upright {
+  position: relative !important;
+  top: -12px !important;
+  background-color: #d9534f !important;
+}
+
+/***************************************************************
+*** TABLE ******************************************************
+***************************************************************/
+table thead tr th.sorting_asc,
+table thead tr th.sorting_desc,
+table thead tr th.sorting,
+table thead tr td.sorting_asc,
+table thead tr td.sorting_desc,
+table thead tr td.sorting {
+  padding-right: 30px !important;
+}
+table thead .sorting:after,
+table thead .sorting_asc:after,
+table thead .sorting_desc:after,
+table thead .sorting_asc_disabled:after,
+table thead .sorting_desc_disabled:after {
+  position: absolute !important;
+  bottom: 8px !important;
+  right: 8px !important;
+  display: block !important;
+  font-family: 'FontAwesome' !important;
+  opacity: 0.7 !important;
+}
+
+table thead .sorting,
+table thead .sorting_asc,
+table thead .sorting_desc,
+table thead .sorting_asc_disabled,
+table thead .sorting_desc_disabled {
+  cursor: pointer !important;
+  cursor: hand !important;
+  position: relative !important;
+}
+
+table thead .sorting:after {
+  opacity: 0.3 !important;
+  content: "\f0dc" !important;
+}
+
+table thead .sorting_asc:after {
+  content: "\f0de" !important;
+}
+
+table thead .sorting_desc:after {
+  content: "\f0dd" !important;
+}
+
+.panel-table .table thead tr th {
+  background-color: #5cb85c !important;
+  border-bottom: 1px solid #d6e9c6 !important;
+  color: #FCFCFC !important;
+}
+
+.panel-table .table tfoot tr th {
+  background-color: #5cb85c !important;
+  border-top: 1px solid #d6e9c6 !important;
+  color: #FCFCFC !important;
+}
+
+table {
+  margin-bottom: 0px !important;
+}
+
+td .checkbox {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+  padding-left: 0px !important;
+}
+
+td .checkbox label::before,
+td .checkbox label::after {
+  margin-left: 0px !important;
+}
+
+td .checkbox label::after {
+  padding-left: 0px !important;
+  width: 17px !important;
+  height: 17px !important;
+}
+
+td .checkbox label {
+  min-height: 17px !important;
+  padding-left: 17px !important;
+}
+
+/***************************************************************
+*** SELECT (PROVISÓRIO! RETIRAR NA VERSÃO FINAL ****************
+***************************************************************/
+select {
+  height: 34px !important;
+  -webkit-appearance: menulist-button !important;
+}
+
+select[disabled] {
+  background-color: #eeeeee !important;
+  color: #555555 !important;
+  cursor: not-allowed !important;
+}
+
+/***************************************************************
+*** SPINNER ****************************************************
+***************************************************************/
+.spinner {
+  display: none !important;
+}
+
+.has-spinner.spinner-active .spinner {
+  display:inline-block !important;
+}
+
+/***************************************************************
+*** HELPERS ****************************************************
+***************************************************************/
+.mb10 {
+  margin-bottom: 10px !important;
+}
+
+.pd0 {
+  padding: 0px !important;
+}
+
+.pd3 {
+  padding: 3px !important;
+}
+
+.mt20 {
+  margin-top: 20px !important;
+}
+
+.fs18 {
+  font-size: 18px !important;
+}
+
+.fw500 {
+  font-weight: 500 !important;
+}
+
+.clickable {
+  cursor: hand;
+  cursor: pointer;
+}
+
+.link-unstyled, .link-unstyled:link, .link-unstyled:hover {
+  color: inherit;
+  text-decoration: inherit;
+}

@@ -1,0 +1,12 @@
+<table class="table table-bordered">
+  <tr>
+<th class="col-xs-1">Código Peneira</th>
+<th class="col-xs-1">Descrição Peneira</th>
+<th class="col-xs-1">Consumo</th>
+  </tr>
+    <tr *ngFor="let warehouse of children">
+      <td>{{ strainer.code }}</td>
+      <td>{{ strainer.description }}</td>
+      <td>{{ strainer.Consumo }}</td>
+  </tr>
+</table>

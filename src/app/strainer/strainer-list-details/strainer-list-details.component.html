@@ -1,0 +1,26 @@
+<section class="content-header">
+  <h1>
+    <small>Detalhes</small>
+    Peneira
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Peneira', '/strainer'],
+    ['Detalhes de Peneira', null]
+  ]"></app-breadcrumb>
+</section>
+
+<app-strainer-list-info [strainer]="strainer" *ngIf="strainer"></app-strainer-list-info>
+
+ <div class="panel panel-default">
+  <div class="panel-footer">
+    <div class="row">
+      <div class="col-xs-12 mb10">
+        <a routerLink="/strainer"
+           class="btn btn-success btn-size">
+          Voltar
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

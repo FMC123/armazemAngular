@@ -1,0 +1,28 @@
+
+<section class="content-header">
+  <h1>
+    <small>Detalhes</small>
+    Tipo de Operação
+  </h1>
+  <app-breadcrumb [items]="[
+  ['Início', ''],
+  ['Tipo de Operação','/operation-type'],
+  ['Detalhes do Tipo de Operação', null]
+]"></app-breadcrumb>
+</section>
+
+
+
+<section class="content">
+
+<app-operation-type-info [operationType]="operationType" *ngIf="operationType"></app-operation-type-info>
+
+<div class="row">
+  <div class="col-xs-12">
+    <a routerLink="/operation-type"
+        class="btn btn-default btn-size">
+      VOLTAR
+    </a>
+  </div>
+</div>
+</section>

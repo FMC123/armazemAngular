@@ -1,0 +1,60 @@
+<div class="box">
+  <div class="box-header with-border clickable"
+       (click)="collapsed=!collapsed"
+       [class.collapsed]="collapsed">
+    <h4 class="box-title accordion-toggle">
+      <i class="fa fa-th-list"></i> Visualização
+    </h4>
+  </div>
+
+  <div class="box-body" style="height: 100%" [hidden]="!loading">
+    <app-loading></app-loading>
+  </div>
+
+  <div class="box-body" style="height: 100%" [hidden]="collapsed || loading">
+    <div *ngIf="!selectedInfo"
+          class="text-center m20">
+      Não existem informações para exibir
+    </div>
+
+    <div *ngIf="selectedInfo" style="padding-bottom: 15px">
+      <app-info-table [data]="selectedInfo"></app-info-table>
+    </div>
+
+    <div class="table-responsive"
+          *ngIf="storageUnits.length>0">
+      <table class="table table-striped table-condensed table-bordered table-hover">
+        <thead>
+          <tr>
+            <th class="col-xs-1">
+              Tag
+            </th>
+            <th class="col-xs-2">
+              Lote
+            </th>
+            <th class="col-xs-3">
+              Posição
+            </th>
+            <th class="col-xs-4">
+              Depositante
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let storageUnit of storageUnits"
+              [style.background-color]="storageUnit.selected? storageUnit.fillDarkest : storageUnit.fill"
+              [style.color]="storageUnit.selected? 'white': storageUnit.textFill"
+              class="clickable"
+              (click)="select(storageUnit)"
+              >
+            <td>{{storageUnit.tagCode}}</td>
+            <td>{{storageUnit.batchCode}}</td>
+            <td>{{storageUnit.fullPosition}}</td>
+            <td *ngIf="!nameWithCodeParameter">{{storageUnit.clientName}}</td>
+            <td *ngIf="nameWithCodeParameter">{{storageUnit.clientNameWithCode}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

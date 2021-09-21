@@ -1,0 +1,82 @@
+<form class="form-horizontal"
+      (ngSubmit)="submit()"
+      [formGroup]="form"
+      *ngIf="form">
+  <fieldset [disabled]="loading">
+
+    <div class="form-group" appErrorGroup>
+      <label class="control-label col-xs-4 col-md-2 text-right" for="userName">Usuário</label>
+      <div class="col-xs-8 col-md-10">
+        <input id="userName"
+                formControlName="userName"
+                type="text"
+                class="form-control" />
+        <app-error-message controlName="userName" label="Usuário"></app-error-message>
+      </div>
+    </div>
+
+    <div class="form-group" appErrorGroup>
+      <label class="control-label col-xs-4 col-md-2 text-right" for="warehouseId">Armazém</label>
+      <div class="col-xs-8 col-md-10">
+        <select formControlName="warehouseId" class="form-control">
+          <option value=''>Selecione um armazém</option>
+          <option *ngFor="let warehouse of warehouses" [value]="warehouse.id">
+            {{ warehouse.code }} - {{ warehouse.name }}
+          </option>
+        </select>
+        <app-error-message controlName="warehouseId" label="Armazém"></app-error-message>
+      </div>
+    </div>
+
+    <div class="form-group" appErrorGroup>
+      <label class="control-label col-xs-4 col-md-2 text-right" for="forkliftId">Empilhadeira</label>
+      <div class="col-xs-8 col-md-10">
+        <select formControlName="forkliftId" class="form-control">
+          <option value=''>Selecione um empilhadeira</option>
+          <option *ngFor="let forklift of forklifts" [value]="forklift.id">
+            {{ forklift.name }}
+          </option>
+        </select>
+        <app-error-message controlName="forkliftId" label="Empilhadeira"></app-error-message>
+      </div>
+    </div>
+
+    <div class="form-group" appErrorGroup>
+      <label class="control-label col-xs-4 col-md-2 text-right" for="initialCreatedDateString">Data Inicial</label>
+      <div class="col-xs-8 col-sm-3 col-lg-2">
+        <div class="input-group">
+          <input type="text"
+                [textMask]="dateMask"
+                appDatePicker
+                formControlName="initialCreatedDateString"
+                class="form-control">
+          <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+        </div>
+        <app-error-message controlName="initialCreatedDateString" label="Data Inicial"></app-error-message>
+      </div>
+    </div>
+
+    <div class="form-group" appErrorGroup>
+      <label class="control-label col-xs-4 col-md-2 text-right" for="finalCraetedDateString">Data Final</label>
+      <div class="col-xs-8 col-sm-3 col-lg-2">
+        <div class="input-group">
+          <input type="text"
+                [textMask]="dateMask"
+                appDatePicker
+                formControlName="finalCraetedDateString"
+                class="form-control">
+          <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+        </div>
+        <app-error-message controlName="finalCraetedDateString" label="Data Final"></app-error-message>
+      </div>
+    </div>
+
+  </fieldset>
+  <div class="form-group">
+    <div class="col-xs-offset-4 col-xs-8 col-sm-offset-2 col-sm-10">
+      <app-submit-button [loading]="loading">
+        PESQUISAR
+      </app-submit-button>
+    </div>
+  </div>
+</form>

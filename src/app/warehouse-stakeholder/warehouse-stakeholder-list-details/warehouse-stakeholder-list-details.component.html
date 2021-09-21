@@ -1,0 +1,134 @@
+<section class="content-header">
+  <h1>
+    <small>Detalhes</small>
+    Cliente e Fornecedor
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Clientes e Fornecedores', '/warehouse-stakeholder/'],
+    ['Detalhes Cliente e Fornecedor', null]
+  ]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <div class="row">
+      <div class="col-xs-12">
+
+        <app-warehouse-stakeholder-list-info [warehouseStakeholder]="warehouseStakeholder" *ngIf="warehouseStakeholder"></app-warehouse-stakeholder-list-info>
+
+        <app-customer-contact-list-simple-details [customerContacts]="warehouseStakeholder.person.customerContacts" *ngIf="warehouseStakeholder.person.customerContacts && warehouseStakeholder.person.customerContacts.length > 0"></app-customer-contact-list-simple-details>
+
+        <app-address-list-simple-details [addresses]="warehouseStakeholder.person.addresses" *ngIf="warehouseStakeholder.person.addresses && warehouseStakeholder.person.addresses.length > 0"></app-address-list-simple-details>
+
+        <app-warehouse-stakeholder-certificate [stakeholder]="warehouseStakeholder" [editable]="false"></app-warehouse-stakeholder-certificate>
+        <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Dados de Cobrança</h3>
+            </div>
+            <div class="box-body">
+              <fieldset>
+                <div class="form-group row" appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="observation1">Observação 1</label>
+                  <div class="col-md-10">
+                    <input value="{{warehouseStakeholder.observation1}}" readonly="true" type="text" maxlength="100" class="form-control uppercase" />
+                  </div>
+                </div>
+                <div class="form-group row" appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="observation2">Observação 2</label>
+                  <div class="col-md-10">
+                    <input value="{{warehouseStakeholder.observation2}}" readonly="true" type="text" maxlength="100"class="form-control uppercase" />
+                  </div>
+                </div>
+                <div class="form-group row" appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="observation3">Observação 3</label>
+                  <div class="col-md-10">
+                    <input value="{{warehouseStakeholder.observation3}}" readonly="true" type="text" maxlength="100"class="form-control uppercase" />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="control-label col-md-2 text-right">Tabela de Serviço</label>
+                  <div class="col-md-4 col-sm-1">
+                    <input value="{{serviceGroup}}" readonly="true" type="text" maxlength="100"class="form-control uppercase" />
+                  </div>
+                  <label class="control-label col-md-2 text-right" for="chargeType">Cobrança Tipo de Café</label>
+                  <div class="col-md-4 col-sm-1">
+                    <input value="{{warehouseStakeholder.chargeType ? 'Sim' : 'Não'}}" readonly="true" type="text" maxlength="100"class="form-control" />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="control-label col-md-2 text-right" for="storageService">Código de Armazenamento</label>
+                  <div class="col-md-4 col-sm-1">
+                    <input value="{{storageService}}" readonly="true" type="text" maxlength="100"class="form-control" />
+                  </div>
+                  <label class="control-label col-md-2 text-right" for="insuranceService">Código de Seguro</label>
+                  <div class="col-md-4 col-sm-1">
+                    <input value="{{insuranceService}}" readonly="true" type="text" maxlength="100"class="form-control" />
+                  </div>
+                </div>
+                <div class="box box-default mt20">
+                    <div class="box-header with-border">
+                      <h3 class="box-title">Dados do período de Carência</h3>
+                    </div>
+                    <div class="box-body">
+                      <div class="form-group row">
+                        <label class="control-label col-md-2 text-right" for="inChargePeriodGrace">Cobrança Lote de Entrada</label>
+                        <div class="col-md-4 col-sm-1">
+                          <input value="{{warehouseStakeholder.inChargePeriodGrace}}" readonly="true" type="text" maxlength="100"class="form-control" />
+                        </div>
+                        <label class="control-label col-md-2 text-right" for="rebenefitChargePeriodGrace">Cobrança Lote de Rebeneficio</label>
+                        <div class="col-md-4 col-sm-1">
+                          <input value="{{warehouseStakeholder.rebenefitChargePeriodGrace}}" readonly="true" type="text" maxlength="100"class="form-control" />
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="control-label col-md-2 text-right" for="storageServiceCarencia">Código de Armazenamento</label>
+                        <div class="col-md-4 col-sm-1">
+                          <input value="{{storageServiceCarencia}}" readonly="true" type="text" maxlength="100"class="form-control" />
+                        </div>
+                        <label class="control-label col-md-2 text-right" for="insuranceServiceCarencia">Código de Seguro</label>
+                        <div class="col-md-4 col-sm-1">
+                          <input value="{{insuranceServiceCarencia}}" readonly="true" type="text" maxlength="100"class="form-control" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="box box-default mt20">
+                      <div class="box-header with-border">
+                        <h3 class="box-title">Dados de Amostra</h3>
+                      </div>
+                      <div class="box-body">
+                        <div class="form-group row" appErrorGroup>
+                          <label class="control-label col-md-2 text-right" for="outSampleQty">Quantidade de saída</label>
+                          <div class="col-md-4 col-sm-1">
+                            <input value="{{warehouseStakeholder.outSampleQty}}" readonly="true" type="text" maxlength="100"class="form-control" />
+                          </div>
+                          <label class="control-label col-md-2 text-right" for="inSampleQty">Quantidade de lote Entrada</label>
+                          <div class="col-md-4 col-sm-1">
+                            <input value="{{warehouseStakeholder.inSampleQty}}" readonly="true" type="text" maxlength="100"class="form-control" />
+                          </div>
+                        </div>
+                        <div class="form-group row" appErrorGroup>
+                            <label class="control-label col-md-2 text-right" for="checkServiceGuideClosing">Ao fechar Intrução de Serviço Verificar da Instrução: Pó, Pedra, Amostra.</label>
+                            <div class="col-md-4 col-sm-1">
+                                <input value="{{warehouseStakeholder.checkServiceGuideClosing ? 'Sim' : 'Não'}}" readonly="true" type="text" maxlength="100"class="form-control" />
+                            </div>
+                            <label class="control-label col-md-2 text-right" for="gsSampleQty">Quantidade GS</label>
+                            <div class="col-md-4 col-sm-1">
+                              <input value="{{warehouseStakeholder.gsSampleQty}}" readonly="true" type="text" maxlength="100"class="form-control" />
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+            </fieldset>
+            </div>
+        </div>
+        <div class="col-xs-12 mb10">
+          <a routerLink="/warehouse-stakeholder"
+            class="btn btn-default btn-size">
+            VOLTAR
+          </a>
+        </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,95 @@
+<section class="content-header">
+  <h1>
+    <small>Cadastro</small>
+    Certificados
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Certificados', '/certificate'],
+    ['Cadastro de Certificados', null]
+  ]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <form
+        (ngSubmit)="save()"
+        [formGroup]="form"
+        *ngIf="form"
+        class="form-horizontal"
+      >
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Formulário</h3>
+          </div>
+
+          <div class="panel-body">
+           <fieldset [disabled]="loading">
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-md-2 text-right" for="code">
+            Código*
+          </label>
+          <div class="col-md-4">
+            <input formControlName="code" type="text" class="form-control uppercase" maxlength="255" id="code"/>
+            <app-error-message controlName="code" label="Código"></app-error-message>
+          </div>
+        </div>
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-md-2 text-right" for="name">Nome*</label>
+          <div class="col-md-10">
+            <input id="name"
+                    [formControl]="form.get('name')"
+                    type="text"
+                    maxlength="255"
+                    class="form-control" />
+            <app-error-message controlName="name" label="Nome"></app-error-message>
+          </div>
+        </div>
+
+        <div class="form-group has-feedback" [class.has-error]="fileErrors">
+          <label class="control-label col-md-2 text-right">Imagem*</label>
+          <div class="col-md-10">
+            <input type="file" (change)="fileChange($event)" [disabled]="loading"/>
+            <p *ngIf="editing && !loading" class="help-block">Para manter a imagem atual não altere o campo</p>
+            <div class="text-danger" *ngIf="fileErrors">
+              <span *ngIf="fileErrors.required">Imagem é obrigatória</span>
+              <span *ngIf="fileErrors.invalidSize">Imagem pode ter no máximo {{maxFileSizeHuman}} <br/></span>
+              <span *ngIf="fileErrors.invalidType">Tipos de imagem válidos são PNG, JPG e JPEG</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" *ngIf="editing && !loading">
+          <label class="control-label col-md-2 text-right">Imagem atual</label>
+          <div class="col-md-10">
+            <img [src]="certificate.url" class="img-thumbnail" alt="Imagem do Certificado"/>
+          </div>
+        </div>
+
+      </fieldset>
+
+          </div>
+
+          <div class="box-footer">
+            <div class="row">
+              <div class="col-sm-offset-2">
+                <div class="col-sm-10 mb10">
+                  <app-submit-button [loading]="loading">
+                    SALVAR
+                  </app-submit-button>
+                  <a [class.disabled]="loading"
+                      routerLink="/certificate"
+                      class="btn btn-default btn-size">
+                    VOLTAR
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

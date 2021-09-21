@@ -1,0 +1,20 @@
+
+
+<div class="page-header">
+  <h1 class="text-success">Detalhes da Fazenda</h1>
+</div>
+
+<app-farm-list-info [farm]="farm" *ngIf="farm"></app-farm-list-info>
+
+ <div class="panel panel-default">
+  <div class="panel-footer">
+    <div class="row">
+      <div class="col-xs-12 mb10">
+        <a   [routerLink]="['/warehouse-stakeholder', farm.warehouseStakeholder.id]"
+           class="btn btn-success btn-size">
+          Voltar
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

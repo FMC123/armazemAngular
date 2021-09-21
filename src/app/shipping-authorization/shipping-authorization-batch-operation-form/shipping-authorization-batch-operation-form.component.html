@@ -1,0 +1,220 @@
+<style>
+.div-margin-top div {margin-top:15px;}
+</style>
+<div class="new-layout">
+
+  <section class="content-header">
+    <app-breadcrumb [items]="[
+      ['Início', ''],
+      ['Autorizações de embarque', '/shipping-authorization'],
+      ['Associação autorização de embarque x Transporte', null]
+      ]"></app-breadcrumb>
+    <h1>
+      Associação Autorização de Embarque x Transporte
+    </h1>
+  </section>
+
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+        <form (ngSubmit)="save()" [formGroup]="form" *ngIf="form" class="form-horizontal">
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Formulário</h3>
+            </div>
+
+            <div class="box-body">
+              <fieldset [disabled]="loading">
+                <div class="form-group" *ngIf="editing">
+                  <label class="control-label col-md-2 text-right">
+                    Autorização de Embarque
+                  </label>
+                  <div class="col-md-5">
+                    <input type="text" class="form-control" disabled
+                      value="{{transportation.batchOperationOut.shippingAuthorization.code}}" />
+                  </div>
+                </div>
+
+                <div class="form-group" *ngIf="editing">
+                  <label class="control-label col-md-2 text-right">
+                    Embarque
+                  </label>
+                  <div class="col-md-5">
+                    <input type="text" class="form-control" disabled
+                      value="{{transportation.batchOperationOut.batchOperationCode}}" />
+                  </div>
+                </div>
+
+                <div class="form-group" *ngIf="editing">
+                  <label class="control-label col-md-2 text-right">
+                    Motorista
+                  </label>
+                  <div class="col-md-5">
+                    <input type="text" class="form-control" disabled value="{{transportation.driverName}}" />
+                  </div>
+                </div>
+
+                <div class="form-group" *ngIf="editing">
+                  <label class="control-label col-md-2 text-right">
+                    Placa 1
+                  </label>
+                  <div class="col-md-5">
+                    <input type="text" class="form-control" disabled value="{{transportation.vehiclePlate1}}" />
+                  </div>
+                </div>
+
+                <div class="form-group" *ngIf="editing && transportation.vehiclePlate2">
+                  <label class="control-label col-md-2 text-right">
+                    Placa 2
+                  </label>
+                  <div class="col-md-5">
+                    <input type="text" class="form-control" disabled value="{{transportation.vehiclePlate2}}" />
+                  </div>
+                </div>
+
+                <div class="form-group" appErrorGroup>
+                  <label class="control-label col-md-2 text-right" for="markupGroupColor">
+                    Cor do marcador
+                  </label>
+                  <div class="col-md-10">
+                    <input id="markupGroupColor" formControlName="markupGroupColor" type="color" class="form-control" />
+                    <app-error-message controlName="markupGroupColor" label="Cor do marcador"></app-error-message>
+                  </div>
+                </div>
+
+                <app-shipping-authorization-batch-operation-batch-form [shippingAuthorization]="shippingAuthorization"
+                  [markupGroup]="markupGroup" [transportation]="transportation" [submitted]="submitted" [hideMarkupGroupButton]="hasBatches">
+                </app-shipping-authorization-batch-operation-batch-form>
+
+                <div class="form-group">
+                  <label class="control-label col-md-2 text-right">
+                    Dados do Embarque
+                  </label>
+                  <div class="col-md-10 div-margin-top">
+
+                    <div>
+                      <div class="col-xs-6 col-md-6 text-left">
+                        <label for="granelDesligado">Granel Desligado</label>
+                      </div>
+
+                      <div class="col-xs-6 col-md-6 text-left">
+                        <label for="maxSacks"  *ngIf="form.get('granelDesligado').value">{{maxSacksLabel}}</label>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div [class]="form.get('granelDesligado').value? 'col-xs-6 col-md-6 text-left':'col-xs-12 col-md-12 text-left'">
+                        <input id="granelDesligado" formControlName="granelDesligado" type="checkbox" (change)='onChangeGranel()'/>
+                      </div>
+                      <div class="col-xs-6 col-md-6 text-left" *ngIf="form.get('granelDesligado').value">
+                        <input id="maxSacks"
+                               formControlName="maxSacks" type="text" class="form-control"
+                               maxlength="5" />
+                        <app-error-message controlName="maxSacks" label="maxSacks"></app-error-message>
+                      </div>
+                    </div>
+
+                    <div class="col-xs-6 col-md-6 text-left" appErrorGroup>
+                      <label for="operationType">Operação</label>
+                      <select class="form-control" formControlName="operationType" id="operationType">
+                        <option value="">Selecione uma operação</option>
+                        <option *ngFor="let operation of getOperations()" [value]="operation.id">
+                          {{ operation.description }}
+                        </option>
+                      </select>
+                      <app-error-message controlName="operationType" label="Operação"></app-error-message>
+                    </div>
+
+                    <div class="col-xs-6 col-md-6 text-left" appErrorGroup>
+                      <label for="oicCode">OIC</label>
+                      <input id="oicCode" formControlName="oicCode" type="text" class="form-control" maxlength="50" />
+                      <app-error-message controlName="oicCode" label="OIC"></app-error-message>
+                    </div>
+
+                    <div class="col-xs-6 col-md-6 text-left" appErrorGroup>
+                      <label for="containerNumber">Número do Container</label>
+                      <input id="containerNumber" formControlName="containerNumber" type="text" class="form-control"
+                        maxlength="50" />
+                      <app-error-message controlName="containerNumber" label="Número do Container"></app-error-message>
+                    </div>
+
+                    <!--<div class="col-xs-12"></div>-->
+
+                    <div class="col-xs-6 col-md-6 text-left" appErrorGroup>
+                      <label for="saleReference">Referência da Venda</label>
+                      <input id="saleReference" formControlName="saleReference" type="text" class="form-control"
+                        maxlength="50" />
+                      <app-error-message controlName="saleReference" label="Referência da Venda"></app-error-message>
+                    </div>
+
+                    <div class="col-xs-6 col-md-6 text-left" appErrorGroup>
+                      <label for="operationType">Tipo de recipiente</label>
+                      <select class="form-control" formControlName="packTypeId" id="packTypeId">
+                        <option value="">Selecione uma embalagem</option>
+                        <option *ngFor="let packType of getPackTypes()" [value]="packType.id">
+                          {{ packType.description }}
+                        </option>
+                      </select>
+                      <app-error-message controlName="packTypeId" label="Embalagem de Transporte"></app-error-message>
+                    </div>
+
+                    <div class="col-xs-12">
+                      <app-shipping-authorization-batch-operation-packtype-form
+                        [shippingData]="shippingData"
+                        [submitted]="submitted"
+                      >
+                      </app-shipping-authorization-batch-operation-packtype-form>
+                    </div>
+
+                    <div class="col-xs-12 text-left" appErrorGroup>
+                      <label for="destiny">Destino</label>
+                      <textarea id="destiny" formControlName="destiny" type="text" class="form-control"
+                        maxlength="255"></textarea>
+                      <app-error-message controlName="destiny" label="Destino"></app-error-message>
+                    </div>
+
+                    <div class="col-xs-12 text-left" appErrorGroup>
+                      <label for="observation">Observação</label>
+                      <textarea id="observation" formControlName="observation" type="text"
+                        class="form-control"></textarea>
+                      <app-error-message controlName="observation" label="Observação"></app-error-message>
+                    </div>
+
+                  </div>
+                </div>
+
+              </fieldset>
+            </div>
+
+            <div class="box-footer">
+              <div class="row">
+                <div class="col-sm-offset-2">
+                  <div class="col-sm-10 mb10">
+                    <app-submit-button [loading]="loading">
+                      Salvar
+                    </app-submit-button>
+
+                    <button *ngIf="editing" type="button" class="btn btn-danger" (click)="destroyConfirm.open()"
+                      [disabled]="loading">
+                      Desvincular
+                    </button>
+
+                    <a [class.disabled]="loading" [routerLink]="backRoute" class="btn btn-default btn-size">
+                      Voltar
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <app-confirm *ngIf="destroyConfirm.opened"
+    message="Tem certeza que deseja desvincular esta autorização de embarque ao embarque?" (confirm)="destroy()"
+    (close)="destroyConfirm.close()">
+  </app-confirm>
+
+</div>

@@ -1,0 +1,31 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h3 class="modal-title">Legenda</h3>
+  </div>
+  <div class="modal-body">
+    <table class="table" *ngFor="let zone of listZone">
+      <tr>
+        <td
+          style="width: 25px; border-width: 1px; border-style: solid"
+          [style.border-color]="colorList[zone.index]"
+          [style.background-color]="colorList[zone.index]"
+        >
+          &#160;
+        </td>
+        <td>
+        {{zone.name}}
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-success btn-size"
+      (click)="save()"
+      [disabled]="!hasChangedPosition"
+    >
+      SALVAR TODOS
+    </button>
+  </div>
+</div>

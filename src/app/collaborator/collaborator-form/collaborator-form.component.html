@@ -1,0 +1,120 @@
+<section class="content-header">
+  <h1>
+    <small>Cadastro</small> Cooperado
+  </h1>
+  <app-breadcrumb [items]="[
+  ['Início', ''],
+  ['Cooperado', '/collaborator'],
+  ['Cadastro de Cooperado', null]
+  ]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <form (ngSubmit)="save()" [formGroup]="form" *ngIf="form" class="form-horizontal">
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Formulário</h3>
+          </div>
+
+          <div class="panel-body">
+            <fieldset [disabled]="loading">
+              <div class="form-group row" appErrorGroup>
+                <div class="col-md-12">
+                  <app-person-modal-find [bootMode]="(collaborator && collaborator.id) ? 'editable': 'default'"
+                  formControlName="personId"></app-person-modal-find>
+                  <app-error-message controlName="personId" label="Pessoa"></app-error-message>
+                </div>
+              </div>
+            </fieldset>
+            <div *ngIf="collaborator && collaborator.registration" class="form-group" appErrorGroup>
+              <label class="control-label col-md-2 text-right" for="registration">Matricula</label>
+              <div class="col-md-10">
+                <input
+                  readonly="true"
+                  id="registration"
+                  formControlName="registration"
+                  type="text"
+                  class="form-control "
+                />
+                <app-error-message controlName="registration" label="Matrícula"></app-error-message>
+              </div>
+            </div>
+            <div class="form-group" appErrorGroup>
+              <label class="control-label col-md-2 text-right" for="initialQuota">Cota Inicial</label>
+              <div class="col-md-10">
+                <input
+                  type="number"
+                  id="initialQuota"
+                  formControlName="initialQuota"
+                  maxlength="18"
+                  class="form-control uppercase"
+                  placeholder="Apenas números"
+                />
+                <app-error-message controlName="initialQuota" label="Cota Inicial"></app-error-message>
+              </div>
+            </div>
+
+            <div class="form-group" appErrorGroup>
+              <label class="control-label col-xs-4 col-md-2 text-right" for="admissionDateString">Data de Inicio</label>
+              <div class="col-xs-8 col-sm-3 col-lg-4">
+                <div class="input-group">
+                  <input type="text"
+                  [textMask]="dateMask"
+                  appDatePicker
+                  formControlName="admissionDateString"
+                  class="form-control">
+                  <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+                </div>
+                <app-error-message controlName="admissionDateString" label="Data Inicial"></app-error-message>
+              </div>
+              <label class="control-label col-xs-4 col-md-2 text-right" for="dateDisconnectionString">Data de Fim</label>
+              <div class="col-xs-8 col-sm-3 col-lg-4">
+                <div class="input-group">
+                  <input type="text"
+                  [textMask]="dateMask"
+                  appDatePicker
+                  formControlName="dateDisconnectionString"
+                  class="form-control">
+                  <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+                </div>
+                <app-error-message controlName="dateDisconnectionString" label="Data Final"></app-error-message>
+              </div>
+            </div>
+
+
+
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-md-2 text-right" for="observation">Observação</label>
+            <div class="col-md-10">
+              <input id="observation"
+              formControlName="observation"
+              type="text"
+              maxlength="18"
+              class="form-control uppercase" />
+              <app-error-message controlName="observation" label="Observação"></app-error-message>
+            </div>
+          </div>
+        </div>
+
+          <div class="box-footer">
+            <div class="row">
+              <div class="col-sm-offset-2">
+                <div class="col-sm-10 mb10">
+                  <app-submit-button [loading]="loading">
+                    SALVAR
+                  </app-submit-button>
+                  <a [class.disabled]="loading" routerLink="/collaborator" class="btn btn-default btn-size">
+                    VOLTAR
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+

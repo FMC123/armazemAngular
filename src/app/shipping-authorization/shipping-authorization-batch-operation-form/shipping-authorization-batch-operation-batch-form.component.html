@@ -1,0 +1,139 @@
+<div class="form-group" appErrorGroup>
+  <label class="control-label col-md-2 text-right">
+    Lotes
+  </label>
+  <div class="col-md-10">
+    <app-loading *ngIf="loading"></app-loading>
+
+    <form [formGroup]="form" (ngSubmit)="add()" *ngIf="form && !noFunds">
+      <table class="table table-bordered">
+        <tr>
+          <th>Lote</th>
+          <th>Certificado</th>
+          <th>Quantidade (Sc)</th>
+          <th>Quantidade Kg</th>
+          <th>Cálculo manual</th>
+          <th class="bts-list-actions">Ação</th>
+        </tr>
+        <tr *ngIf="availableBatches && availableBatches.length">
+          <td appErrorGroup>
+            <select formControlName="batchId" class="form-control">
+              <option value="">Selecione um lote</option>
+              <option *ngFor="let batch of availableBatches" [value]="batch.id">
+                {{ batch.batchCode }}
+              </option>
+            </select>
+            <app-error-message controlName="batchId" label="Lote"></app-error-message>
+          </td>
+          <td>
+            {{certificates}}
+          </td>
+          <td appErrorGroup>
+            <input type="number" id="sacksQuantityString" class="form-control" formControlName="sacksQuantityString"
+              maxlength="10" (change)="sacksChanged($event)" />
+            <app-error-message controlName="sacksQuantityString" label="Quantidade (Sc)"></app-error-message>
+            <div class="text-danger" *ngIf="form.errors && form.errors.maxSacks">
+              Quantidade deve possuir valor máximo de {{form.errors.maxSacks?.requiredValue}}
+            </div>
+          </td>
+          <td appErrorGroup>
+            <input id="quantityString" class="form-control" formControlName="quantityString" [textMask]="decimalMask"
+              maxlength="14" (change)="quantityChanged($event)" />
+            <div class="text-danger" *ngIf="form.errors && form.errors.max">
+              Quantidade deve possuir valor máximo de {{form.errors.max.requiredValue}}
+            </div>
+          </td>
+          <td appErrorGroup>
+            <input id="calcManual" [formControl]="form.get('calcManual')" type="checkbox" />
+            <app-error-message controlName="calcManual" label="Cálculo manual"></app-error-message>
+          </td>
+          <td class="bts-list-actions">
+            <button type="submit" class="btn btn-success" appTooltip="Adicionar">
+              <span class="fa fa-check"></span>
+            </button>
+          </td>
+        </tr>
+        <ng-container *ngFor="let serviceItem of filteredData">
+          <tr class="active">
+            <td>{{ serviceItem.batch.batchCode }}</td>
+            <td>{{ serviceItem.batch.batchOperation?.certificateNames }}</td>
+            <td>{{ serviceItem.sackQuantity }}</td>
+            <td>{{ serviceItem.quantityString }}</td>
+            <td>{{ serviceItem.calcManualString }}</td>
+            <td class="bts-list-actions">
+              <button (click)="edit(serviceItem)" type="button" appTooltip="Editar" class="btn btn-primary btn-sm">
+                <span class="fa fa-edit fa-lg"></span>
+              </button>
+              <button (click)="remove(serviceItem.batch.id)" type="button" appTooltip="Excluir"
+                class="btn btn-danger btn-sm">
+                <span class="fa fa-trash-o fa-lg"></span>
+              </button>
+            </td>
+          </tr>
+          <tr *ngFor="let mgsu of markupGroupStorageUnitsOfBatch(serviceItem.batch.id)">
+            <td colspan="3">
+              <span style="margin-left: 15px">
+                {{ mgsu.storageUnitBatch.storageUnit.tag.tagCode }}
+                &#160;<i class="fa fa-info" appTooltip="Sugestão"></i>
+              </span>
+            </td>
+            <td><span style="margin-left: 15px">{{ mgsu.quantityString }}</span></td>
+            <td class="bts-list-actions">
+              <button (click)="removeMarkupGroupStorageUnit(mgsu.id)" type="button" appTooltip="Excluir"
+                class="btn btn-danger btn-sm">
+                <span class="fa fa-trash-o fa-lg"></span>
+              </button>
+            </td>
+          </tr>
+        </ng-container>
+        <tfoot>
+          <tr *ngIf="!!sackQuantityTotal">
+            <td style="text-align:right;"[colSpan]="2"><strong>Total:</strong></td>
+            <td>{{sackQuantityTotal}}</td>
+          </tr>
+        </tfoot>
+
+      </table>
+    </form>
+
+    <div *ngIf="submitted && !noFunds && (!filteredData || !filteredData.length)" class='text-danger'>
+      É obrigatório selecionar ao menos um lote
+    </div>
+
+    <p class="text-danger" *ngIf="noFunds && !loading">
+      A autorização de embarque não possui mais lotes disponíveis
+    </p>
+  </div>
+</div>
+
+<div class="form-group" appErrorGroup *ngIf="!hideMarkupGroupButton">
+  <label class="control-label col-md-2 text-right">
+    Marcadores
+  </label>
+  <div class="col-md-10">
+    <app-loading *ngIf="loading"></app-loading>
+
+    <table class="table table-bordered">
+      <tr>
+        <th class="col-xs-10">Marcador</th>
+        <th class="col-xs-1 bts-list-actions">Ação</th>
+      </tr>
+      <tr>
+        <td>
+          <select class="form-control" [(ngModel)]="markupGroupToMergeId">
+            <option value="">Selecione um marcador</option>
+            <option *ngFor="let markupGroup of markupGroupsAvailable" [value]="markupGroup.id">
+              {{ markupGroup.label }}
+            </option>
+          </select>
+        </td>
+        <td class="bts-list-actions">
+          <button type="button" (click)="mergeMarkupGroup()" class="btn btn-success" [disabled]="markupGroupToMergeId == ''"
+                  appTooltip="Adicionar lotes e unidades de armazenamento disponíveis para este marcador">
+            <span class="fa fa-check"></span>
+          </button>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

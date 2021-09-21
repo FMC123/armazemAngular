@@ -1,0 +1,155 @@
+<section class="content-header">
+  <h1>
+    <small>Cadastro de Permissões</small>
+
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Permissões', '/permission']
+  ]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <form (ngSubmit)="save()" [formGroup]="form" *ngIf="form" class="form-horizontal">
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Formulário</h3>
+          </div>
+
+          <div class="box-body">
+            <fieldset [disabled]="loading">
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="name">Nome</label>
+                <div class="col-md-10">
+                  <input id="name" [formControl]="form.get('name')" type="text" maxlength="255" class="form-control" />
+                  <app-error-message controlName="name" label="Nome *"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="leader">Perfil de Lider (*)</label>
+                <div class="col-md-10">
+                  <input type="checkbox" [checked]="group.leader" (change)="group.leader = !group.leader" />
+                  <app-error-message controlName="leader" label="Perfil"></app-error-message>
+                </div>
+              </div>
+
+
+
+              <div class="row" style="padding: 10px;">
+
+                <ul class="nav nav-tabs">
+                  <li class="active">
+                    <a data-toggle="tab" href="#permissoes">Permissões</a>
+                  </li>
+                  <li>
+                    <a data-toggle="tab" href="#usuarios">Usuários</a>
+                  </li>
+                </ul>
+                <div class="tab-content">
+                  <div id="permissoes" class="tab-pane fade in active">
+
+
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Nome da permissão</th>
+                          <th>Permitido</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let p of group.permissoes">
+                          <td>{{p.name}}</td>
+                          <td>
+                            <input type="checkbox" [checked]="p.checked" (change)="p.checked = !p.checked" />
+
+                          </td>
+                        </tr>
+
+                      </tbody>
+                    </table>
+
+
+
+
+
+                  </div>
+                  <div id="usuarios" class="tab-pane fade">
+
+                    <div class="form-group" appErrorGroup>
+                      <label class="control-label col-xs-4 col-md-2 text-right" for="ownerStakeholderId">
+                        Usuário
+                      </label>
+                      <!--
+                      <div class="col-xs-8 col-md-10">
+                        <app-autocomplete [service]="userAutocomplete"></app-autocomplete>
+                      </div>
+                    -->
+                    <div class="col-xs-8 col-md-10">
+                      <app-autocomplete [service]="userAutocomplete"></app-autocomplete>
+
+                    </div>
+                    </div>
+
+
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Nome do usuário</th>
+                          <th>Ação</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let u of group.usuarios">
+                          <td>{{u.name}}</td>
+                          <td>
+                            <a href="javascript:" (click)="deleteConfirm.open(u.id)" type="button" appTooltip="Excluir" class="btn btn-danger btn-sm">
+                              <span class="fa fa-trash-o fa-lg"></span>
+                            </a>
+                          </td>
+                        </tr>
+
+                      </tbody>
+                    </table>
+
+
+
+
+                  </div>
+
+                </div>
+
+
+              </div>
+
+
+
+
+            </fieldset>
+          </div>
+
+          <div class="box-footer">
+            <div class="row">
+              <div class="col-sm-offset-2">
+                <div class="col-sm-10 mb10">
+                  <app-submit-button [loading]="loading">
+                    SALVAR
+                  </app-submit-button>
+                  <a [class.disabled]="loading" routerLink="/permission" class="btn btn-default btn-size">
+                    VOLTAR
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<app-confirm *ngIf="deleteConfirm.opened" message="Tem certeza que deseja excluir este registro?" (confirm)="deleteUsuario(deleteConfirm.value)"
+  (close)="deleteConfirm.close()">
+</app-confirm>

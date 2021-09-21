@@ -1,0 +1,59 @@
+<div class="new-layout">
+
+  <section class="content-header">
+    <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Instruções de Serviço', '/service-instruction'],
+    [serviceInstruction ? serviceInstruction.code : null, null]
+  ]"></app-breadcrumb>
+    <h1>
+      <small>Detalhe</small>
+      Instrução de Serviço
+    </h1>
+  </section>
+
+  <section class="content" *ngIf="serviceInstruction">
+    <div class="box">
+      <div class="box-header">
+        <h4 class="panel-title clearfix" style="line-height: 2">
+          Dados da Instrução de Serviço
+        </h4>
+      </div>
+      <div class="box-body">
+
+        <div class="row">
+          <div class="col-sm-6">
+            <app-info-table [data]="leftColumn"></app-info-table>
+          </div>
+          <div class="col-sm-6">
+            <app-info-table [data]="rightColumn"></app-info-table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- seleção de lotes -->
+    <app-service-instruction-batch-selection [serviceInstruction]="serviceInstruction" [isEditable]="false">
+    </app-service-instruction-batch-selection>
+
+    <!-- lotes resultantes -->
+    <app-service-instruction-executed-result [serviceInstruction]="serviceInstruction">
+    </app-service-instruction-executed-result>
+
+    <app-service-instruction-services [serviceInstruction]="serviceInstruction" [isEditable]="false">
+    </app-service-instruction-services>
+
+    <app-service-instruction-expected-result [averageWeightSacksString]="serviceInstruction.averageWeightBagString"
+      [serviceInstruction]="serviceInstruction" [isEditable]="false"></app-service-instruction-expected-result>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <a routerLink="/service-instruction" class="btn btn-default btn-size">
+          Voltar
+        </a>
+      </div>
+    </div>
+  </section>
+
+</div>

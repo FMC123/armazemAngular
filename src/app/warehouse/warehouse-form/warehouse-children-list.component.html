@@ -1,0 +1,12 @@
+<table class="table table-bordered">
+  <tr>
+    <th class="col-xs-3 text-center">Código</th>
+    <th class="col-xs-3 text-center">Sigla</th>
+    <th class="col-xs-6 text-center">Nome</th>
+  </tr>
+  <tr *ngFor="let warehouse of children">
+    <td class="text-center">{{ warehouse.code }}</td>
+    <td class="text-center">{{ warehouse.shortName }}</td>
+    <td class="text-center">{{ warehouse.name }}</td>
+  </tr>
+</table>

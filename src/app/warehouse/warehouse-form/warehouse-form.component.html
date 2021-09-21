@@ -1,0 +1,173 @@
+<section class="content-header">
+  <h1>
+    <small> Cadastro </small>
+    Armazém
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Armazém', '/warehouse'],
+    ['Cadastro do Armazém', null]
+  ]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <form (ngSubmit)="save()" [formGroup]="form" *ngIf="form" class="form-horizontal">
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Formulário</h3>
+          </div>
+
+          <div class="panel-body">
+
+            <fieldset [disabled]="loading">
+
+
+              <div class="panel-body">
+                <fieldset [disabled]="loading">
+                  <div class="form-group row" appErrorGroup>
+                    <div class="col-md-12">
+                      <app-person-modal-find [bootMode]="(warehouse && warehouse.id) ? 'editable': 'default'" formControlName="personId"></app-person-modal-find>
+                      <app-error-message controlName="personId" label="Pessoa"></app-error-message>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="code">*Código</label>
+                <div class="col-md-10">
+                  <input id="code" formControlName="code" type="text" maxlength="2" class="form-control uppercase" />
+                  <app-error-message controlName="code" label="Código"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="name">*Nome</label>
+                <div class="col-md-10">
+                  <input id="name" formControlName="name" type="text" maxlength="255" class="form-control" />
+                  <app-error-message controlName="name" label="Nome"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="shortName">*Sigla</label>
+                <div class="col-md-10">
+                  <input id="shortName" formControlName="shortName" type="text" maxlength="3" class="form-control uppercase" />
+                  <app-error-message controlName="shortName" label="Sigla"></app-error-message>
+                </div>
+              </div>
+
+              <div *ngIf="warehouse.id" class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="main">
+                  Forma de Armazenamento
+                </label>
+                <div class="col-md-1">
+                  <label>
+                    <input [formControl]="form.get('storageTypeBigBag')" type="checkbox" /> Big-bag
+                  </label>
+                </div>
+                <div class="col-md-1">
+                  <label>
+                    <input [formControl]="form.get('storageTypeSacaria')" type="checkbox" /> Sacaria
+                  </label>
+                </div>
+                <div class="col-md-1">
+                  <label>
+                    <input [formControl]="form.get('storageTypeSilo')" type="checkbox" /> Silo
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="stackWeightLimitString">Tamanho Limite da Pilha</label>
+                <div class="col-md-10">
+                  <input id="stackWeightLimitString" class="form-control" [textMask]="decimalMask" formControlName="stackWeightLimitString"
+                    maxlength="13" />
+                  <app-error-message controlName="stackWeightLimitString" label="Tamanho Limite da Pilha"></app-error-message>
+                </div>
+              </div>
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="axCode">Código no Ax</label>
+                <div class="col-md-10">
+                  <input id="axCode" formControlName="axCode" type="text" maxlength="255" class="form-control" />
+                  <app-error-message controlName="axCode" label="Código no Ax"></app-error-message>
+                </div>
+              </div>
+              <div class="form-group" appErrorGroup *ngIf="!warehouse.children || warehouse.children.length<=0">
+                <label class="control-label col-md-2 text-right">Pai</label>
+                <div class="col-md-10">
+                  <select formControlName="parentId" class="form-control">
+                    <option value="">Selecione um armazém pai</option>
+                    <option *ngFor="let parent of parents" [value]="parent.id">
+                      {{ parent.code }} - {{ parent.name }}
+                    </option>
+                  </select>
+                  <app-error-message controlName="parentId" label="Pai"></app-error-message>
+                </div>
+              </div>
+
+
+              <app-warehouse-stakeholder-certificate *ngIf="warehouse.id"></app-warehouse-stakeholder-certificate>
+
+              <div class="form-group" appErrorGroup *ngIf="warehouse.children && warehouse.children.length>0">
+                <label class="control-label col-md-2 text-right">Filhos</label>
+                <div class="col-md-10">
+                  <app-warehouse-children-list [children]="warehouse.children"></app-warehouse-children-list>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="main">
+                  Matriz
+                </label>
+                <div class="col-md-1">
+                  <label>
+                    <input id="main" [formControl]="form.get('matriz')" type="checkbox" /> Sim
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="ipAddress">Endereço IP</label>
+                <div class="col-md-10">
+                  <input id="ipAddress" formControlName="ipAddress" type="url" maxlength="255" class="form-control" />
+                  <app-error-message controlName="ipAddress" label="Endereço do IP"></app-error-message>
+                </div>
+              </div>
+
+              <div class="form-group" appErrorGroup>
+                <label class="control-label col-md-2 text-right" for="local">
+                  Local
+                </label>
+                <div class="col-md-1">
+                  <label>
+                    <input id="local" [formControl]="form.get('local')" type="checkbox" /> Sim
+                  </label>
+                </div>
+              </div>
+
+            </fieldset>
+
+          </div>
+
+          <div class="box-footer">
+            <div class="row">
+              <div class="col-sm-offset-2">
+                <div class="col-sm-10 mb10">
+                  <app-submit-button [loading]="loading">
+                    SALVAR
+                  </app-submit-button>
+                  <a [class.disabled]="loading" routerLink="/warehouse" class="btn btn-default btn-size">
+                    VOLTAR
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

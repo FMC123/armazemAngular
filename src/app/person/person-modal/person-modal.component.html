@@ -1,0 +1,28 @@
+<div class="modal person-modal fade" appModal (close)="emitCloseModalPerson()" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title"><span class="fa fa-pencil-square-o"></span> Cadastro de Pessoa</h3>
+      </div>
+      <div class="modal-body">
+        <app-person-modal-list *ngIf="mode==='LIST'"></app-person-modal-list>
+        <app-person-modal-form [id]="person.id" *ngIf="mode==='FORM'"></app-person-modal-form>
+        <app-person-modal-list-details [person]="person" [returnActive]="true" *ngIf="mode==='DETAILS'"></app-person-modal-list-details>
+        <app-customer-contact-modal-form  [person]="person" [id]="customerContactId" *ngIf="mode==='FORM_CONTACT'"></app-customer-contact-modal-form>
+        <app-address-modal-form  [person]="person" [id]="addressId" *ngIf="mode==='FORM_ADDRESS'"></app-address-modal-form>
+        <app-address-modal-list-details  [id]="addressId" *ngIf="mode==='DETAILS_ADDRESS'"></app-address-modal-list-details>
+        <app-customer-contact-modal-list-details  [id]="customerContactId" *ngIf="mode==='DETAILS_CONTACT'"></app-customer-contact-modal-list-details>
+
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-default btn-size"
+          (click)="emitCloseModalPerson()"
+        >
+          FECHAR
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

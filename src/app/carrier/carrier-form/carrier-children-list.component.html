@@ -1,0 +1,14 @@
+<table class="table table-bordered">
+  <tr>
+      <th class="col-xs-3">Nome</th>
+      <th class="col-xs-3">Documento</th>
+      <th class="col-xs-3">Tipo de Pessoa</th>
+      <th class="col-xs-3">Nome Usual</th>
+  </tr>
+  <tr *ngFor="let warehouse of children">
+      <td>{{ carrier.person.name }}</td>
+      <td>{{ carrier.person.document }}</td>
+      <td>{{ carrier.person.personType }}</td>
+      <td>{{ carrier.person.tradingName }}</td>
+  </tr>
+</table>

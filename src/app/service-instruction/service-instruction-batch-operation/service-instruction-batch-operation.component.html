@@ -1,0 +1,241 @@
+<div class="box" *ngIf="batcheOperations != null && batcheOperations.length > 0">
+  <div class="box-header">
+    <h3 class="box-title">Lista de Tarefas</h3>
+  </div>
+  <div class="box-body">
+    <div class="row">
+      <div class="col-xs-12">
+        <table class="table table-bordered table-condensed">
+          <thead>
+          <tr>
+            <th>Simbolo</th>
+            <th>Data Criação</th>
+            <th>Codigo tarefa</th>
+            <th>Lotes selecionados</th>
+            <th>Sacas</th>
+            <th>Planejado/Executado</th>
+            <th>Ação</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let batchOperation of batcheOperations"
+              [style.background-color]="batchOperation.typeObject.color">
+            <td *ngIf="batchOperation.typeObject.route === 'OUT'"
+                class="label-danger text-center td-img-type col-xs-1">
+              <img *ngIf="batchOperation.typeObject.code === 'P_OUT'" height="42" width="32"
+                   src="./assets/img/bo_w_to_p.png" appTooltip={{batchOperation.typeObject.name}} />
+            </td>
+            <td *ngIf="batchOperation.typeObject.route === 'IN'"
+                class="label-success text-center td-img-type col-xs-1">
+              <img *ngIf="batchOperation.typeObject.code === 'P_IN'" height="42" width="32"
+                   src="./assets/img/bo_p_to_w.png" appTooltip={{batchOperation.typeObject.name}} />
+            </td>
+
+            <td class="col-xs-2">{{ batchOperation.createdDateString }}</td>
+            <td class="col-xs-1">{{ batchOperation.batchOperationCode }}</td>
+
+            <!-- <td>{{ batchOperation.serviceInstruction?.code }}</td> -->
+            <td *ngIf="batchOperation.typeObject.route === 'OUT'" class="col-xs-2">
+              <div *ngFor="let batch of batchOperation.markupGroup.batches">
+                <div>{{ batch.batch.batchCode }}</div>
+              </div>
+            </td>
+            <td *ngIf="batchOperation.typeObject.route === 'IN'" class="col-xs-2">
+              <div *ngFor="let batch of batchOperation.batches">
+                <div>{{ batch.batchCode }}</div>
+              </div>
+            </td>
+            <!-- <td>{{ batchOperation.sacksQuantity }}</td> -->
+            <td *ngIf="batchOperation.typeObject.route === 'OUT'" class="col-xs-1">
+              <div *ngFor="let batch of batchOperation.markupGroup.batches">
+                <div>{{ batch.sackQuantity }}</div>
+              </div>
+            </td>
+            <td *ngIf="batchOperation.typeObject.route === 'IN'" class="col-xs-1">
+              <div *ngFor="let batch of batchOperation.batches">
+                <div>{{ batch.netQuantityValue }}</div>
+              </div>
+            </td>
+            <!-- <td>{{ batchOperation.netWeightString }} / {{ batchOperation.storedWeightString }}</td> -->
+            <td *ngIf="batchOperation.typeObject.route === 'OUT'"  class="col-xs-2">
+              <div *ngFor="let batch of batchOperation.markupGroup.batches">
+                <div>{{ batch.quantityString }} / {{ batch.currentQuantityString }}</div>
+              </div>
+            </td>
+            <td *ngIf="batchOperation.typeObject.route === 'IN'"  class="col-xs-2">
+              <div *ngFor="let batch of batchOperation.batches">
+                <div>{{ batch.netWeightString }} / {{ batch.storageUnitBatchesQuantitySumString }}</div>
+              </div>
+            </td>
+
+            <!--Botoes de actions do despejo-->
+            <td class="bts-list-actions col-xs-3 " *ngIf="batchOperation.typeObject.route === 'OUT'">
+              <button (click) = 'proportionalEvictionModal($event, batchOperation)'
+                      type="button" appTooltip="Despejo Proporcional"
+                      class="btn btn-sm btn-success"
+                      [class.disabled]="loading" [disabled]="loading">
+                <span class="fa fa-cubes fa-lg"></span>
+              </button>
+
+              <button type="button" appTooltip="Gerar Relatório da Tarefa"
+                      class="btn btn-sm btn-success"
+                      (click)="printTaskReport(serviceInstruction, batchOperation.taskOrder)"
+                      [class.disabled]="loading" [disabled]="loading">
+                <span class="fa fa-file-pdf-o"></span>
+              </button>
+
+              <button type="button" appTooltip="Editar"
+                      class="btn btn-sm btn-success"
+                      (click)="editTaskModal(batchOperation)"
+                      [class.disabled]="loading" [disabled]="loading">
+                <span class="fa fa-pencil fa-lg"></span>
+              </button>
+
+              <button type="button" appTooltip="Excluir"
+                      class="btn btn-danger btn-sm"
+                      (click)="beforeDelete(batchOperation)"
+                      [class.disabled]="loading" [disabled]="loading">
+                <span class="fa fa-trash-o fa-lg"></span>
+              </button>
+            </td>
+            <!--Botoes de actions da entrada (retroalimentação-->
+            <td class="bts-list-actions col-xs-3" *ngIf="batchOperation.typeObject.route === 'IN'">
+              <button *ngIf="batchOperation.batches?.length
+                          && !isTaskResultInServiceInstruction(batchOperation)"
+                      type="button" appTooltip="Adicionar Lote na Instrução de Serviço"
+                      class="btn btn-success btn-sm"
+                      (click)="feedbackConfirm.open(batchOperation)"
+                      [class.disabled]="loading" [disabled]="loading">
+                <span class="fa fa-recycle fa-lg"></span>
+              </button>
+
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="modal fade" appModal (close)="dumpProportionalModal.close()" tabindex="-1" role="dialog"
+     *ngIf="dumpProportionalModal.opened">
+
+  <div class="modal-dialog tamanho-modal" role="document">
+    <div class="modal-content">
+      <!-- <form (ngSubmit)="gerarRelatorioFitilho()" [formGroup]="formFitilho" class="form-horizontal"> -->
+      <form>
+        <div class="modal-header col-sm-12">
+
+          <div class="row-sm-8">
+            <button type="submit" (click)="runSimulation()" class="btn btnDespejo btn-primary btn-size">
+              GERAR SIMULAÇÃO
+            </button>
+            <button type="button" (click)="resetProportionalEviction()" class="btn btnDespejo btn-danger btn-size">
+              RESETAR SIMULAÇÃO
+            </button>
+          </div>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered table-striped table-hover">
+          <thead class="headModal">
+            <tr class="titles">
+              <th>Lotes</th>
+
+              <th>Sacas</th>
+
+              <th>Qt. BAG IS</th>
+
+              <th>Despejo Proporcional</th>
+
+            </tr>
+
+          </thead>
+          <tbody  class="bodyModal">
+
+            <ng-container *ngFor=" let pe of proportionalEvictionBatchOperation.proportionalEvictionBatch">
+              <tr>
+                <td class="batchCode">
+                  <div>
+                    <div>{{ pe.markupGroupBatch.batch.batchCode }}</div>
+                  </div>
+                </td>
+                <td class="batchQuantity">
+                  <div>
+                    <div>{{ pe.markupGroupBatch.sackQuantityString }}</div>
+                  </div>
+                </td>
+                <td class="quantityBags">
+                  <div>
+                    <div><input
+                      class="inputBags"
+                      type="number"
+                      name="quantityBags"
+                      [(ngModel)]="pe.quantityBags"
+                      [ngModelOptions]="{standalone: true}">
+                    </div>
+                  </div>
+                </td>
+
+                <td class="gridRound">
+                  <div *ngFor=" let round of pe.proportionalEviction ">
+                    <div><input class="inputRound" type="number" [(ngModel)]="round.quantity" [ngModelOptions]="{standalone: true}"></div>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+
+          </tbody>
+          <tfoot class="footModal">
+            <td>
+              <div>
+                <div>
+                  <div>Totais</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div>
+                <div>
+                  <div>{{ proportionalEvictionBatchOperation.totalQuantity }}</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div>
+                <div>
+                  <div><input  class="inputQuantityBags" type="text" value="{{ proportionalEvictionBatchOperation.totalQuantityBags }}" disabled></div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="gridRound">
+                <div *ngFor=" let round of proportionalEvictionBatchOperation.totalQuantityPerRound">
+                  <div ><input class="round" type="number" value="{{ round }}" disabled></div>
+                </div>
+              </div>
+            </td>
+
+          </tfoot>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (close)="dumpProportionalModal.close()" class="btn btnDespejo btn-ligth btn-size" data-dismiss="modal">
+          Voltar
+        </button>
+        <button type="submit" (click)="saveProportionalEviction()" class="btn btnDespejo btn-success btn-size">
+          Salvar
+        </button >
+      </div>
+    </form>
+  </div>
+</div>
+</div>
+
+<app-confirm *ngIf="deleteConfirm.opened" message="Tem certeza que deseja excluir a tarefa?"
+  (confirm)="deleteTask(batchOperation)" (close)="deleteConfirm.close()">
+</app-confirm>
+<app-confirm *ngIf="feedbackConfirm.opened" message="Tem certeza que deseja adicionar o lote à Instrução de Serviço?"
+  (confirm)="addTaskBatchesInServiceInstruction(feedbackConfirm.value)" (close)="feedbackConfirm.close()">
+</app-confirm>

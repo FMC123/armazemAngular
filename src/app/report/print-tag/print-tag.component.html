@@ -1,0 +1,58 @@
+<section class="content-header">
+  <h1>
+    Impressão de Tag's
+  </h1>
+  <app-breadcrumb [items]="[
+        ['Início', ''],
+        ['Impressão de Tags', null]
+      ]"></app-breadcrumb>
+</section>
+<section class="content-header">
+  <div class="box">
+    <div class="box-header">
+      <h3 class="box-title w100">
+        Filtro
+      </h3>
+    </div>
+    <div class="box-body">
+      <form class="form-horizontal" [formGroup]="form" (keydown.enter)="$event.preventDefault();">
+        <fieldset [disabled]="loading">
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-xs-4 col-md-2 text-right" for="tagCode">Tag Inicial</label>
+            <div *ngIf="tagCode" class="col-xs-8 col-md-4">
+              <input type="text" formControlName="tagCode" class="form-control" maxlength="7" disabled="true">
+              <app-error-message controlName="tagCode" label="Tag"></app-error-message>
+            </div>
+          </div>
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-xs-4 col-md-2 text-right" for="quantity">Quantidade</label>
+            <div class="col-xs-8 col-md-4">
+              <input type="number" formControlName="quantity" class="form-control" max="20">
+              <app-error-message controlName="quantity" label="Quantidade"></app-error-message>
+            </div>
+          </div>
+          <div *ngIf="!loading" class="form-group">
+            <label class="control-label col-xs-4 col-md-2 text-right" for="certifateId">Certificado</label>
+            <div class="col-xs-8 col-md-4">
+              <select formControlName="certifateId" class="form-control">
+                <option value=''>Selecione um certificado</option>
+                <option *ngFor="let certificate of page.data" [value]="certificate.id">
+                  {{ certificate.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </fieldset>
+        <div class="form-group">
+          <div class="col-xs-offset-4 col-xs-8 col-sm-offset-2 col-sm-10">
+            <button *ngIf="enableButton" (click)="submit()" type="button" class="btn btn-size btn-success">
+              <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+              ABRIR
+            </button>
+            <button type="button" (click)="buildForm()" class="btn btn-size btn-default">LIMPAR</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

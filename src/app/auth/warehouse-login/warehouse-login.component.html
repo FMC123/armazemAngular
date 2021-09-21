@@ -1,0 +1,33 @@
+<app-loading *ngIf="loading"></app-loading>
+<div class="content" *ngIf="!loading">
+  <div class="row">
+
+  </div>
+
+  <div
+    class="col-lg-3 col-xs-6"
+    *ngFor="let warehouse of warehouses"
+  >
+    <div
+      class="small-box bg-green clickable"
+      (click)="select(warehouse.id)"
+    >
+      <div class="inner">
+        <h3>{{ warehouse.code }}</h3>
+        {{ warehouse.name }}
+      </div>
+      <div class="icon">{{ warehouse.shortName }}</div>
+      <div class="small-box-footer">Acessar este armazém</div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12 col-md-12">
+        <p class="text-center">
+          <a href="javascript:" (click)="logoff()" class="text-center new-account">
+            <span class="fa fa-power-off"></span> Sair
+          </a>
+        </p>
+    </div>
+  </div>
+</div>

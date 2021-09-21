@@ -1,0 +1,65 @@
+<div class="form-group" appErrorGroup>
+  <app-loading *ngIf="loading"></app-loading>
+  <div class="col-md-12">
+    <form [formGroup]="form" (ngSubmit)="save()" *ngIf="form">
+      <table class="table table-bordered">
+        <tr>
+          <th>
+            <label for="packTypeId">Embalagem de Transporte</label>
+          </th>
+          <th>
+            <label for="quantity">Quantidade</label>
+          </th>
+          <th>
+            <label for="packWeight">Acresc. Peso</label>
+          </th>
+          <th class="bts-list-actions">Ação</th>
+        </tr>
+        <tr>
+          <td appErrorGroup>
+            <select class="form-control" formControlName="packTypeId" id="packTypeId">
+              <option value=''>Selecione uma embalagem</option>
+              <option *ngFor="let packType of packTypeList" [value]="packType.id">
+                {{ packType.description }}
+              </option>
+            </select>
+            <app-error-message controlName="packTypeId" label="Embalagem de Transporte"></app-error-message>
+          </td>
+          <td appErrorGroup>
+            <input type="number" class="form-control" formControlName="quantity" id="quantity"
+                   maxlength="10" />
+            <app-error-message controlName="quantity" label="Quantidade"></app-error-message>
+          </td>
+          <td appErrorGroup>
+            <input [formControl]="form.get('weightAddition')" type="checkbox"/>
+            <app-error-message controlName="weightAddition" label="Acresc. Peso"></app-error-message>
+          </td>
+          <td class="bts-list-actions">
+            <button type="submit" class="btn btn-success" appTooltip="Adicionar">
+              <span class="fa" [ngClass]="{'fa-check': packEditing !== null, 'fa-plus': packEditing === null}"></span>
+            </button>
+          </td>
+        </tr>
+        <tr class="active" *ngFor="let item of data">
+          <td>{{item.packType.description}}</td>
+          <td>{{item.quantity}}</td>
+          <td><input type="checkbox" [checked]="item.weightAddition" disabled></td>
+          <td class="bts-list-actions">
+
+            <button (click)="edit(item)" type="button" appTooltip="Editar" class="btn btn-primary btn-sm">
+              <span class="fa fa-edit fa-lg"></span>
+            </button>
+            <button (click)="remove(item)" type="button" appTooltip="Excluir"
+                    class="btn btn-danger btn-sm">
+              <span class="fa fa-trash-o fa-lg"></span>
+            </button>
+          </td>
+        </tr>
+      </table>
+    </form>
+
+    <div *ngIf="submitted && (!data || !data.length)" class='text-danger'>
+      É obrigatório selecionar ao menos uma embalagem
+    </div>
+  </div>
+</div>

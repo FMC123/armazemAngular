@@ -1,0 +1,25 @@
+<svg [attr.width]="svgWidth"
+      [attr.height]="svgHeight"
+      version="1.1"
+      xmlns="http://www.w3.org/2000/svg" *ngIf="positions"
+>
+  <g 
+    *ngFor="let position of rects"
+    (click)="select(position)"
+    style="cursor:pointer"
+   
+  >
+    <rect 
+     *ngIf="position.type == 'A'"    
+      [attr.x]="position.x"
+      [attr.y]="position.y"
+      [attr.width]="position.adjustedWidth"
+      [attr.height]="position.adjustedHeight"
+      [attr.transform]="position.transform"
+      [attr.stroke]="position.stroke"
+      [attr.fill]="position.fill"
+      [attr.stroke-width]="position.strokeWidth"
+    >
+    </rect>
+  </g>
+</svg>

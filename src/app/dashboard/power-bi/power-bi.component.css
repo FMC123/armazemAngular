@@ -1,0 +1,9 @@
+.report-holder{
+  height: 600px;
+}
+
+:host >>> powerbi-component iframe{
+  border: 0 !important;
+  border-radius: 5px !important;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3) !important;
+}

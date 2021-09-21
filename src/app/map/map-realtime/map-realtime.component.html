@@ -1,0 +1,14 @@
+<app-map-realtime-sidebar></app-map-realtime-sidebar>
+
+<div class="map-container text-center">
+  <!--<button
+    (click)="startStorageUnitsSync()"
+    [disabled] = "refreshingMap"
+    type="button"
+    class="btn btn-size btn-primary"
+  >
+    ATUALIZAR O MAPA
+  </button>-->
+  <hr>
+  <app-map-positions *ngIf="positions"></app-map-positions>
+</div>

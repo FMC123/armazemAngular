@@ -1,0 +1,66 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div class="box">
+      <div class="box-header">
+        <span class="box-title">Dados do Embarque</span>
+      </div>
+      <div class="box-body">
+        <div class="row">
+          <div class="col-xs-6">
+
+            <table class="table table-bordered">
+              <tr>
+                <th class="col-xs-4 text-right">Cliente</th>
+                <td class="col-xs-8">{{(markupGroup?.ownersBatchesNames)?markupGroup?.ownersBatchesNames:'-'}}</td>
+              </tr>
+              <tr>
+                <th class="col-xs-4 text-right">Destino</th>
+                <td class="col-xs-8">{{(shippingData?.destiny)?shippingData?.destiny:'-'}}</td>
+              </tr>
+              <tr>
+                <th class="col-xs-4 text-right">Sacas</th>
+                <td class="col-xs-8">{{totalQuantity}} sacas</td>
+              </tr>
+              <tr>
+                <th class="col-xs-4 text-right">Peso Total</th>
+                <td class="col-xs-8">{{totalNetWeight}} kgs</td>
+              </tr>
+              <tr>
+                <th class="col-xs-4 text-right">Peso Produto</th>
+                <td class="col-xs-8">{{productWeight}} kgs</td>
+              </tr>
+              <tr>
+                <th class="col-xs-4 text-right">Peso Embalagem</th>
+                <td class="col-xs-8">{{totalSackWeight}} kgs</td>
+              </tr>
+            </table>
+
+          </div>
+          <div class="col-xs-6">
+
+            <table class="table table-bordered">
+              <tr>
+                <th class="col-xs-4 text-right">Container</th>
+                <td class="col-xs-8">{{(shippingData?.containerNumber)?shippingData?.containerNumber:'-'}}</td>
+              </tr>
+              <tr>
+                <th class="col-xs-4 text-right">OIC</th>
+                <td class="col-xs-8">{{(shippingData?.oicCode)?shippingData?.oicCode:'-'}}</td>
+              </tr>
+              <tr>
+                <th class="col-xs-4 text-right">Embalagem</th>
+                <td class="col-xs-8">{{(packTypes)?packTypes:'-'}}</td>
+              </tr>
+              <tr>
+                <th class="col-xs-4 text-right">Observações</th>
+                <td class="col-xs-8">{{(shippingData?.observation)?shippingData?.observation:'-'}}</td>
+              </tr>
+            </table>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

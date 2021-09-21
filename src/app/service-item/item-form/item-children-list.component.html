@@ -1,0 +1,18 @@
+<table class="table table-bordered">
+  <tr>
+    <th class="col-xs-3">Código</th>
+    <th class="col-xs-3">Sigla</th>
+    <th class="col-xs-6">Nome</th>
+  </tr>
+  <tr *ngFor="let serviceItem of children">
+      <td>{{serviceItem.code}}</td>
+      <td>{{serviceItem.description}}</td>
+      <td>{{serviceItem.basePrice}}</td>
+      <td>{{serviceItem.groupedCharge}}</td>
+      <td>{{serviceItem.indQuoteVal}}</td>
+      <td>{{serviceItem.indIss}}</td>
+      <td>{{serviceItem.indDiscount}}</td>
+      <td>{{serviceItem.industrialType}}</td>
+      <td>{{serviceItem.batchMask}}</td>
+  </tr>
+</table>

@@ -1,0 +1,25 @@
+<span>
+  <label>Tem certeza?</label>
+
+  <span appTooltip="Não">
+    <button
+      type="button"
+      class="btn btn-danger btn-sm"
+      (click)="confirmHandler($event,false)"
+      style="margin:2px;"
+    >
+      <span class="fa fa-remove"></span>
+    </button>
+  </span>
+
+  <span appTooltip="Sim">
+    <button
+      type="button"
+      class="btn btn-success btn-sm"
+      (click)="confirmHandler($event,true)"
+      style="margin:2px;"
+    >
+      <span class="fa fa-check"></span>
+    </button>
+  </span>
+</span>

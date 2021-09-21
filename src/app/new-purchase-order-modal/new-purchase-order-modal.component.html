@@ -1,0 +1,144 @@
+<section class="modal fade" appModal [shownCallback]="focusOnInput()" (close)="close.emit(null)" tabindex="-1"
+         role="dialog">
+  <div class="row">
+    <div class="col-xs-12">
+      <form (ngSubmit)="save()" [formGroup]="form" *ngIf="form" class="form-horizontal">
+
+        <div class="box">
+          <div class="box-header">
+            <h3 class="box-title w100">
+              Cadastrar
+            </h3>
+          </div>
+
+          <div class="box-body">
+            <fieldset >
+<!--              [disabled]="loading">-->
+
+              <div class="row">
+                <div class="col-md-4 col-xs-12" appErrorGroup>
+                  <label for="purchaseOrderCode">Ordem de compra</label>
+                  <input id="purchaseOrderCode" class="form-control" formControlName="purchaseOrderCode"
+                         maxlength="25" placeholder="Informe a ordem de compra" />
+                  <app-error-message controlName="purchaseOrderCode" label="Ordem de compra"></app-error-message>
+                </div>
+
+                <div class="col-md-4 col-xs-12" appErrorGroup>
+                  <label for="loadingDateString">Data de carregamento</label>
+                  <div>
+                    <div class="input-group">
+                      <input type="text" [textMask]="dateMask" appDatePicker id="loadingDateString"
+                             formControlName="loadingDateString" placeholder="__/__/____" class="form-control" />
+                      <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+                    </div>
+                    <app-error-message controlName="loadingDateString" label="Data de carregamento">
+                    </app-error-message>
+                  </div>
+                </div>
+
+                <div class="col-md-4 col-xs-12" appErrorGroup>
+                  <label for="downloadForecastDateString">Previsão de descarga</label>
+                  <div>
+                    <div class="input-group">
+                      <input type="text" [textMask]="dateMask" appDatePicker id="downloadForecastDateString"
+                             formControlName="downloadForecastDateString" placeholder="__/__/____" class="form-control" />
+                      <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+                    </div>
+                    <app-error-message controlName="downloadForecastDateString" label="Previsão de descarga">
+                    </app-error-message>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4 col-xs-12" appErrorGroup>
+                  <label for="clientId">Cliente</label>
+                  <app-autocomplete [service]="clientAutocomplete" [placeHolder]="'Selecione um cliente'">
+                  </app-autocomplete>
+                  <input type="hidden" id="clientId" class="form-control" formControlName="clientId" />
+                  <app-error-message controlName="clientId" label="Cliente"></app-error-message>
+                </div>
+
+                <div class="col-md-4 col-xs-12" appErrorGroup>
+                  <label for="sacksQuantity">Sacas</label>
+                  <input id="sacksQuantity" class="form-control" formControlName="sacksQuantity" maxlength="10"
+                         [textMask]="integerMask" placeholder="Informe a quantidade de sacas" />
+                  <app-error-message controlName="sacksQuantity" label="Sacas"></app-error-message>
+                </div>
+
+                <div class="col-md-4 col-xs-12">
+                  <label for="packTypeId">Embalagem</label>
+                  <select formControlName="packTypeId" class="form-control" id="packTypeId"
+                          placeholder="Selecione a embalagem">
+                    <option value=''>Selecione a embalagem</option>
+                    <option *ngFor="let packType of packTypes" [value]="packType.id">
+                      {{ packType.description }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4 col-xs-12" style="padding-right:0" appErrorGroup>
+                  <label for="salesmanId">Vendedor</label>
+                  <app-autocomplete [service]="salesmanAutocomplete" [placeHolder]="'Selecione um vendedor'">
+                  </app-autocomplete>
+                  <input type="hidden" id="salesmanId" class="form-control" formControlName="salesmanId" />
+                  <app-error-message controlName="salesmanId" label="Vendedor"></app-error-message>
+                </div>
+
+                <div class="col-md-4 col-xs-12">
+                  <label for="loadingWarehouseId">Carregamento</label>
+                  <app-autocomplete [service]="warehouseAutocomplete" [placeHolder]="'Selecione um carregamento'">
+                  </app-autocomplete>
+                  <input type="hidden" id="loadingWarehouseId" class="form-control"
+                         formControlName="loadingWarehouseId" />
+                  <app-error-message controlName="loadingWarehouseId" label="Carregamento"></app-error-message>
+                </div>
+
+                <div class="col-md-4 col-xs-12" appErrorGroup>
+                  <label for="loadingCityId">Cidade do carregamento</label>
+                  <app-autocomplete [service]="cityAutocomplete" [placeHolder]="'Selecione a cidade do carregamento'">
+                  </app-autocomplete>
+                  <input type="hidden" id="loadingCityId" class="form-control" formControlName="loadingCityId" />
+                  <app-error-message controlName="loadingCityId" label="Cidade do carregamento"></app-error-message>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4 col-xs-12">
+                  <label for="dischargedQuantity">Quantidade descarregada</label>
+                  <input id="dischargedQuantity" class="form-control" formControlName="dischargedQuantity"
+                         maxlength="10" [textMask]="integerMask" placeholder="0" disabled />
+                </div>
+              </div>
+
+              <div class="row text-right">
+                <div class="col-xs-12 bts-actions">
+
+                  <button type="button" (click)="clearForm()" class="btn btn-size btn-default">Limpar</button>
+
+                  <app-submit-button >
+<!--                    [loading]="loading"-->
+<!--                  >-->
+                    Salvar
+                  </app-submit-button>
+
+                </div>
+              </div>
+
+            </fieldset>
+          </div>
+        </div>
+
+<!--        <div class="col-xs-12 last-buttons">-->
+<!--          <a [class.disabled]="loading" routerLink="/purchase-order" class="btn btn-default btn-size">-->
+<!--            Voltar-->
+<!--          </a>-->
+<!--        </div>-->
+
+      </form>
+    </div>
+  </div>
+
+</section>

@@ -1,0 +1,28 @@
+
+<section class="content-header">
+    <h1>
+      <small>Detalhes</small>
+      Transportadora
+    </h1>
+    <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Transportadora','/carrier'],
+    ['Detalhes da Transportadora', null]
+  ]"></app-breadcrumb>
+  </section>
+
+
+
+  <section class="content">
+
+ <app-carrier-list-info [carrier]="carrier" *ngIf="carrier"></app-carrier-list-info>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <a routerLink="/carrier"
+          class="btn btn-default btn-size">
+        VOLTAR
+      </a>
+    </div>
+  </div>
+  </section>

@@ -1,0 +1,105 @@
+<section class="content-header">
+  <h1>
+    Relatório Entrada Diária
+  </h1>
+  <app-breadcrumb [items]="[
+        ['Início', ''],
+        ['Relatório Entrada Diária', null]
+      ]"></app-breadcrumb>
+</section>
+<section class="content-header">
+  <div class="box">
+    <div class="box-header">
+      <h3 class="box-title w100">
+        Filtro
+      </h3>
+    </div>
+    <div class="box-body">
+      <form class="form-horizontal" [formGroup]="form" (keydown.enter)="$event.preventDefault();">
+        <fieldset [disabled]="loading">
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-xs-4 col-md-2 text-right" for="packTypeStorage">
+              Embalagem de Armazenamento
+            </label>
+            <div class="col-xs-8 col-md-10">
+              <select formControlName="packTypeStorage" class="form-control">
+                <option value=''>Selecione um tipo de embalagem de armazenamento</option>
+                <option *ngFor="let packType of packTypes" [value]="packType.id">
+                  {{ packType.description }}
+                </option>
+              </select>
+              <app-error-message controlName="packTypeStorage" label="Tipo de Embalagem"></app-error-message>
+            </div>
+          </div>
+
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-xs-4 col-md-2 text-right" for="packTypeTransport">
+              Embalagem de Transporte
+            </label>
+
+            <div class="col-xs-8 col-md-10">
+              <select formControlName="packTypeTransport" class="form-control">
+                <option value=''>Selecione um tipo de embalagem de transporte</option>
+                <option *ngFor="let packType of packTypes" [value]="packType.id">
+                  {{ packType.description }}
+                </option>
+              </select>
+              <app-error-message controlName="packTypeTransport" label="Tipo de Embalagem"></app-error-message>
+            </div>
+          </div>
+
+          <div class="form-group" appErrorGroup>
+            <label class="control-label col-xs-4 col-md-2 text-right" for="createdDateStartString">Data</label>
+            <div class="col-xs-8 col-md-10">
+              <div class="row">
+                <div class="col-xs-6">
+                  <div class="input-group">
+                    <input type="text"
+                           [textMask]="dateMask"
+                            appDatePicker
+                            formControlName="createdDateStartString"
+                            placeholder="Início"
+                            class="form-control">
+                    <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+                  </div>
+                  <app-error-message controlName="createdDateStartString" label="Data Inicial"></app-error-message>
+                </div>
+                <div class="col-xs-6">
+                  <div class="input-group">
+                    <input type="text"
+                           [textMask]="dateMask"
+                            appDatePicker
+                            formControlName="createdDateEndString"
+                            placeholder="Fim"
+                            class="form-control">
+                    <div class="input-group-addon clickable">
+                      <span class="fa fa-calendar fa-fw"></span>
+                    </div>
+                  </div>
+                  <app-error-message controlName="createdDateEndString" label="Data Final"></app-error-message>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </fieldset>
+        <div class="form-group">
+          <div class="col-xs-offset-4 col-xs-8 col-sm-offset-2 col-sm-10">
+            <button (click)="submitPdf()" type="button" class="btn btn-size btn-success">
+              <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+              ABRIR PDF
+            </button>
+
+            <button (click)="submitCsv()" type="button" class="btn btn-size btn-success">
+              <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+              ABRIR CSV
+            </button>
+
+            <button type="button" (click)="buildForm()" class="btn btn-size btn-default">LIMPAR</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

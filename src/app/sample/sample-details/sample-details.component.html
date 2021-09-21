@@ -1,0 +1,29 @@
+<div class="new-layout">
+  <section class="content-header">
+    <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Amostras', '/sample'],
+    [sample.barcode, null]
+  ]"></app-breadcrumb>
+    <h1>
+      <small>Detalhe</small>
+      Amostra
+    </h1>
+  </section>
+
+  <section class="content">
+    <app-sample-info [sample]="sample" *ngIf="sample"></app-sample-info>
+
+<!--    <app-sample-history [sample]="sample" *ngIf="sample"></app-sample-history>-->
+
+    <app-sample-movement-history [sample]="sample" *ngIf="sample"></app-sample-movement-history>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <a [class.disabled]="loading" onclick="window.history.back()" class="btn btn-default btn-size">
+          VOLTAR
+        </a>
+      </div>
+    </div>
+  </section>
+</div>

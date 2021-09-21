@@ -1,0 +1,30 @@
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div
+          class="box-header with-border clickable"
+          (click)="opened = !opened"
+        >
+          <h3 class="box-title">
+            <i class="fa fa-calculator"></i> Totais
+          </h3>
+        </div>
+
+        <div class="box-body" *ngIf="opened">
+          <app-loading *ngIf="loading"></app-loading>
+
+          <div class="row" *ngIf="!loading">
+            <div class="col-xs-4">
+              <app-info-table [data]="openedInfo" header="Em aberto"></app-info-table>
+            </div>
+            <div class="col-xs-4">
+              <app-info-table [data]="inProgressInfo" header="Em progresso"></app-info-table>
+            </div>
+            <div class="col-xs-4">
+              <app-info-table [data]="closedInfo" header="Fechados hoje"></app-info-table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

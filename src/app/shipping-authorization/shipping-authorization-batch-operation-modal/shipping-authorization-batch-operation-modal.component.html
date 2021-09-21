@@ -1,0 +1,13 @@
+<div class="modal fade" appModal (close)="close.emit(null)" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <app-transportation-list mode="select" type="OUT" [forShippingAuthorization]="shippingAuthorization"
+        (select)="open($event)"></app-transportation-list>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-size" data-dismiss="modal">
+          Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

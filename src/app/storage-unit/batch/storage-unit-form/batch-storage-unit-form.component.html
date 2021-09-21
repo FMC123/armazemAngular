@@ -1,0 +1,217 @@
+<form
+  id="form-batch-storage-unit-form-component"
+  (ngSubmit)="beforeSave()"
+  [formGroup]="form"
+  *ngIf="form"
+  class="form-horizontal"
+>
+  <div class="box">
+    <div class="box-header with-border">
+      <h3 class="box-title">Formulário</h3>
+    </div>
+
+    <div class="box-body">
+      <fieldset [disabled]="loading">
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-md-2 text-right">
+            Lote
+          </label>
+          <div class="info-bacthes col-md-10">
+            {{ batch.batchCode }}
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-md-2 text-right">
+            Peso do lote
+          </label>
+          <div class="info-bacthes col-md-2">
+            KG {{ batch.netWeightString }}
+          </div>
+
+          <label class="control-label col-md-1 text-right">
+            Sacas
+          </label>
+          <div class="info-bacthes col-md-7">
+            {{ batch.netQuantity ? batch.netQuantity : batch.sacks}}
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-md-2 text-right" for="positionId">
+            Localização*
+          </label>
+          <div class="col-md-4">
+            <app-autocomplete [service]="positionAutocomplete" [instant]="true"></app-autocomplete>
+            <input type="hidden" class="form-control" formControlName="positionId" id="positionId" />
+            <app-error-message controlName="positionId" label="Posição"></app-error-message>
+          </div>
+
+          <div class="col-md-3" *ngIf="stacks && stacks.length && !selectedPosition.isSilo">
+            <select (change)="changeStack()" formControlName="stackId" class="form-control">
+              <option value=''>Selecione uma pilha</option>
+              <option *ngFor="let isStack of stacks" [value]="isStack.id">
+                {{ isStack.code }}
+              </option>
+            </select>
+            <app-error-message controlName="stackId" label="Pilha"></app-error-message>
+          </div>
+
+          <div class="col-md-3" *ngIf="stacks && stacks.length && !selectedPosition.isSilo">
+            <input
+              id="stackHeight"
+              formControlName="stackHeight"
+              class="form-control"
+              [textMask]="integerMask"
+              maxlength="4"
+            />
+            <app-error-message controlName="stackHeight" label="Altura"></app-error-message>
+          </div>
+        </div>
+
+        <div *ngIf="!selectedPosition.isSilo"
+             class="form-group" appErrorGroup>
+          <label class="control-label col-md-2 text-right" for="tagCode">Tag</label>
+          <div class="col-md-10">
+            <input
+              id="tagCode"
+              formControlName="tagCode"
+              class="form-control"
+              maxlength="255"
+            />
+            <app-error-message controlName="tagCode" label="Tag"></app-error-message>
+          </div>
+        </div>
+
+        <div class="form-group" appErrorGroup>
+          <label class="control-label col-md-2 text-right" for="quantity">Peso*</label>
+          <div class="col-md-4">
+            <input
+              id="quantity"
+              formControlName="quantity"
+              [textMask]="decimalMask"
+              class="form-control"
+              (change)="changeWeight()"
+              maxlength="12"
+            />
+            <app-error-message controlName="quantity" label="Peso"></app-error-message>
+          </div>
+          <div class="col-md-2">
+            <select
+              [formControl]="form.get('unitType')"
+            >
+              <option value="KG">KG</option>
+            </select>
+          </div>
+          <label class="control-label col-md-1 text-right">
+              Sacas
+            </label>
+            <div class="info-bacthes col-md-3">
+              {{ weightInSacks }}
+            </div>
+        </div>
+
+        <div *ngIf="!selectedPosition.isSilo"
+             class="form-group" appErrorGroup>
+          <label class="control-label col-md-2 text-right" for="packTypeId">Tipo de Embalagem*</label>
+          <div class="col-md-10">
+            <select id="packTypeId" formControlName="packTypeId" class="form-control">
+              <option value=''>Selecione um tipo de embalagem</option>
+              <option *ngFor="let packType of packTypes" [value]="packType.id">
+                {{ packType.description }}
+              </option>
+            </select>
+            <app-error-message controlName="packTypeId" label="Tipo de Embalagem"></app-error-message>
+          </div>
+        </div>
+
+        <div *ngIf="!selectedPosition.isSilo"
+             class="form-group" appErrorGroup>
+          <label class="control-label col-md-2 text-right" for="indRepackage">
+            Reensaque
+          </label>
+          <div class="col-md-1">
+            <input
+              id="indRepackage"
+              formControlName="indRepackage"
+              type="checkbox"
+            />
+            <app-error-message controlName="indRepackage" label="Reensacado?"></app-error-message>
+          </div>
+        </div>
+
+        <div *ngIf="trackStock && !indRepackage" class="form-group" appErrorGroup>
+          <label class="control-label col-md-2 text-right" for="packTypeOwnerId">Dono da embalagem*</label>
+          <div class="col-md-10">
+            <select id="packTypeOwnerId" formControlName="packTypeOwnerId" class="form-control">
+              <option value=''>Selecione o dono da embalagem</option>
+              <option *ngFor="let packStockOwner of packStockOwners" [value]="packStockOwner.owner.id">
+                {{ packStockOwner.label }}
+              </option>
+            </select>
+            <app-error-message controlName="packTypeOwnerId" label="Dono da embalagem"></app-error-message>
+          </div>
+        </div>
+
+        <div *ngIf="trackStock" class="form-group" appErrorGroup>
+          <label class="control-label col-md-2 text-right" for="packTypeQuantity">Quantidade*</label>
+          <div class="col-md-10">
+            <input
+              id="packTypeQuantity"
+              formControlName="packTypeQuantity"
+              class="form-control"
+              [textMask]="integerMask"
+              maxlength="9"
+            />
+            <app-error-message controlName="packTypeQuantity" label="Quantidade"></app-error-message>
+          </div>
+        </div>
+
+        <div *ngIf="trackStock" class="form-group" appErrorGroup>
+          <label class="control-label col-md-2 text-right" for="packTypeQuantityComplement">Quantidade Complementar</label>
+          <div class="col-md-10">
+            <input
+              id="packTypeQuantityComplement"
+              formControlName="packTypeQuantityComplement"
+              class="form-control"
+              [textMask]="integerMask"
+              maxlength="9"
+            />
+            <app-error-message controlName="packTypeQuantityComplement" label="Quantidade Complementar"></app-error-message>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="box-footer">
+      <div class="row">
+        <div class="col-sm-offset-2">
+          <div class="col-sm-10 mb10">
+            <app-submit-button [loading]="loading">
+              SALVAR
+            </app-submit-button>
+            <button
+              type="button"
+              class="btn btn-default btn-size"
+              (click)="reset()"
+            >
+              LIMPAR
+            </button>
+            <a
+              [class.disabled]="loading"
+              [routerLink]="['/batch-operation', 'in', this.batchOperation.id, 'edit']"
+              class="btn btn-default btn-size"
+            >
+              VOLTAR
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-confirm *ngIf="confirmDialog.opened" message="O Peso armazenado do lote foi extrapolado. deseja continuar?" noLabel="Não"
+      yesLabel="Sim" (confirm)="save()" (close)="closeConfirmDialog()">
+    </app-confirm>
+  </div>
+</form>
+
+

@@ -1,0 +1,127 @@
+<div
+  class="modal fade"
+  appModal
+  [shownCallback]="focusOnInput()"
+  (close)="close.emit(null)"
+  tabindex="-1"
+  role="dialog"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <form
+        (ngSubmit)="submit()"
+        [formGroup]="form"
+        *ngIf="form"
+        class="form-horizontal"
+      >
+        <div class="modal-header">
+          <h3 class="modal-title">Nova movimentação de entrada de embalagem</h3>
+        </div>
+        <div class="modal-body">
+          <fieldset [disabled]="loading">
+
+            <div class="form-group" appErrorGroup>
+              <label class="control-label col-md-2 text-right" for="packTypeId">
+                Tipo de Embalagem
+              </label>
+              <div class="col-md-10">
+                <select formControlName="packTypeId" class="form-control">
+                  <option value=''>Selecione um tipo de embalagem</option>
+                  <option *ngFor="let packType of packTypes" [value]="packType.id">
+                    {{ packType.description }}
+                  </option>
+                </select>
+                <app-error-message controlName="packTypeId" label="Tipo de Embalagem"></app-error-message>
+              </div>
+            </div>
+
+            <div class="form-group" appErrorGroup>
+              <label
+                class="control-label col-md-2 text-right"
+                for="quantityVariation"
+              >
+                Quantidade
+              </label>
+              <div class="col-md-10">
+                <input
+                  id="quantityVariation"
+                  class="form-control"
+                  formControlName="quantityVariation"
+                  [textMask]="integerMask"
+                  maxlength="9"
+                />
+                <app-error-message controlName="quantityVariation" label="Quantidade"></app-error-message>
+              </div>
+            </div>
+
+            <div
+              *ngIf="!indStockOut"
+              class="form-group"
+              appErrorGroup
+            >
+              <label
+                class="control-label col-md-2 text-right"
+                for="unitValueString"
+              >
+                Valor unitário
+              </label>
+              <div class="col-md-10">
+                <input
+                  id="unitValueString"
+                  class="form-control"
+                  formControlName="unitValueString"
+                  [textMask]="decimalMask"
+                  maxlength="9"
+                />
+                <app-error-message controlName="unitValueString" label="Valor unitário"></app-error-message>
+              </div>
+            </div>
+
+            <div
+              class="form-group"
+              appErrorGroup
+              *ngIf="indStockOut"
+            >
+              <label class="control-label col-md-2 text-right">
+                Peso Unitário (KG)
+              </label>
+              <div class="col-md-10">
+                <input
+                  class="form-control"
+                  [value]="unitWeightString"
+                  disabled
+                />
+              </div>
+            </div>
+
+            <div
+              class="form-group"
+              appErrorGroup
+              *ngIf="indStockOut"
+            >
+              <label class="control-label col-md-2 text-right">
+                Peso total (KG)
+              </label>
+              <div class="col-md-10">
+                <input
+                  class="form-control"
+                  [value]="totalWeightString"
+                  disabled
+                />
+              </div>
+            </div>
+
+          </fieldset>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default btn-size" data-dismiss="modal">
+            CANCELAR
+          </button>
+          <app-submit-button [loading]="loading">
+            SALVAR
+          </app-submit-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

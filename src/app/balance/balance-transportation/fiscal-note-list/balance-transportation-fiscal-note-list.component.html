@@ -1,0 +1,41 @@
+<div class="box">
+  <div class="box-header clickable" (click)="opened = !opened">
+    <h3 class="box-title w100">
+      Lista de Notas Fiscais
+    </h3>
+  </div>
+
+  <div class="box-body" [hidden]="!opened">
+    <table
+      *ngIf="(fiscalNotes && fiscalNotes.length>0)"
+      class="table table-bordered table-condensed"
+    >
+
+      <thead>
+        <tr>
+          <th class="col-xs-2">Nota Fiscal</th>
+          <th class="col-xs-2">Cliente</th>
+          <th class="col-xs-2">Quantidade</th>
+          <th class="col-xs-2">Valor</th>
+        </tr>
+      </thead>
+      <tbody>
+        <template ngFor let-fiscalNote [ngForOf]="fiscalNotes">
+          <tr
+            [class.info]="fiscalNote.selected"
+            [class.active]="fiscalNote.batchOperation && fiscalNote.batchOperation.id"
+          >
+            <td>
+              <input type="checkbox" *ngIf="!(fiscalNote.batchOperation && fiscalNote.batchOperation.id) && !packing" (change)="changeSelected($event, fiscalNote)"/>
+              {{ fiscalNote.code }}
+            </td>
+            <td *ngIf="!nameWithCodeParameter">{{ fiscalNote.ownerStakeholder.person?.name }}</td>
+            <td *ngIf="nameWithCodeParameter">{{ fiscalNote.ownerStakeholder.labelWithoutDocument }}</td>
+            <td>{{ fiscalNote.quantity }}</td>
+            <td>{{ fiscalNote.totalPriceString }}</td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </div>
+</div>

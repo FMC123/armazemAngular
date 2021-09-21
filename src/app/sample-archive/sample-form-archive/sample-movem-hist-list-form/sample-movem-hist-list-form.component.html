@@ -1,0 +1,132 @@
+<div class="row">
+    <form (ngSubmit)="save()" [formGroup]="form" *ngIf="form" class="form-horizontal">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">Solicitações da amostra</h3>
+        </div>
+
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-xs-12">
+              <div>
+                <div class="col-xs-3">
+                    Departamento Solicitante
+                </div>
+                <div class="col-xs-2">
+                    Data Solicitação
+                </div>
+                <div class="col-xs-2">
+                </div>
+                <div class="col-xs-2">
+                </div>
+                <div class="col-xs-2">
+                    Ação
+                </div>
+                <div class="col-xs-3">
+                    <div appErrorGroup>
+                      <select formControlName="departmentId" class="form-control">
+                        <option value=''>Selecione um departamento</option>
+                        <option *ngFor="let department of departments" [value]="department.id">
+                          {{ department.name }}
+                        </option>
+                      </select>
+                      <app-error-message controlName="departmentId" label="Departamento Solicitante"></app-error-message>
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                    <div>
+                        <div class="input-group">
+                          <input id="movementDate" type="text" [textMask]="dateMask" appDatePicker formControlName="movementDate" class="form-control">
+                          <div class="input-group-addon clickable">
+                            <span class="fa fa-calendar fa-fw"></span>
+                          </div>
+                        </div>
+                        <app-error-message controlName="movementDate" label="Data Solicitação"></app-error-message>
+                      </div>
+                </div>
+                <div class="col-xs-2">
+                </div>
+                <div class="col-xs-2">
+                </div>
+                <div class="col-xs-2">
+                    <button
+                      type="submit"
+                      class="btn btn-success btn-sm">
+                      <span>Solicitar</span>
+                    </button>
+                </div>
+              </div>
+            </div>
+            <app-loading *ngIf="loading"></app-loading>
+            <table style="margin-top: 10px;" class="table table-bordered" *ngIf="data && data.length > 0 && !loading">
+                <thead>
+                    <tr>
+                        <th class="col-xs-2 text-center">
+                            Status Solicitação
+                        </th>
+                        <th class="col-xs-2 text-center">
+                            Data
+                        </th>
+                        <th class="col-xs-1 text-center">
+                            Arm
+                        </th>
+                        <th class="col-xs-2 text-center">
+                            Lote
+                        </th>
+                        <th class="col-xs-2 text-center">
+                            Solicitante
+                        </th>
+                        <th class="col-xs-2 text-center">
+                            Ação
+                        </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let sampleMovementHistory of data">
+                      <td class="text-center">{{sampleMovementHistory.movementTypeLabel.status}}</td>
+                      <td class="text-center">{{sampleMovementHistory.movementDateString}}</td>
+                      <td class="text-center">{{sampleMovementHistory.sample.warehouse.name}}</td>
+                      <td class="text-center">{{sampleMovementHistory.sample.batchCodes}}</td>
+                      <td class="text-center">{{sampleMovementHistory.movementedBy?.name + "/" + sampleMovementHistory.departmentRequestBy?.name}}</td>
+                      <td class="text-center">
+                        <button *ngIf="sampleMovementHistory.movementTypeLabel.name == sampleRequest.name"
+                          type="button"
+                          (click)="sendSample(sampleMovementHistory)"
+                          class="btn btn-primary btn-sm"
+                        >
+                          <span>Enviar Amostra</span>
+                        </button>
+                        <button *ngIf="sampleMovementHistory.movementTypeLabel.name == withdraw.name
+                                       || sampleMovementHistory.movementTypeLabel.name == sampleReceived.name"
+                          type="button"
+                          (click)="returnSample(sampleMovementHistory)"
+                          class="btn btn-primary btn-sm"
+                        >
+                          <span>Devolver Amostra</span>
+                        </button>
+                        <button *ngIf="sampleMovementHistory.movementTypeLabel.name == sampleRequest.name"
+                          type="button"
+                          (click)="beforeRemove(sampleMovementHistory)"
+                          class="btn btn-danger btn-sm"
+                          appTooltip="Excluir"
+                        >
+                          <span class="fa fa-trash fa-lg"></span>
+                      </button>
+                      </td>
+                    </tr>
+                  </tbody>
+              </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    </form>
+  </div>
+
+<app-confirm
+  *ngIf="closeConfirm.opened"
+  message="Tem certeza que deseja remover a solicitação?"
+  (confirm)="remove()"
+  (close)="closeConfirm.close()">
+</app-confirm>

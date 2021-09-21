@@ -1,0 +1,182 @@
+<form
+  (ngSubmit)="submit()"
+  *ngIf="form"
+  [formGroup]="form"
+  (keydown.enter)="$event.preventDefault();"
+>
+  <div class="box">
+    <div class="box-header">
+      <h3 class="box-title w100">
+        Filtro
+      </h3>
+    </div>
+
+    <div class="box-body">
+      <fieldset
+        class="form-horizontal"
+        [disabled]="loading"
+      >
+        <div class="col-xs-6">
+          <div
+            class="form-group"
+            appErrorGroup
+          >
+            <label
+              class="control-label col-xs-4 text-right"
+              for="codeOrName"
+            >
+              Instr. de Serviço
+            </label>
+            <div class="col-xs-8">
+              <input
+                id="codeOrName"
+                formControlName="codeOrName"
+                type="text"
+                class="form-control"
+                maxlength="18"
+              />
+              <app-error-message
+                controlName="codeOrName"
+                label="Instr. de Serviço"
+              ></app-error-message>
+            </div>
+          </div>
+
+          <div
+            class="form-group"
+            appErrorGroup
+          >
+            <label
+              class="control-xlabel col-xs-4 text-right"
+              for="typeId"
+            >
+              Tipo
+            </label>
+            <div class="col-xs-8">
+              <select
+                id="typeId"
+                formControlName="typeId"
+                class="form-control"
+              >
+                <option value=''>Selecione um tipo</option>
+                <option
+                  *ngFor="let type of types"
+                  [value]="type.id"
+                >
+                  {{ type.code }} - {{ type?.name }}
+                </option>
+              </select>
+              <app-error-message
+                controlName="typeId"
+                label="Tipo"
+              ></app-error-message>
+            </div>
+          </div>
+
+          <div
+            class="form-group"
+            appErrorGroup
+          >
+            <label
+              class="control-label col-xs-4 text-right"
+              for="includeClosedOrCancelled"
+            >
+              Incluir IS Finalizadas/Canceladas
+            </label>
+            <div class="col-xs-1">
+              <input
+                id="includeClosedOrCancelled"
+                formControlName="includeClosedOrCancelled"
+                type="checkbox"
+              />
+              <app-error-message
+                controlName="includeClosedOrCancelled"
+                label="Incluir IS Finalizadas/Canceladas"
+              ></app-error-message>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xs-6">
+          <div
+            class="form-group"
+            appErrorGroup
+          >
+            <label
+              class="control-label col-xs-4 text-right"
+              for="batchCode"
+            >
+              Lote
+            </label>
+            <div class="col-xs-8">
+              <input
+                id="batchCode"
+                class="form-control"
+                formControlName="batchCode"
+                maxlength="255"
+              />
+              <app-error-message
+                controlName="batchCode"
+                label="Lote"
+              ></app-error-message>
+            </div>
+          </div>
+
+          <div
+            class="form-group"
+            appErrorGroup
+          >
+            <label
+              class="control-label col-xs-4 text-right"
+              for="status"
+            >
+              Situação
+            </label>
+            <div class="col-xs-8">
+              <select
+                id="status"
+                formControlName="status"
+                class="form-control"
+              >
+                <option value=''>Selecione uma situação</option>
+                <option
+                  *ngFor="let status of statusList"
+                  [value]="status.code"
+                >{{ status?.name }}</option>
+              </select>
+              <app-error-message
+                controlName="status"
+                label="Situação"
+              ></app-error-message>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="box-footer">
+      <div class="row">
+        <div class="col-xs-offset-2 col-xs-10">
+          <button
+            [disabled]="loading"
+            [class.has-spinner]="loading"
+            type="submit"
+            class="btn btn-size btn-success"
+          >
+            <span
+              class="fa fa-spinner fa-pulse fa-fw"
+              *ngIf="loading"
+            ></span>
+            FILTRAR
+          </button>
+
+          <button
+            type="button"
+            (click)="buildForm()"
+            class="btn btn-size btn-default"
+          >LIMPAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

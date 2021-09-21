@@ -1,0 +1,28 @@
+
+<section class="content-header">
+    <h1>
+      <small>Detalhes</small>
+      Itens e Serviços
+    </h1>
+    <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Ites e Serviços','/service-item'],
+    ['Detalhes de Itens e Serviços', null]
+  ]"></app-breadcrumb>
+  </section>
+
+
+
+  <section class="content">
+
+  <app-service-item-list-info [serviceItem]="serviceItem"></app-service-item-list-info>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <a routerLink="/service-item"
+          class="btn btn-default btn-size">
+        VOLTAR
+      </a>
+    </div>
+  </div>
+  </section>

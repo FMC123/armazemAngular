@@ -1,0 +1,27 @@
+<section class="content-header">
+  <h1>
+    <small>Detalhes</small>
+    Endereço
+  </h1>
+  <app-breadcrumb [items]="[
+  ['Início', ''],
+  ['Pessoa','/person'],
+  ['Detalhes de Endereço', null]
+]"></app-breadcrumb>
+</section>
+
+<section class="content">
+
+  <app-address-list-info [address]="address" *ngIf="address"></app-address-list-info>
+
+  <div class="col-xs-12 mb10">
+    <button
+      type="button"
+      (click)="returFormPerson()"
+      class="btn btn-default btn-size"
+    >
+      VOLTAR
+    </button>
+  </div>
+
+</section>

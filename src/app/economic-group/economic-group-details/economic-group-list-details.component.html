@@ -1,0 +1,18 @@
+<div class="page-header">
+  <h1 class="text-success">Detalhes do Grupo Econômico</h1>
+</div>
+
+<app-economic-group-list-info [economicGroup]="economicGroup" *ngIf="economicGroup"></app-economic-group-list-info>
+
+ <div class="panel panel-default">
+  <div class="panel-footer">
+    <div class="row">
+      <div class="col-xs-12 mb10">
+        <a routerLink="/economic-group"
+           class="btn btn-success btn-size">
+          Voltar
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

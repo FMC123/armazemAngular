@@ -1,0 +1,48 @@
+<div class="modal fade"
+     appModal
+     [shownCallback]=""
+     (close)="onSelectUser.emit(null)"
+     tabindex="-1"
+     role="dialog">
+
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <form
+        (ngSubmit)="submit()"
+        [formGroup]="form"
+        *ngIf="form"
+        class="form-horizontal">
+        <div class="modal-header">
+          <h3 class="modal-title">Novo certificado para o romaneio</h3>
+        </div>
+        <div class="modal-body">
+          <fieldset [disabled]="loading">
+
+            <div class="form-group" appErrorGroup>
+              <label class="control-label col-md-2 text-right" for="userId">
+                Usuário
+              </label>
+              <div class="col-md-10">
+                <select formControlName="userId" class="form-control" id="userId">
+                  <option value=''>Selecione um usuário</option>
+                  <option *ngFor="let user of usersList" [value]="user.id">
+                    {{ user.name }}
+                  </option>
+                </select>
+                <app-error-message controlName="userId" label="Usuário"></app-error-message>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default btn-size" data-dismiss="modal">
+            Cancelar
+          </button>
+          <app-submit-button [loading]="loading">
+            Salvar
+          </app-submit-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

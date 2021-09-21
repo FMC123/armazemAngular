@@ -1,0 +1,30 @@
+<section class="content-header">
+  <h1>
+    <small>Cadastro</small>
+    Certificados
+  </h1>
+  <app-breadcrumb [items]="[
+    ['Início', ''],
+    ['Certificados', '/certificate'],
+    ['Cadastro de Certificados', null]
+  ]"></app-breadcrumb>
+</section>
+
+<section class="content">
+  <div class="row">
+    <app-certificate-list-info [certificate]="certificate" *ngIf="certificate"></app-certificate-list-info>
+
+    <div class="box box-default">
+      <div class="box-footer">
+        <div class="row">
+          <div class="col-xs-12 mb10">
+            <a routerLink="/certificate"
+                class="btn btn-success btn-size">
+              VOLTAR
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

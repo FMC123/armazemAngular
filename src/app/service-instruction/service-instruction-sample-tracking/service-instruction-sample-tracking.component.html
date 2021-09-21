@@ -1,0 +1,66 @@
+<div class="col-xs-6">
+  <form [formGroup]="form" *ngIf="form">
+    <div class="form-group" appErrorGroup>
+      <label class="control-label col-md-2 text-right" for="sampleTrackingId">Liga</label>
+      <div class="col-md-10" *ngIf="isNewOrOpened">
+        <select id="sampleTrackingId" formControlName="sampleTrackingId" class="form-control">
+          <option value=''>Selecione uma liga</option>
+          <option *ngFor="let sampleTracking of sampleTrackings" [value]="sampleTracking.id">
+            {{ sampleTracking.code }}
+          </option>
+        </select>
+        <app-error-message controlName="sampleTrackingId" label="Liga"></app-error-message>
+      </div>
+      <div class="col-md-10" *ngIf="!isNewOrOpened">
+        <input type="text" formControlName="sampleTrackingCode" class="form-control" disabled />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <table class="table table-striped table-bordered table-hover">
+          <thead>
+            <tr>
+              <th class="col-xs-2 text-center">
+                Lote
+              </th>
+              <th class="col-xs-2 text-center">
+                Armazém
+              </th>
+              <th class="col-xs-2 text-center">
+                Sacas
+              </th>
+              <th class="col-xs-2 text-center">
+                Despejo
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let batchIn of serviceInstruction.batchesIn">
+              <td class="text-center">{{batchIn.batch?.batchCode}}</td>
+              <td class="text-center">{{batchIn.batch?.batchOperation?.warehouse?.name}}</td>
+              <td class="text-center">{{batchIn.batch?.netQuantity}}</td>
+              <td class="text-center" *ngIf="!isBatchInQuantityEditable">{{batchIn.quantityString}}</td>
+              <td class="text-center" *ngIf="isBatchInQuantityEditable">
+                <input type="text" class="form-control" [textMask]="decimalMask" [(ngModel)]="batchIn.quantityString"
+                  [ngModelOptions]="{standalone: true}" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-6">
+        &#160;
+      </div>
+      <div class="col-xs-3 text-right">
+        <label>Total Despejo</label>
+      </div>
+      <div class="col-xs-3 text-center">
+        {{sumSacksOut}}
+      </div>
+    </div>
+  </form>
+</div>

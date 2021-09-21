@@ -1,0 +1,91 @@
+<!-- Quando o formulário era submetido por enter, ocorria um erro, por isso foi adicionado o bloqueio: (keydown.enter)="$event.preventDefault();" -->
+<form
+  class="form-horizontal"
+  (ngSubmit)="submit()"
+  *ngIf="form"
+  [formGroup]="form"
+  (keydown.enter)="$event.preventDefault();"
+>
+  <fieldset [disabled]="loading">
+
+    <div class="form-group" appErrorGroup>
+      <label class="control-label col-xs-4 col-md-2 text-right" for="registrationDateStartString">Período</label>
+      <div class="col-xs-8 col-md-10">
+        <div class="row">
+          <div class="col-xs-6">
+            <div class="input-group">
+              <input
+                type="text"
+                [textMask]="dateMask"
+                appDatePicker
+                formControlName="registrationDateStartString"
+                placeholder="Início"
+                class="form-control"
+              />
+              <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+            </div>
+          </div>
+          <div class="col-xs-6">
+            <div class="input-group">
+              <input
+                type="text"
+                [textMask]="dateMask"
+                appDatePicker
+                formControlName="registrationDateEndString"
+                placeholder="Fim"
+                class="form-control"
+              />
+              <div class="input-group-addon clickable"><span class="fa fa-calendar fa-fw"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group" appErrorGroup>
+      <label class="control-label col-xs-4 col-md-2 text-right" for="ownerId">
+        Cliente
+      </label>
+      <div class="col-xs-8 col-md-10">
+        <app-autocomplete [service]="ownerAutocomplete"></app-autocomplete>
+        <input type="hidden" formControlName="ownerId"/>
+        <app-error-message controlName="ownerId" label="Cliente"></app-error-message>
+      </div>
+    </div>
+
+    <div class="form-group" appErrorGroup>
+      <label class="control-label col-xs-4 col-md-2 text-right" for="packTypes">
+        Tipos de embalagem
+      </label>
+      <div class="col-xs-8 col-md-10">
+        <ng-select
+          #packTypesInput
+          [multiple]="true"
+          [items]="packTypeOptions"
+          (data)="refreshPackTypes($event)"
+          placeholder="Nenhuma embalagem selecionada">
+        </ng-select>
+      </div>
+    </div>
+
+  </fieldset>
+  <div class="form-group">
+    <div class="col-xs-offset-4 col-xs-8 col-sm-offset-2 col-sm-10">
+      <button
+        [disabled]="loading"
+        [class.has-spinner]="loading"
+        type="submit"
+        class="btn btn-size btn-success"
+      >
+        <span class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></span>
+        PESQUISAR
+      </button>
+
+      <button
+        type="button"
+        (click)="buildForm()"
+        class="btn btn-size btn-default"
+      >LIMPAR</button>
+    </div>
+  </div>
+</form>

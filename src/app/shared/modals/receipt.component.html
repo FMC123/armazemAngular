@@ -1,0 +1,46 @@
+<div class="modal fade" appModal (close)="close.emit(null)" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Confirmação de Recebimento de Lote</h3>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-xs-12">{{message}} {{markupGroupBatch.batch.batchCode}}?</div>
+        </div>
+        <div class="row autocomplete-holder">
+          <form [formGroup]="form" (ngSubmit)="pesquisar()">
+
+            <div class="col-xs-9 text-left">
+              <label for="buscar_por_cod_lote">Código</label>
+              <app-autocomplete [service]="batchAutocomplete"></app-autocomplete>
+              <input type="hidden" id="buscar_por_cod_lote" class="form-control" formControlName="buscar_por_cod_lote"/>
+              <app-error-message controlName="buscar_por_cod_lote" label="Código"></app-error-message>
+            </div>
+
+            <div class="col-xs-3">
+              <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+              <app-submit-button [loading]="loading" [btnClass]="'form-control btn btn-success btn-normal'">
+                Pesquisar
+              </app-submit-button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button *ngIf="showLabelNo == 'true'"
+                type="button"
+                class="btn btn-default btn-size"
+                data-dismiss="modal">{{ noLabel ? noLabel : 'Cancelar'  }}</button>
+        <button
+          type="button"
+          class="btn btn-size"
+          (click)="executeConfirm()"
+          [class.btn-success]="buttonClass === 'btn-success'"
+          [class.btn-danger]="buttonClass === 'btn-danger'"
+        >{{ yesLabel ? yesLabel : 'Ok' }}</button>
+      </div>
+    </div>
+  </div>
+</div>
